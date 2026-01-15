@@ -11,7 +11,7 @@ const permissions: HealthKitPermissions = {
         read: [
             AppleHealthKit.Constants.Permissions.Steps,
             AppleHealthKit.Constants.Permissions.SleepAnalysis,
-            AppleHealthKit.Constants.Permissions.Workouts,
+            AppleHealthKit.Constants.Permissions.Workout,
             AppleHealthKit.Constants.Permissions.Water, // Make sure this exists in types
         ],
         write: [],
@@ -122,7 +122,7 @@ export const HealthKitService = {
         const end = new Date(date);
         end.setHours(23, 59, 59, 999);
 
-        const options: HealthInputOptions = {
+        const options: any = {
             startDate: start.toISOString(),
             endDate: end.toISOString(),
             type: 'Workout', // Helper might be different

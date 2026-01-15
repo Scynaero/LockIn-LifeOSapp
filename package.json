@@ -36,6 +36,7 @@
     "tailwindcss": "^3.4.19"
   },
   "devDependencies": {
+    "@types/expo__vector-icons": "^9.0.1",
     "@types/react": "~19.1.0",
     "babel-preset-expo": "~54.0.9",
     "typescript": "~5.9.2"

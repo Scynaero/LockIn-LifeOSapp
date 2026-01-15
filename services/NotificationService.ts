@@ -7,6 +7,8 @@ Notifications.setNotificationHandler({
         shouldShowAlert: true,
         shouldPlaySound: true,
         shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
     }),
 });
 
@@ -21,13 +23,16 @@ export const NotificationService = {
         return finalStatus === 'granted';
     },
 
-    scheduleReminder: async (habit: Habit) => {
+    scheduleReminder: async (habit: Pick<Habit, 'id' | 'name' | 'reminder_time'>) => {
         if (!habit.reminder_time) return;
 
         // Cancel any existing notifs for this habit to avoid duplicates
         await NotificationService.cancelReminder(habit.id);
 
         const timeDate = new Date(habit.reminder_time);
+        const hour = timeDate.getHours();
+        const minute = timeDate.getMinutes();
+
         const identifier = await Notifications.scheduleNotificationAsync({
             content: {
                 title: "It's time to Lock In",
@@ -36,6 +41,7 @@ export const NotificationService = {
                 data: { url: `/habit/${habit.id}` }
             },
             trigger: {
+                type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
                 hour,
                 minute,
                 repeats: true,
