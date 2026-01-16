@@ -23,6 +23,7 @@ export interface Habit {
     target_value: number;
     daily_logs?: string;
     completed_today: boolean; // Virtual field
+    completed_value?: number; // Virtual field
     frozen_today?: boolean; // Virtual field
     archived_at?: string;
 }
@@ -146,8 +147,8 @@ export const HabitService = {
 
         // Show active habits OR habits archived AFTER the target date
         // Note: created_at check handled in query if needed, but for list we usually show all valid.
-        const result = await db.getAllAsync<Habit & { target_log_id: string, target_freeze_id: string }>(`
-            SELECT h.*, l.id as target_log_id, f.id as target_freeze_id
+        const result = await db.getAllAsync<Habit & { target_log_id: string, target_log_value: number, target_freeze_id: string }>(`
+            SELECT h.*, l.id as target_log_id, l.value as target_log_value, f.id as target_freeze_id
             FROM habits h
             LEFT JOIN logs l ON h.id = l.habit_id AND l.date = ?
             LEFT JOIN streak_freezes f ON h.id = f.habit_id AND f.date = ?
@@ -160,6 +161,7 @@ export const HabitService = {
             archived: Boolean(h.archived),
             frequency: JSON.parse(h.frequency as any),
             completed_today: !!h.target_log_id,
+            completed_value: h.target_log_value || 0,
             frozen_today: !!h.target_freeze_id,
             // Virtual Streak: Use DB value if today, else calculate
             current_streak: targetDate === DateUtils.getTodayDateString()

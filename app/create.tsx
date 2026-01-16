@@ -1,5 +1,5 @@
 import { View, Text, TextInput, Pressable, ScrollView, Switch, Platform } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HabitService } from "../services/HabitService";
 import { router } from "expo-router";
 import { X } from "lucide-react-native";
@@ -24,6 +24,23 @@ export default function CreateHabitScreen() {
     const [useHealthKit, setUseHealthKit] = useState(false);
     const [healthType, setHealthType] = useState('steps'); // steps, sleep, workout
 
+    // Custom Goal Logic
+    const [hasCustomGoal, setHasCustomGoal] = useState(false);
+    const [customGoal, setCustomGoal] = useState('1');
+    const [customUnit, setCustomUnit] = useState('count');
+
+    // Auto-detect unit
+    useEffect(() => {
+        const n = name.toLowerCase();
+        if ((n.includes('water') || n.includes('drink') || n.includes('hydrate')) && !useHealthKit) {
+            setCustomUnit('L');
+            setHasCustomGoal(true);
+        } else if ((n.includes('read') || n.includes('book')) && !useHealthKit) {
+            setCustomUnit('pages');
+            setHasCustomGoal(true);
+        }
+    }, [name, useHealthKit]);
+
     const toggleDay = (day: string) => {
         if (frequency.includes(day)) {
             // Don't allow empty frequency
@@ -45,7 +62,7 @@ export default function CreateHabitScreen() {
         // Determine Color
         const habitColor = type === 'quit' ? '#FF4545' : '#CCFF00';
 
-        // HealthKit Defaults
+        // Defaults
         let finalGoal = 1;
         let finalUnit = 'count';
         let finalIcon = 'activity';
@@ -64,6 +81,11 @@ export default function CreateHabitScreen() {
                 finalUnit = 'min';
                 finalIcon = 'fitness';
             }
+        } else if (hasCustomGoal) {
+            finalGoal = parseFloat(customGoal) || 1;
+            finalUnit = customUnit || 'count';
+            if (name.toLowerCase().includes('water')) finalIcon = 'water';
+            if (name.toLowerCase().includes('read')) finalIcon = 'book';
         }
 
         const id = await HabitService.createHabit(
@@ -163,10 +185,50 @@ export default function CreateHabitScreen() {
                 )}
 
                 <View className="flex-row justify-between items-center mb-2 mt-4">
+                    <Text className="text-secondary font-medium">CUSTOM GOAL</Text>
+                    <Switch
+                        value={hasCustomGoal}
+                        onValueChange={(v) => {
+                            setHasCustomGoal(v);
+                            if (v) setUseHealthKit(false);
+                        }}
+                        trackColor={{ false: '#3F3F46', true: '#CCFF00' }}
+                        thumbColor={Platform.OS === 'ios' ? '#fff' : (hasCustomGoal ? '#000' : '#f4f3f4')}
+                    />
+                </View>
+
+                {hasCustomGoal && (
+                    <View className="flex-row gap-4 mb-6">
+                        <View className="flex-1">
+                            <Text className="text-secondary mb-1 text-xs font-bold">TARGET</Text>
+                            <TextInput
+                                className="bg-surface text-primary p-4 rounded-xl text-lg border border-surfaceHighlight font-bold text-center"
+                                keyboardType="numeric"
+                                value={customGoal}
+                                onChangeText={setCustomGoal}
+                            />
+                        </View>
+                        <View className="flex-1">
+                            <Text className="text-secondary mb-1 text-xs font-bold">UNIT</Text>
+                            <TextInput
+                                className="bg-surface text-primary p-4 rounded-xl text-lg border border-surfaceHighlight font-bold text-center"
+                                placeholder="e.g. min"
+                                placeholderTextColor="#666"
+                                value={customUnit}
+                                onChangeText={setCustomUnit}
+                            />
+                        </View>
+                    </View>
+                )}
+
+                <View className="flex-row justify-between items-center mb-2 mt-4">
                     <Text className="text-secondary font-medium">AUTOMATION (APPLE HEALTH)</Text>
                     <Switch
                         value={useHealthKit}
-                        onValueChange={setUseHealthKit}
+                        onValueChange={(v) => {
+                            setUseHealthKit(v);
+                            if (v) setHasCustomGoal(false);
+                        }}
                         trackColor={{ false: '#3F3F46', true: '#CCFF00' }}
                         thumbColor={Platform.OS === 'ios' ? '#fff' : (useHealthKit ? '#000' : '#f4f3f4')}
                     />

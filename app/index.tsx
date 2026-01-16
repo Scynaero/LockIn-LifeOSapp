@@ -13,12 +13,14 @@ import { router } from "expo-router";
 import { Plus } from "lucide-react-native";
 import { DateUtils } from "../utils/DateUtils";
 import { ProgressRing } from "../components/ProgressRing";
+import { LogValueModal } from "../components/LogValueModal";
 
 export default function HomeScreen() {
     const [habits, setHabits] = useState<Habit[]>([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [heatmapData, setHeatmapData] = useState<Record<string, number>>({});
     const [stats, setStats] = useState({ streak: 0, completionRate: 0, breakdown: { build: 0, quit: 0, frozen: 0, total: 0 } });
+    const [logHabit, setLogHabit] = useState<Habit | null>(null);
 
     // ...
 
@@ -50,6 +52,21 @@ export default function HomeScreen() {
         const dateStr = DateUtils.getDateString(selectedDate);
         await HabitService.logCompletion(id, dateStr, 1);
         loadData(); // Refresh UI
+    };
+
+    const handleLogSave = async (val: number) => {
+        if (!logHabit) return;
+        const dateStr = DateUtils.getDateString(selectedDate);
+
+        let finalVal = val;
+        // Convert Hours to Min for Sleep
+        if (logHabit.health_type === 'sleep') {
+            finalVal = Math.round(val * 60);
+        }
+
+        await HabitService.logCompletion(logHabit.id, dateStr, finalVal);
+        loadData();
+        setLogHabit(null);
     };
 
     const confirmDelete = (habit: Habit) => {
@@ -130,7 +147,15 @@ export default function HomeScreen() {
                     </View>
                 }
                 ListFooterComponent={
-                    <Heatmap data={heatmapData} />
+                    <>
+                        <Heatmap data={heatmapData} />
+                        <LogValueModal
+                            visible={!!logHabit}
+                            habit={logHabit}
+                            onClose={() => setLogHabit(null)}
+                            onSave={handleLogSave}
+                        />
+                    </>
                 }
                 renderItem={({ item, drag, isActive }) => (
                     <ScaleDecorator>
@@ -146,7 +171,22 @@ export default function HomeScreen() {
                             {/* Deep Dive Interaction */}
                             <View className="flex-1">
                                 <Text className="text-primary font-bold text-lg">{item.name}</Text>
-                                {item.description ? <Text className="text-secondary text-sm" numberOfLines={1}>{item.description}</Text> : null}
+
+                                {item.target_value > 1 ? (
+                                    <Text className="text-primary font-bold text-base mt-0.5">
+                                        {item.health_type === 'sleep'
+                                            ? ((item.completed_value || 0) / 60).toFixed(1)
+                                            : (item.completed_value?.toLocaleString() || 0)}
+                                        <Text className="text-secondary font-medium text-xs"> / {
+                                            item.health_type === 'sleep'
+                                                ? `${(item.target_value / 60).toFixed(1)} hrs`
+                                                : `${item.target_value.toLocaleString()} ${item.unit}`
+                                        }</Text>
+                                    </Text>
+                                ) : (
+                                    item.description ? <Text className="text-secondary text-sm" numberOfLines={1}>{item.description}</Text> : null
+                                )}
+
                                 <Text className="text-secondary text-xs mt-1">{item.current_streak} Day Streak</Text>
                             </View>
 
@@ -154,7 +194,11 @@ export default function HomeScreen() {
                             <Pressable
                                 onPress={(e) => {
                                     e.stopPropagation();
-                                    toggleHabit(item.id);
+                                    if (item.target_value > 1) {
+                                        setLogHabit(item);
+                                    } else {
+                                        toggleHabit(item.id);
+                                    }
                                 }}
                                 className={`w-10 h-10 rounded-full border-2 items-center justify-center ml-4`}
                                 style={{
