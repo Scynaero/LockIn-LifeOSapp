@@ -1,275 +1,4624 @@
 [
-    {
-        "id": "chest_press_machine",
-        "name": "Chest Press (Machine)",
-        "target_muscle": "chest",
-        "equipment": "machine",
-        "is_custom": 0
-    },
-    {
-        "id": "pec_deck",
-        "name": "Pec Deck (Fly)",
-        "target_muscle": "chest",
-        "equipment": "machine",
-        "is_custom": 0
-    },
-    {
-        "id": "push_up",
-        "name": "Push Up",
-        "target_muscle": "chest",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "incline_dumbbell_press",
-        "name": "Incline Dumbbell Press",
-        "target_muscle": "chest",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "cable_crossover",
-        "name": "Cable Crossover",
-        "target_muscle": "chest",
-        "equipment": "cable",
-        "is_custom": 0
-    },
-    {
-        "id": "lat_pulldown_cable",
-        "name": "Lat Pulldown (Cable)",
-        "target_muscle": "back",
-        "equipment": "cable",
-        "is_custom": 0
-    },
-    {
-        "id": "seated_row_cable",
-        "name": "Seated Row (Cable)",
-        "target_muscle": "back",
-        "equipment": "cable",
-        "is_custom": 0
-    },
-    {
-        "id": "bent_over_row_barbell",
-        "name": "Bent Over Row (Barbell)",
-        "target_muscle": "back",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "single_arm_dumbbell_row",
-        "name": "Single Arm Dumbbell Row",
-        "target_muscle": "back",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "face_pull",
-        "name": "Face Pull",
-        "target_muscle": "shoulders",
-        "equipment": "cable",
-        "is_custom": 0
-    },
-    {
-        "id": "shoulder_press_dumbbell",
-        "name": "Shoulder Press (Dumbbell)",
-        "target_muscle": "shoulders",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "lateral_raise_dumbbell",
-        "name": "Lateral Raise (Dumbbell)",
-        "target_muscle": "shoulders",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "front_raise_dumbbell",
-        "name": "Front Raise (Dumbbell)",
-        "target_muscle": "shoulders",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "arnold_press",
-        "name": "Arnold Press",
-        "target_muscle": "shoulders",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "bicep_curl_barbell",
-        "name": "Bicep Curl (Barbell)",
-        "target_muscle": "arms",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "hammer_curl",
-        "name": "Hammer Curl",
-        "target_muscle": "arms",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "tricep_pushdown",
-        "name": "Tricep Pushdown",
-        "target_muscle": "arms",
-        "equipment": "cable",
-        "is_custom": 0
-    },
-    {
-        "id": "skullcrusher",
-        "name": "Skullcrusher",
-        "target_muscle": "arms",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "preacher_curl",
-        "name": "Preacher Curl",
-        "target_muscle": "arms",
-        "equipment": "machine",
-        "is_custom": 0
-    },
-    {
-        "id": "squat_goblet",
-        "name": "Goblet Squat",
-        "target_muscle": "legs",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "leg_extension",
-        "name": "Leg Extension",
-        "target_muscle": "legs",
-        "equipment": "machine",
-        "is_custom": 0
-    },
-    {
-        "id": "leg_curl",
-        "name": "Leg Curl (Hamstring)",
-        "target_muscle": "legs",
-        "equipment": "machine",
-        "is_custom": 0
-    },
-    {
-        "id": "bulgarian_split_squat",
-        "name": "Bulgarian Split Squat",
-        "target_muscle": "legs",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "calf_raise_standing",
-        "name": "Calf Raise (Standing)",
-        "target_muscle": "legs",
-        "equipment": "machine",
-        "is_custom": 0
-    },
-    {
-        "id": "romanian_deadlift",
-        "name": "Romanian Deadlift",
-        "target_muscle": "legs",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "plank",
-        "name": "Plank",
-        "target_muscle": "abs",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "leg_raise_hanging",
-        "name": "Hanging Leg Raise",
-        "target_muscle": "abs",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "russian_twist",
-        "name": "Russian Twist",
-        "target_muscle": "abs",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "ab_roller",
-        "name": "Ab Wheel Rollout",
-        "target_muscle": "abs",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "bench_press_barbell",
-        "name": "Bench Press (Barbell)",
-        "target_muscle": "chest",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "squat_barbell",
-        "name": "Squat (Barbell)",
-        "target_muscle": "legs",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "deadlift_barbell",
-        "name": "Deadlift (Barbell)",
-        "target_muscle": "back",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "overhead_press_barbell",
-        "name": "Overhead Press (Barbell)",
-        "target_muscle": "shoulders",
-        "equipment": "barbell",
-        "is_custom": 0
-    },
-    {
-        "id": "pull_up",
-        "name": "Pull Up",
-        "target_muscle": "back",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "dumbbell_curl",
-        "name": "Dumbbell Curl",
-        "target_muscle": "arms",
-        "equipment": "dumbbell",
-        "is_custom": 0
-    },
-    {
-        "id": "tricep_dip",
-        "name": "Tricep Dip",
-        "target_muscle": "arms",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "crunch",
-        "name": "Crunch",
-        "target_muscle": "abs",
-        "equipment": "bodyweight",
-        "is_custom": 0
-    },
-    {
-        "id": "leg_press",
-        "name": "Leg Press",
-        "target_muscle": "legs",
-        "equipment": "machine",
-        "is_custom": 0
-    },
-    {
-        "id": "lat_pulldown",
-        "name": "Lat Pulldown",
-        "target_muscle": "back",
-        "equipment": "machine",
-        "is_custom": 0
-    }
+  {
+    "id": "bench_press_barbell",
+    "name": "Bench Press (Barbell)",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "chest/pectoralis minor",
+      "arms/triceps",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_bench_press",
+    "name": "Incline Bench Press",
+    "target_muscle": "chest/clavicular pectoralis",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_bench_press",
+    "name": "Decline Bench Press",
+    "target_muscle": "chest/sternal pectoralis",
+    "secondary_muscles": [
+      "chest/pectoralis major",
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_press",
+    "name": "Dumbbell Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_dumbbell_press",
+    "name": "Incline Dumbbell Press",
+    "target_muscle": "chest/clavicular pectoralis",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_dumbbell_press",
+    "name": "Decline Dumbbell Press",
+    "target_muscle": "chest/sternal pectoralis",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "chest_press_machine",
+    "name": "Chest Press (Machine)",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_bench",
+    "name": "Smith Machine Bench Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "push_up",
+    "name": "Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "pushup_wide",
+    "name": "Wide Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "pushup_diamond",
+    "name": "Diamond Push Up",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "chest_dip",
+    "name": "Chest Dip",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "pec_deck",
+    "name": "Pec Deck (Fly)",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "chest/pectoralis minor"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_flye",
+    "name": "Dumbbell Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_flye",
+    "name": "Cable Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_crossover",
+    "name": "Cable Crossover",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "chest/pectoralis minor"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_chest_fly",
+    "name": "Machine Chest Fly",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "landmine_press",
+    "name": "Landmine Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_chest_press",
+    "name": "Resistance Band Chest Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "bent_over_row_barbell",
+    "name": "Bent Over Row (Barbell)",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "pendulum_row",
+    "name": "Pendulum Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_row",
+    "name": "Machine Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_dumbbell_row",
+    "name": "Single Arm Dumbbell Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_row",
+    "name": "Dumbbell Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "landmine_row",
+    "name": "Landmine Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "sealed_row_cable",
+    "name": "Seated Row (Cable)",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_row_high",
+    "name": "High Cable Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_row_low",
+    "name": "Low Cable Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "t_bar_row",
+    "name": "T-Bar Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "pull_up",
+    "name": "Pull Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "wide_grip_pullup",
+    "name": "Wide Grip Pull Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "close_grip_pullup",
+    "name": "Close Grip Pull Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "chin_up",
+    "name": "Chin Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "lat_pulldown_cable",
+    "name": "Lat Pulldown (Cable)",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "lat_pulldown",
+    "name": "Lat Pulldown (Machine)",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "lat_pulldown_close",
+    "name": "Lat Pulldown Close Grip",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "face_pull",
+    "name": "Face Pull",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "reverse_fly_dumbbell",
+    "name": "Reverse Fly (Dumbbell)",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "reverse_pec_deck",
+    "name": "Reverse Pec Deck",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_reverse_fly",
+    "name": "Cable Reverse Fly",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "upright_row",
+    "name": "Upright Row",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "deadlift_barbell",
+    "name": "Deadlift (Barbell)",
+    "target_muscle": "back/erector spinae",
+    "secondary_muscles": [
+      "legs/glutes",
+      "back/latissimus dorsi",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "sumo_deadlift",
+    "name": "Sumo Deadlift",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [
+      "back/erector spinae",
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "romanian_deadlift",
+    "name": "Romanian Deadlift",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [
+      "legs/glutes",
+      "back/erector spinae"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_deadlift",
+    "name": "Dumbbell Deadlift",
+    "target_muscle": "back/erector spinae",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "trap_bar_deadlift",
+    "name": "Trap Bar Deadlift",
+    "target_muscle": "back/erector spinae",
+    "secondary_muscles": [
+      "legs/quadriceps",
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "shrug_dumbbell",
+    "name": "Dumbbell Shrug",
+    "target_muscle": "back/trapezius",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "shrug_barbell",
+    "name": "Barbell Shrug",
+    "target_muscle": "back/trapezius",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "shrug_machine",
+    "name": "Machine Shrug",
+    "target_muscle": "back/trapezius",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "shoulder_press_barbell",
+    "name": "Overhead Press (Barbell)",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/lateral deltoid"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "shoulder_press_dumbbell",
+    "name": "Shoulder Press (Dumbbell)",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/lateral deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "shoulder_press_machine",
+    "name": "Shoulder Press (Machine)",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "arnold_press",
+    "name": "Arnold Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "lateral_raise_dumbbell",
+    "name": "Lateral Raise (Dumbbell)",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "lateral_raise_cable",
+    "name": "Lateral Raise (Cable)",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "lateral_raise_machine",
+    "name": "Lateral Raise (Machine)",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "front_raise_dumbbell",
+    "name": "Front Raise (Dumbbell)",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "front_raise_cable",
+    "name": "Front Raise (Cable)",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "front_raise_plate",
+    "name": "Front Raise (Plate)",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_shoulder_fly",
+    "name": "Machine Shoulder Fly",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "squat_barbell",
+    "name": "Squat (Barbell)",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/adductors",
+      "back/erector spinae"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "front_squat",
+    "name": "Front Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "core/rectus abdominis"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_press",
+    "name": "Leg Press",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_press_45",
+    "name": "45 Degree Leg Press",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "hack_squat",
+    "name": "Hack Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_squat",
+    "name": "Smith Machine Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "pendulum_squat",
+    "name": "Pendulum Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_sled",
+    "name": "Leg Sled",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "squat_goblet",
+    "name": "Goblet Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "core/rectus abdominis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_squat",
+    "name": "Dumbbell Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "lunges_dumbbell",
+    "name": "Lunges (Dumbbell)",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "lunges_barbell",
+    "name": "Lunges (Barbell)",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "walking_lunges",
+    "name": "Walking Lunges",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "bulgarian_split_squat",
+    "name": "Bulgarian Split Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_extension",
+    "name": "Leg Extension",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_curl",
+    "name": "Leg Curl (Hamstring)",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_curl_lying",
+    "name": "Lying Leg Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_curl_seated",
+    "name": "Seated Leg Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_curl_single",
+    "name": "Single Leg Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "nordic_curl",
+    "name": "Nordic Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "calf_raise_standing",
+    "name": "Calf Raise (Standing)",
+    "target_muscle": "legs/gastrocnemius",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "calf_raise_seated",
+    "name": "Calf Raise (Seated)",
+    "target_muscle": "legs/soleus",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "calf_raise_dumbbell",
+    "name": "Dumbbell Calf Raise",
+    "target_muscle": "legs/gastrocnemius",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "calf_raise_barbell",
+    "name": "Barbell Calf Raise",
+    "target_muscle": "legs/gastrocnemius",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_abduction_machine",
+    "name": "Leg Abduction (Machine)",
+    "target_muscle": "legs/gluteus medius",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_adduction_machine",
+    "name": "Leg Adduction (Machine)",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "hip_thrust",
+    "name": "Hip Thrust",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "hip_thrust_machine",
+    "name": "Hip Thrust (Machine)",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "hip_thrust_dumbbell",
+    "name": "Hip Thrust (Dumbbell)",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "glute_bridge",
+    "name": "Glute Bridge",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "glute_bridge_dumbbell",
+    "name": "Glute Bridge (Dumbbell)",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_glute_kickback",
+    "name": "Cable Glute Kickback",
+    "target_muscle": "legs/gluteus maximus",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_glute_kickback",
+    "name": "Dumbbell Glute Kickback",
+    "target_muscle": "legs/gluteus maximus",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_glute_kickback",
+    "name": "Machine Glute Kickback",
+    "target_muscle": "legs/gluteus maximus",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "sumo_squat",
+    "name": "Sumo Squat",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/quadriceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "bicep_curl_barbell",
+    "name": "Bicep Curl (Barbell)",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_curl",
+    "name": "Dumbbell Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "hammer_curl",
+    "name": "Hammer Curl",
+    "target_muscle": "arms/brachialis",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "preacher_curl",
+    "name": "Preacher Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_curl",
+    "name": "Machine Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_curl",
+    "name": "Cable Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "reverse_curl",
+    "name": "Reverse Curl",
+    "target_muscle": "arms/brachialis",
+    "secondary_muscles": [
+      "forearm/extensors"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "concentration_curl",
+    "name": "Concentration Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "tricep_pushdown",
+    "name": "Tricep Pushdown",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "tricep_rope_pushdown",
+    "name": "Tricep Rope Pushdown",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "tricep_dip",
+    "name": "Tricep Dip",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "skullcrusher",
+    "name": "Skullcrusher",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "skullcrusher_dumbbell",
+    "name": "Skullcrusher (Dumbbell)",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "tricep_kickback",
+    "name": "Tricep Kickback",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "tricep_extension_machine",
+    "name": "Tricep Extension (Machine)",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "overhead_tricep_extension",
+    "name": "Overhead Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "plank",
+    "name": "Plank",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/transverse abdominis"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "crunch",
+    "name": "Crunch",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_crunch",
+    "name": "Decline Crunch",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_crunch",
+    "name": "Cable Crunch",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_crunch",
+    "name": "Machine Crunch",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_raise_hanging",
+    "name": "Hanging Leg Raise",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "knee_raise_captain_chair",
+    "name": "Knee Raise (Captain's Chair)",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "russian_twist",
+    "name": "Russian Twist",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "pallof_press",
+    "name": "Pallof Press",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "ab_roller",
+    "name": "Ab Wheel Rollout",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/transverse abdominis"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "ab_wheel_standing",
+    "name": "Ab Wheel (Standing)",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/transverse abdominis"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "wrist_curl",
+    "name": "Wrist Curl",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "reverse_wrist_curl",
+    "name": "Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_curl_forearms",
+    "name": "Barbell Curl Forearms",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_wrist_curl_forearms",
+    "name": "Dumbbell Wrist Curl",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_wrist_curl_forearms",
+    "name": "Barbell Wrist Curl",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_wrist_curl_forearms",
+    "name": "Cable Wrist Curl",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_reverse_wrist_curl_forearms",
+    "name": "Dumbbell Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_reverse_wrist_curl_forearms",
+    "name": "Barbell Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_reverse_wrist_curl_forearms",
+    "name": "Cable Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_wrist_curl_forearms",
+    "name": "Machine Wrist Curl",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_push_up",
+    "name": "Incline Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_push_up",
+    "name": "Decline Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "wide_push_up",
+    "name": "Wide Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "narrow_push_up",
+    "name": "Narrow Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "explosive_push_up",
+    "name": "Explosive Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "pseudo_planche_push_up",
+    "name": "Pseudo Planche Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_dumbbell_flye",
+    "name": "Incline Dumbbell Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_dumbbell_flye",
+    "name": "Decline Dumbbell Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_cable_flye",
+    "name": "Incline Cable Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_cable_flye",
+    "name": "Decline Cable Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_incline_press",
+    "name": "Smith Machine Incline Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_decline_press",
+    "name": "Smith Machine Decline Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_push_up",
+    "name": "Weighted Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_dumbbell_press",
+    "name": "Single Arm Dumbbell Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps",
+      "core/obliques"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "neutral_grip_dumbbell_press",
+    "name": "Neutral Grip Dumbbell Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "close_grip_bench_press",
+    "name": "Close Grip Bench Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "low_to_high_cable_flye",
+    "name": "Low to High Cable Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "high_to_low_cable_flye",
+    "name": "High to Low Cable Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "middle_cable_flye",
+    "name": "Middle Cable Flye",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "landmine_chest_press",
+    "name": "Landmine Chest Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "landmine_rotational_chest_press",
+    "name": "Landmine Rotational Chest Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "core/obliques"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "hex_press",
+    "name": "Hex Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "svend_press",
+    "name": "Svend Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_machine_chest_press",
+    "name": "Incline Machine Chest Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_machine_chest_press",
+    "name": "Decline Machine Chest Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_pullover",
+    "name": "Dumbbell Pullover",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "back/latissimus dorsi"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_pullover",
+    "name": "Machine Pullover",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "back/latissimus dorsi"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_crossover_high_to_low",
+    "name": "Cable Crossover High to Low",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_crossover_low_to_high",
+    "name": "Cable Crossover Low to High",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_crossover_middle",
+    "name": "Cable Crossover Middle",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "archer_push_up",
+    "name": "Archer Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "rotating_dumbbell_press",
+    "name": "Rotating Dumbbell Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "floor_press",
+    "name": "Floor Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_floor_press",
+    "name": "Barbell Floor Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "unilateral_cable_press",
+    "name": "Unilateral Cable Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps",
+      "core/obliques"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_unilateral_cable_press",
+    "name": "Incline Unilateral Cable Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_unilateral_cable_press",
+    "name": "Decline Unilateral Cable Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "landmine_single_arm_press",
+    "name": "Landmine Single Arm Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps",
+      "core/obliques"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_bench_press_neutral_grip",
+    "name": "Dumbbell Bench Press Neutral Grip",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "neutral_grip_pullup",
+    "name": "Neutral Grip Pull Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps",
+      "arms/brachialis"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_pullup",
+    "name": "Weighted Pull Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_chin_up",
+    "name": "Weighted Chin Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_pullup",
+    "name": "Single Arm Pull Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps",
+      "core/obliques"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "assisted_pullup",
+    "name": "Assisted Pull Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_bent_over_row",
+    "name": "Barbell Bent Over Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_bent_over_row",
+    "name": "Dumbbell Bent Over Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "v_bar_cable_row",
+    "name": "V Bar Cable Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "wide_grip_cable_row",
+    "name": "Wide Grip Cable Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_cable_row",
+    "name": "Single Arm Cable Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps",
+      "core/obliques"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "seal_row",
+    "name": "Seal Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "inverted_row",
+    "name": "Inverted Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps",
+      "chest/pectoralis major"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "wide_grip_inverted_row",
+    "name": "Wide Grip Inverted Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "chest_supported_row",
+    "name": "Chest Supported Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_chest_supported_row",
+    "name": "Barbell Chest Supported Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_chest_supported_row",
+    "name": "Machine Chest Supported Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "wide_grip_lat_pulldown",
+    "name": "Wide Grip Lat Pulldown",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "narrow_grip_lat_pulldown",
+    "name": "Narrow Grip Lat Pulldown",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "reverse_grip_lat_pulldown",
+    "name": "Reverse Grip Lat Pulldown",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "v_bar_lat_pulldown",
+    "name": "V Bar Lat Pulldown",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_lat_pulldown",
+    "name": "Single Arm Lat Pulldown",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps",
+      "core/obliques"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_lat_pulldown",
+    "name": "Machine Lat Pulldown",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "rope_face_pull",
+    "name": "Rope Face Pull",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/upper back",
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "straight_bar_face_pull",
+    "name": "Straight Bar Face Pull",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/upper back",
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "bent_over_dumbbell_raise",
+    "name": "Bent Over Dumbbell Raise",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_bent_over_raise",
+    "name": "Barbell Bent Over Raise",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_rear_deltoid_fly",
+    "name": "Machine Rear Deltoid Fly",
+    "target_muscle": "back/posterior deltoid",
+    "secondary_muscles": [
+      "back/rhomboid"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_upright_row",
+    "name": "Dumbbell Upright Row",
+    "target_muscle": "back/upper back",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid",
+      "arms/biceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_upright_row",
+    "name": "Cable Upright Row",
+    "target_muscle": "back/upper back",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid",
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_upright_row",
+    "name": "Smith Machine Upright Row",
+    "target_muscle": "back/upper back",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid",
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_upright_row",
+    "name": "Machine Upright Row",
+    "target_muscle": "back/upper back",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid",
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "shrug",
+    "name": "Shrug",
+    "target_muscle": "back/trapezius",
+    "secondary_muscles": [
+      "shoulders/upper trapezius"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_shrug",
+    "name": "Cable Shrug",
+    "target_muscle": "back/trapezius",
+    "secondary_muscles": [
+      "shoulders/upper trapezius"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_shrug",
+    "name": "Smith Machine Shrug",
+    "target_muscle": "back/trapezius",
+    "secondary_muscles": [
+      "shoulders/upper trapezius"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "conventional_deadlift",
+    "name": "Conventional Deadlift",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_romanian_deadlift",
+    "name": "Dumbbell Romanian Deadlift",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/hamstrings"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "stiff_legged_deadlift",
+    "name": "Stiff Legged Deadlift",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/hamstrings"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_deadlift",
+    "name": "Single Leg Deadlift",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_deadlift",
+    "name": "Machine Deadlift",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_deadlift",
+    "name": "Smith Machine Deadlift",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "deficit_deadlift",
+    "name": "Deficit Deadlift",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "rack_pull",
+    "name": "Rack Pull",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "good_morning",
+    "name": "Good Morning",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/hamstrings"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "back_extension",
+    "name": "Back Extension",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_back_extension",
+    "name": "Machine Back Extension",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "reverse_hyperextension",
+    "name": "Reverse Hyperextension",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "hyperextension",
+    "name": "Hyperextension",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_back_extension",
+    "name": "Cable Back Extension",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_back_extension",
+    "name": "Dumbbell Back Extension",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_back_extension",
+    "name": "Barbell Back Extension",
+    "target_muscle": "back/lower back",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/hamstrings"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_row_to_chest",
+    "name": "Barbell Row to Chest",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "renegade_row",
+    "name": "Renegade Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps",
+      "chest/pectoralis major"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "half_kneeling_single_arm_row",
+    "name": "Half Kneeling Single Arm Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps",
+      "core/obliques"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "military_press",
+    "name": "Military Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_dumbbell_shoulder_press",
+    "name": "Incline Dumbbell Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "seated_shoulder_press",
+    "name": "Seated Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_shoulder_press",
+    "name": "Machine Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_shoulder_press",
+    "name": "Cable Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_dumbbell_shoulder_press",
+    "name": "Single Arm Dumbbell Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps",
+      "core/obliques"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_shoulder_press",
+    "name": "Smith Machine Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "landmine_shoulder_press",
+    "name": "Landmine Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "pike_push_up",
+    "name": "Pike Push Up",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "handstand_pushup",
+    "name": "Handstand Push Up",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "wall_supported_handstand_pushup",
+    "name": "Wall Supported Handstand Push Up",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_cable_lateral_raise",
+    "name": "Single Arm Cable Lateral Raise",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "core/obliques"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "plate_lateral_raise",
+    "name": "Plate Lateral Raise",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_lateral_raise",
+    "name": "Resistance Band Lateral Raise",
+    "target_muscle": "shoulders/lateral deltoid",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_front_raise",
+    "name": "Barbell Front Raise",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_front_raise",
+    "name": "Cable Front Raise",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "plate_front_raise",
+    "name": "Plate Front Raise",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "standing_shoulder_press",
+    "name": "Standing Shoulder Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "push_press",
+    "name": "Push Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_push_press",
+    "name": "Dumbbell Push Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "z_press",
+    "name": "Z Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_z_press",
+    "name": "Barbell Z Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "behind_the_neck_press",
+    "name": "Behind The Neck Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_behind_the_neck_press",
+    "name": "Dumbbell Behind The Neck Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "shoulders/lateral deltoid",
+      "arms/triceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "jm_press",
+    "name": "JM Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "high_bar_squat",
+    "name": "High Bar Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "low_bar_squat",
+    "name": "Low Bar Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "back/lower back"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_squat",
+    "name": "Machine Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "v_squat",
+    "name": "V Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "sissy_squat",
+    "name": "Sissy Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "bodyweight_squat",
+    "name": "Bodyweight Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "split_squat",
+    "name": "Split Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_squat",
+    "name": "Single Leg Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_extension",
+    "name": "Single Leg Extension",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_leg_extension",
+    "name": "Cable Leg Extension",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_cable_extension",
+    "name": "Single Leg Cable Extension",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_leg_extension",
+    "name": "Resistance Band Leg Extension",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "step_up",
+    "name": "Step Up",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_step_up",
+    "name": "Dumbbell Step Up",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_step_up",
+    "name": "Barbell Step Up",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_step_up",
+    "name": "Weighted Step Up",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "lunge",
+    "name": "Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_lunge",
+    "name": "Dumbbell Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_lunge",
+    "name": "Barbell Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "walking_lunge",
+    "name": "Walking Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "reverse_lunge",
+    "name": "Reverse Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_reverse_lunge",
+    "name": "Dumbbell Reverse Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "walking_reverse_lunge",
+    "name": "Walking Reverse Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "curtsy_lunge",
+    "name": "Curtsy Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/adductors"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_curtsy_lunge",
+    "name": "Dumbbell Curtsy Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/adductors"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "side_lunge",
+    "name": "Side Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/adductors"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_side_lunge",
+    "name": "Dumbbell Side Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/adductors"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_side_lunge",
+    "name": "Barbell Side Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/adductors"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "pin_squat",
+    "name": "Pin Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "hamstring_curl",
+    "name": "Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "seated_hamstring_curl",
+    "name": "Seated Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_hamstring_curl",
+    "name": "Single Leg Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_hamstring_curl",
+    "name": "Cable Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_cable_hamstring_curl",
+    "name": "Single Leg Cable Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_hamstring_curl",
+    "name": "Resistance Band Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_hamstring_curl",
+    "name": "Dumbbell Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "swiss_ball_hamstring_curl",
+    "name": "Swiss Ball Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_swiss_ball_hamstring_curl",
+    "name": "Single Leg Swiss Ball Hamstring Curl",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_glute_bridge",
+    "name": "Barbell Glute Bridge",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_glute_bridge",
+    "name": "Single Leg Glute Bridge",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_hip_thrust",
+    "name": "Barbell Hip Thrust",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring",
+      "legs/quadriceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_hip_thrust",
+    "name": "Smith Machine Hip Thrust",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_hip_thrust",
+    "name": "Single Leg Hip Thrust",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_hip_thrust",
+    "name": "Cable Hip Thrust",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_hip_thrust",
+    "name": "Machine Hip Thrust",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "Bulgarian_split_squat_rear_elevated",
+    "name": "Bulgarian Split Squat Rear Elevated",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/quadriceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_Bulgarian_split_squat_rear_elevated",
+    "name": "Dumbbell Bulgarian Split Squat Rear Elevated",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/quadriceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_pull_through",
+    "name": "Cable Pull Through",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_pull_through",
+    "name": "Machine Pull Through",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "trap_bar_deadlift_from_elevated",
+    "name": "Trap Bar Deadlift from Elevated",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "calf_raise_bodyweight",
+    "name": "Calf Raise",
+    "target_muscle": "legs/calves",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_calf_raise",
+    "name": "Machine Calf Raise",
+    "target_muscle": "legs/calves",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_calf_raise",
+    "name": "Smith Machine Calf Raise",
+    "target_muscle": "legs/calves",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "leg_press_calf_raise",
+    "name": "Leg Press Calf Raise",
+    "target_muscle": "legs/calves",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_calf_raise",
+    "name": "Single Leg Calf Raise",
+    "target_muscle": "legs/calves",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_calf_raise",
+    "name": "Resistance Band Calf Raise",
+    "target_muscle": "legs/calves",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_calf_raise",
+    "name": "Cable Calf Raise",
+    "target_muscle": "legs/calves",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "adductor_machine",
+    "name": "Adductor Machine",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_adduction",
+    "name": "Cable Adduction",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_leg_cable_adduction",
+    "name": "Single Leg Cable Adduction",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_adduction",
+    "name": "Resistance Band Adduction",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_adduction",
+    "name": "Dumbbell Adduction",
+    "target_muscle": "legs/adductors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "ez_bar_curl",
+    "name": "EZ Bar Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "spider_curl",
+    "name": "Spider Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_spider_curl",
+    "name": "Cable Spider Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "21s_curl",
+    "name": "21s Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_21s_curl",
+    "name": "Dumbbell 21s Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_bicep_curl",
+    "name": "Resistance Band Bicep Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_tricep_dip",
+    "name": "Barbell Tricep Dip",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "bodyweight_tricep_dip",
+    "name": "Bodyweight Tricep Dip",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_tricep_dip",
+    "name": "Weighted Tricep Dip",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "rope_tricep_pushdown",
+    "name": "Rope Tricep Pushdown",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "v_bar_tricep_pushdown",
+    "name": "V Bar Tricep Pushdown",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_tricep_pushdown",
+    "name": "Single Arm Tricep Pushdown",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_overhead_tricep_extension",
+    "name": "Barbell Overhead Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "ez_bar_overhead_tricep_extension",
+    "name": "EZ Bar Overhead Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_overhead_tricep_extension",
+    "name": "Cable Overhead Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_overhead_tricep_extension",
+    "name": "Single Arm Overhead Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "french_press",
+    "name": "French Press",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "lying_tricep_extension",
+    "name": "Lying Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_lying_tricep_extension",
+    "name": "Dumbbell Lying Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "close_grip_dumbbell_press",
+    "name": "Close Grip Dumbbell Press",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "skull_crusher",
+    "name": "Skull Crusher",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_skull_crusher",
+    "name": "Dumbbell Skull Crusher",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_skull_crusher",
+    "name": "Cable Skull Crusher",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_tricep_kickback",
+    "name": "Cable Tricep Kickback",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_tricep_extension",
+    "name": "Machine Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_tricep_dip",
+    "name": "Machine Tricep Dip",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "assisted_tricep_dip",
+    "name": "Assisted Tricep Dip",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [
+      "chest/pectoralis major"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "resistance_band_tricep_extension",
+    "name": "Resistance Band Tricep Extension",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_crunch",
+    "name": "Cable Crunch",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "decline_sit_up",
+    "name": "Decline Sit Up",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_decline_sit_up",
+    "name": "Weighted Decline Sit Up",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "sit_up",
+    "name": "Sit Up",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_sit_up",
+    "name": "Weighted Sit Up",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_plank",
+    "name": "Weighted Plank",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/obliques"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "side_plank",
+    "name": "Side Plank",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_side_plank",
+    "name": "Weighted Side Plank",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "hanging_leg_raise",
+    "name": "Hanging Leg Raise",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_hanging_leg_raise",
+    "name": "Weighted Hanging Leg Raise",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_leg_raise",
+    "name": "Cable Leg Raise",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_leg_raise",
+    "name": "Machine Leg Raise",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "captain_chair_leg_raise",
+    "name": "Captain Chair Leg Raise",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "wood_chop",
+    "name": "Wood Chop",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_wood_chop",
+    "name": "Dumbbell Wood Chop",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_wood_chop",
+    "name": "Machine Wood Chop",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_russian_twist",
+    "name": "Cable Russian Twist",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "standing_cable_crunch",
+    "name": "Standing Cable Crunch",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/obliques"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_pallof_press",
+    "name": "Dumbbell Pallof Press",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "suitcase_carry",
+    "name": "Suitcase Carry",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_suitcase_carry",
+    "name": "Barbell Suitcase Carry",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "farmers_carry",
+    "name": "Farmers Carry",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "forearm/grip"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_farmers_carry",
+    "name": "Barbell Farmers Carry",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "forearm/grip"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_reverse_wrist_curl_forearms",
+    "name": "Dumbbell Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_reverse_wrist_curl_forearms",
+    "name": "Barbell Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_reverse_wrist_curl_forearms",
+    "name": "Cable Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_wrist_curl_forearms",
+    "name": "Machine Wrist Curl",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_reverse_wrist_curl_forearms",
+    "name": "Machine Reverse Wrist Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_radial_devation",
+    "name": "Dumbbell Radial Devation",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_radial_devation",
+    "name": "Barbell Radial Devation",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_ulnar_devation",
+    "name": "Dumbbell Ulnar Devation",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_ulnar_devation",
+    "name": "Barbell Ulnar Devation",
+    "target_muscle": "forearm/flexors",
+    "secondary_muscles": [],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "farmer_walk",
+    "name": "Farmer Walk",
+    "target_muscle": "forearm/grip",
+    "secondary_muscles": [
+      "back/trapezius"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "barbell_farmer_walk",
+    "name": "Barbell Farmer Walk",
+    "target_muscle": "forearm/grip",
+    "secondary_muscles": [
+      "back/trapezius"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dead_hang",
+    "name": "Dead Hang",
+    "target_muscle": "forearm/grip",
+    "secondary_muscles": [
+      "back/latissimus dorsi"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "weighted_dead_hang",
+    "name": "Weighted Dead Hang",
+    "target_muscle": "forearm/grip",
+    "secondary_muscles": [
+      "back/latissimus dorsi"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "thick_bar_deadlift",
+    "name": "Thick Bar Deadlift",
+    "target_muscle": "forearm/grip",
+    "secondary_muscles": [
+      "back/lower back",
+      "legs/glutes"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "thick_bar_curl",
+    "name": "Thick Bar Curl",
+    "target_muscle": "forearm/grip",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "gripper_squeeze",
+    "name": "Gripper Squeeze",
+    "target_muscle": "forearm/grip",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_reverse_curl",
+    "name": "Dumbbell Reverse Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_reverse_curl",
+    "name": "Cable Reverse Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_reverse_curl",
+    "name": "Machine Reverse Curl",
+    "target_muscle": "forearm/extensors",
+    "secondary_muscles": [
+      "arms/biceps"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "incline_dumbbell_curl",
+    "name": "Incline Dumbbell Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_preacher_curl",
+    "name": "Dumbbell Preacher Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "machine_preacher_curl",
+    "name": "Machine Preacher Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "arms/brachialis"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "kettlebell_swing",
+    "name": "Kettlebell Swing",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [
+      "legs/glutes",
+      "back/erector spinae",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "kettlebell",
+    "category_icon": "🔔",
+    "is_custom": 0
+  },
+  {
+    "id": "kettlebell_goblet_squat",
+    "name": "Kettlebell Goblet Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "core/rectus abdominis"
+    ],
+    "equipment": "kettlebell",
+    "category_icon": "🔔",
+    "is_custom": 0
+  },
+  {
+    "id": "kettlebell_turkish_getup",
+    "name": "Turkish Get Up",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "shoulders/stabilizers",
+      "legs/quadriceps"
+    ],
+    "equipment": "kettlebell",
+    "category_icon": "🔔",
+    "is_custom": 0
+  },
+  {
+    "id": "kettlebell_snatch",
+    "name": "Kettlebell Snatch",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "legs/hamstring",
+      "back/trapezius"
+    ],
+    "equipment": "kettlebell",
+    "category_icon": "🔔",
+    "is_custom": 0
+  },
+  {
+    "id": "clean_and_jerk",
+    "name": "Clean and Jerk",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "back/trapezius"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "snatch",
+    "name": "Barbell Snatch",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "legs/hamstring",
+      "back/trapezius"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "box_jumps",
+    "name": "Box Jumps",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/calves",
+      "legs/glutes"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "rope_climb",
+    "name": "Rope Climb",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "arms/biceps",
+      "forearm/grip"
+    ],
+    "equipment": "rope",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "muscle_up",
+    "name": "Muscle Up",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "chest/pectoralis major",
+      "arms/triceps"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "ring_dip",
+    "name": "Ring Dip",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "arms/triceps",
+      "shoulders/stabilizers"
+    ],
+    "equipment": "rings",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dumbbell_lunge_reverse",
+    "name": "Dumbbell Reverse Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "smith_machine_lunge",
+    "name": "Smith Machine Lunge",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "hack_squat_reverse",
+    "name": "Reverse Hack Squat",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "legs/hamstring",
+      "back/erector spinae"
+    ],
+    "equipment": "machine",
+    "category_icon": "🤖",
+    "is_custom": 0
+  },
+  {
+    "id": "sissy_squat_weighted",
+    "name": "Weighted Sissy Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [],
+    "equipment": "plate",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "good_morning_seated",
+    "name": "Seated Good Morning",
+    "target_muscle": "back/erector spinae",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "jefferson_curl",
+    "name": "Jefferson Curl",
+    "target_muscle": "back/erector spinae",
+    "secondary_muscles": [
+      "legs/hamstring"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "zercher_squat",
+    "name": "Zercher Squat",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "core/rectus abdominis",
+      "arms/biceps"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "svend_press_plate",
+    "name": "Plate Svend Press",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "plate",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "around_the_world",
+    "name": "Dumbbell Around the World",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_iron_cross",
+    "name": "Cable Iron Cross",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "cocoon",
+    "name": "Cocoon",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "dragon_flag",
+    "name": "Dragon Flag",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/transverse abdominis"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "windshield_wipers",
+    "name": "Windshield Wipers",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "core/rectus abdominis"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "toes_to_bar",
+    "name": "Toes to Bar",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "core/hip flexors",
+      "back/lats"
+    ],
+    "equipment": "bodyweight",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "med_ball_slam",
+    "name": "Medicine Ball Slam",
+    "target_muscle": "core/rectus abdominis",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid",
+      "back/lats"
+    ],
+    "equipment": "medicine ball",
+    "category_icon": "🏀",
+    "is_custom": 0
+  },
+  {
+    "id": "med_ball_russian_twist",
+    "name": "Medicine Ball Russian Twist",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [],
+    "equipment": "medicine ball",
+    "category_icon": "🏀",
+    "is_custom": 0
+  },
+  {
+    "id": "landmine_rainbow",
+    "name": "Landmine Rainbow",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "shoulders/stabilizers"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "cable_woodchop_low_high",
+    "name": "Low to High Woodchop",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "single_arm_farmers_walk",
+    "name": "Single Arm Farmers Walk",
+    "target_muscle": "core/obliques",
+    "secondary_muscles": [
+      "forearm/grip"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "battle_ropes",
+    "name": "Battle Ropes",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "cardio",
+      "arms/triceps"
+    ],
+    "equipment": "rope",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "tire_flip",
+    "name": "Tire Flip",
+    "target_muscle": "legs/glutes",
+    "secondary_muscles": [
+      "back/erector spinae",
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "tire",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "sled_push",
+    "name": "Sled Push",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "legs/glutes",
+      "legs/calves"
+    ],
+    "equipment": "sled",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "sled_pull",
+    "name": "Sled Pull",
+    "target_muscle": "legs/hamstring",
+    "secondary_muscles": [
+      "legs/glutes",
+      "back/erector spinae"
+    ],
+    "equipment": "sled",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "assault_bike",
+    "name": "Assault Bike",
+    "target_muscle": "legs/quadriceps",
+    "secondary_muscles": [
+      "cardio"
+    ],
+    "equipment": "machine",
+    "category_icon": "🚴",
+    "is_custom": 0
+  },
+  {
+    "id": "rowing_machine",
+    "name": "Rowing Machine",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "legs/quadriceps",
+      "cardio"
+    ],
+    "equipment": "machine",
+    "category_icon": "🚣",
+    "is_custom": 0
+  },
+  {
+    "id": "ski_erg",
+    "name": "SkiErg",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "core/rectus abdominis",
+      "cardio"
+    ],
+    "equipment": "machine",
+    "category_icon": "🎿",
+    "is_custom": 0
+  },
+  {
+    "id": "neck_curl",
+    "name": "Neck Curl",
+    "target_muscle": "neck/sternocleidomastoid",
+    "secondary_muscles": [],
+    "equipment": "plate",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "neck_extension",
+    "name": "Neck Extension",
+    "target_muscle": "neck/splenius",
+    "secondary_muscles": [],
+    "equipment": "harness",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "bulgarian_ring_dip",
+    "name": "Bulgarian Ring Dip",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "rings",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "zottman_curl",
+    "name": "Zottman Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [
+      "forearm/extensors"
+    ],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "waiters_curl",
+    "name": "Waiter's Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "bayesian_curl",
+    "name": "Bayesian Curl",
+    "target_muscle": "arms/biceps",
+    "secondary_muscles": [],
+    "equipment": "cable",
+    "category_icon": "🔌",
+    "is_custom": 0
+  },
+  {
+    "id": "tate_press",
+    "name": "Tate Press",
+    "target_muscle": "arms/triceps",
+    "secondary_muscles": [],
+    "equipment": "dumbbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  },
+  {
+    "id": "kettlebell_overhead_press",
+    "name": "Kettlebell Overhead Press",
+    "target_muscle": "shoulders/anterior deltoid",
+    "secondary_muscles": [
+      "arms/triceps"
+    ],
+    "equipment": "kettlebell",
+    "category_icon": "🔔",
+    "is_custom": 0
+  },
+  {
+    "id": "deficit_pushup",
+    "name": "Deficit Push Up",
+    "target_muscle": "chest/pectoralis major",
+    "secondary_muscles": [
+      "shoulders/anterior deltoid"
+    ],
+    "equipment": "blocks",
+    "category_icon": "💪",
+    "is_custom": 0
+  },
+  {
+    "id": "pendlay_row",
+    "name": "Pendlay Row",
+    "target_muscle": "back/latissimus dorsi",
+    "secondary_muscles": [
+      "back/rhomboid",
+      "back/erector spinae"
+    ],
+    "equipment": "barbell",
+    "category_icon": "🏋️",
+    "is_custom": 0
+  }
 ]

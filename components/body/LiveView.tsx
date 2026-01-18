@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, TextInput, Modal, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, TextInput, Modal, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ActivityRings from './ActivityRings';
 import { BodyService } from '../../services/BodyService';
-import { Svg, Path, Circle, Line, Text as SvgText } from 'react-native-svg';
 import { useFocusEffect } from 'expo-router';
-import { CalendarStrip } from '../CalendarStrip';
 
 const SPORTS = [
     { name: 'Badminton', icon: 'tennisball', met: 7.0 },
@@ -24,9 +22,8 @@ export default function LiveView() {
     const [duration, setDuration] = useState('');
     const [sportsLogs, setSportsLogs] = useState<any[]>([]);
 
-    const [metrics, setMetrics] = useState({ height: 175, weight: 70 });
-    const [weightHistory, setWeightHistory] = useState<{ date: string, weight: number }[]>([]);
-    const [editMetrics, setEditMetrics] = useState(false);
+    // We need weight for calorie calc. Let's fetch it but not show UI
+    const [userWeight, setUserWeight] = useState(70);
 
     const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -48,23 +45,9 @@ export default function LiveView() {
     );
 
     const loadData = async () => {
-        const h = await BodyService.getHeight();
-        const dateStr = selectedDate.toISOString().split('T')[0];
-
-        // Get history first
-        const wHist = await BodyService.getWeightHistory();
-        setWeightHistory(wHist);
-
-        // Check if we have a weight for selectedDate
-        const historyEntry = wHist.find(w => w.date === dateStr);
-        // Default to latest weight if nothing on selected date, or just keep previous?
-        // User wants "track down date-wise". If I select older date, I should see THAT date's weight.
-        // If not exists, maybe show 0 or latest? Let's show latest as placeholder but differentiate?
-        // Actually best UI: show existing if any, else latest.
+        // Fetch weight just for internal calc
         const latestW = await BodyService.getLatestWeight();
-
-        if (h) setMetrics(prev => ({ ...prev, height: h }));
-        setMetrics(prev => ({ ...prev, weight: historyEntry ? historyEntry.weight : latestW }));
+        setUserWeight(latestW);
 
         const sLogs = await BodyService.getSportsLogs();
         setSportsLogs(sLogs);
@@ -117,71 +100,13 @@ export default function LiveView() {
         const name = selectedSport.name === 'Other' && customName ? customName : selectedSport.name;
 
         // Simple Calorie Formula: Calories = (MET * 3.5 * weight) / 200 * duration
-        const calories = Math.round((selectedSport.met * 3.5 * metrics.weight) / 200 * min);
+        const calories = Math.round((selectedSport.met * 3.5 * userWeight) / 200 * min);
 
         // Uses today's date implicitly in Service or defaults to now
         await BodyService.logSport(name, min, calories, selectedSport.met);
 
         setModalVisible(false); // No Alert
         loadData();
-    };
-
-    const handleSaveMetrics = async () => {
-        await BodyService.updateHeight(metrics.height);
-        const dateStr = selectedDate.toISOString().split('T')[0];
-        await BodyService.logWeight(metrics.weight, dateStr);
-        setEditMetrics(false);
-        loadData();
-    };
-
-    const getBMI = () => {
-        const hM = metrics.height / 100;
-        return (metrics.weight / (hM * hM)).toFixed(1);
-    };
-
-    const renderWeightGraph = () => {
-        if (weightHistory.length < 2) return (
-            <View className="h-40 items-center justify-center border border-zinc-800 rounded-xl bg-black/40 mb-6">
-                <Text className="text-zinc-500 text-xs">Log more weight data to see a trend graph.</Text>
-            </View>
-        );
-
-        const width = Dimensions.get('window').width - 64; // padding
-        const height = 160;
-        const weights = weightHistory.map(w => w.weight);
-        const minW = Math.min(...weights) - 2;
-        const maxW = Math.max(...weights) + 2;
-        const range = maxW - minW;
-
-        const points = weightHistory.map((d, i) => {
-            const x = (i / (weightHistory.length - 1)) * width;
-            const y = height - ((d.weight - minW) / range) * height;
-            return `${x},${y}`;
-        }).join(' ');
-
-        return (
-            <View className="mb-6">
-                <Text className="text-zinc-500 text-xs uppercase font-bold mb-4">Weight Trend (Last 30 Entries)</Text>
-                <View className="h-40 border border-zinc-800 rounded-xl bg-zinc-900/50 p-4">
-                    <Svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`}>
-                        {/* Grid Lines */}
-                        <Line x1="0" y1="0" x2={width} y2="0" stroke="#333" strokeDasharray="5,5" />
-                        <Line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#333" strokeDasharray="5,5" />
-                        <Line x1="0" y1={height} x2={width} y2={height} stroke="#333" strokeDasharray="5,5" />
-
-                        {/* The Line */}
-                        <Path d={`M ${points}`} fill="none" stroke="#CCFF00" strokeWidth="3" />
-
-                        {/* Dots */}
-                        {weightHistory.map((d, i) => {
-                            const x = (i / (weightHistory.length - 1)) * width;
-                            const y = height - ((d.weight - minW) / range) * height;
-                            return <Circle key={i} cx={x} cy={y} r="4" fill="#000" stroke="#CCFF00" strokeWidth="2" />;
-                        })}
-                    </Svg>
-                </View>
-            </View>
-        );
     };
 
     const todayStr = new Date().toISOString().split('T')[0];
@@ -219,28 +144,6 @@ export default function LiveView() {
                     />
                 </View>
             </View>
-
-            {/* Metrics Card (BMI, Weight) */}
-            <TouchableOpacity
-                onPress={() => setEditMetrics(true)}
-                className="bg-zinc-900 p-4 rounded-2xl border border-zinc-800 mb-6 flex-row justify-between items-center"
-            >
-                <View className="items-center">
-                    <Text className="text-zinc-500 text-xs font-bold uppercase">Weight</Text>
-                    <Text className="text-white text-xl font-bold">{metrics.weight} <Text className="text-xs text-zinc-500">KG</Text></Text>
-                </View>
-                <View className="h-8 w-[1px] bg-zinc-800" />
-                <View className="items-center">
-                    <Text className="text-zinc-500 text-xs font-bold uppercase">Height</Text>
-                    <Text className="text-white text-xl font-bold">{metrics.height} <Text className="text-xs text-zinc-500">CM</Text></Text>
-                </View>
-                <View className="h-8 w-[1px] bg-zinc-800" />
-                <View className="items-center">
-                    <Text className="text-zinc-500 text-xs font-bold uppercase">BMI</Text>
-                    <Text className="text-xl font-bold text-white">{getBMI()}</Text>
-                </View>
-                <Ionicons name="chevron-forward" size={20} color="#52525B" />
-            </TouchableOpacity>
 
             {/* Quick Log Sports */}
             <View className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 mb-6">
@@ -331,70 +234,6 @@ export default function LiveView() {
                                 <Text className="text-black font-bold">Log Activity</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                </View>
-            </Modal>
-
-            {/* Metrics Edit & History Modal */}
-            <Modal visible={editMetrics} animationType="slide">
-                <View className="flex-1 bg-black p-6">
-                    <View className="flex-row items-center justify-between mb-8 mt-10">
-                        <Text className="text-white text-3xl font-bold">Body Metrics</Text>
-                        <TouchableOpacity onPress={() => setEditMetrics(false)} className="bg-zinc-800 p-2 rounded-full">
-                            <Ionicons name="close" size={24} color="white" />
-                        </TouchableOpacity>
-                    </View>
-
-                    <CalendarStrip selectedDate={selectedDate} onSelectDate={setSelectedDate} />
-
-                    {renderWeightGraph()}
-
-                    <Text className="text-zinc-500 text-xs uppercase font-bold mb-2">
-                        Weight for {selectedDate.toLocaleDateString()} (KG)
-                    </Text>
-                    <TextInput
-                        value={metrics.weight.toString()}
-                        onChangeText={(t) => setMetrics(p => ({ ...p, weight: parseFloat(t) || 0 }))}
-                        className="bg-zinc-900 text-white p-4 rounded-xl text-lg font-bold mb-4 border border-zinc-800"
-                        keyboardType="numeric"
-                    />
-
-                    <Text className="text-zinc-500 text-xs uppercase font-bold mb-2">Update Height (CM)</Text>
-                    <TextInput
-                        value={metrics.height.toString()}
-                        onChangeText={(t) => setMetrics(p => ({ ...p, height: parseFloat(t) || 0 }))}
-                        className="bg-zinc-900 text-white p-4 rounded-xl text-lg font-bold mb-6 border border-zinc-800"
-                        keyboardType="numeric"
-                    />
-
-                    <TouchableOpacity
-                        onPress={handleSaveMetrics}
-                        className="w-full bg-neonGreen p-4 rounded-xl items-center"
-                    >
-                        <Text className="text-black font-bold text-lg">Save & Log</Text>
-                    </TouchableOpacity>
-
-                    <View className="mt-8">
-                        <Text className="text-zinc-500 text-xs uppercase font-bold mb-4">History</Text>
-                        {weightHistory.length === 0 ? (
-                            <Text className="text-zinc-600 text-sm italic">No weight history logged yet.</Text>
-                        ) : (
-                            <ScrollView className="max-h-60">
-                                {weightHistory.map((h, i) => {
-                                    // Calculate BMI based on current height (assuming constant height for history)
-                                    const bmi = (h.weight / ((metrics.height / 100) ** 2)).toFixed(1);
-                                    return (
-                                        <View key={i} className="flex-row justify-between py-3 border-b border-zinc-800">
-                                            <Text className="text-white font-bold">{h.date}</Text>
-                                            <View className="flex-row gap-4">
-                                                <Text className="text-zinc-500 font-mono text-xs mt-1">BMI {bmi}</Text>
-                                                <Text className="text-neonGreen font-mono font-bold">{h.weight} kg</Text>
-                                            </View>
-                                        </View>
-                                    );
-                                })}
-                            </ScrollView>
-                        )}
                     </View>
                 </View>
             </Modal>

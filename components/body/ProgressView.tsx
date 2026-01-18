@@ -1,124 +1,294 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Modal, Dimensions } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { BodyService } from '../../services/BodyService';
 import BodyHeatmap from '../../components/BodyHeatmap';
 import { Ionicons } from '@expo/vector-icons';
 import { CalendarStrip } from '../../components/CalendarStrip';
 import { DateUtils } from '../../utils/DateUtils';
+import { Svg, Path, Circle, Line } from 'react-native-svg';
 
 export default function ProgressView() {
     const [recentMuscles, setRecentMuscles] = useState<string[]>([]);
     const [stats, setStats] = useState({ workouts: 0, volume: 0 });
     const [viewMode, setViewMode] = useState<'front' | 'back'>('front');
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [splitRange, setSplitRange] = useState<7 | 14 | 30>(30);
+
+    // Weight/BMI State
+    const [metrics, setMetrics] = useState({ height: 175, weight: 70 });
+    const [weightHistory, setWeightHistory] = useState<{ date: string, weight: number }[]>([]);
+    const [editMetrics, setEditMetrics] = useState(false);
+    const [muscleSplit, setMuscleSplit] = useState<{ name: string, val: number, count: number }[]>([]);
 
     useFocusEffect(
         useCallback(() => {
             loadData();
-        }, [selectedDate])
+        }, [selectedDate, splitRange])
     );
 
     const loadData = async () => {
         const dateStr = DateUtils.getDateString(selectedDate);
+
+        // Daily Stats (Heatmap, Volume, Sessions)
         const muscles = await BodyService.getRecentMuscles(dateStr);
         setRecentMuscles(muscles);
 
-        // Get stats for DATE
         const workouts = await BodyService.getWorkoutsForDate(dateStr);
         const completed = workouts.filter(w => w.status === 'completed');
 
-        // Volume calculation needs Sets... we don't have sets in 'workouts' list easily without join
-        // For now, let's mock volume based on workout count or fetch sets?
-        // BodyService.getWorkoutsForDate returns basic info.
-        // Let's keep volume simple or 0 if no workouts.
-        // A better approach would be to have getDailyVolume(date).
-        // I'll leave simple approximation or 0 for now to keep it safe.
+        const vol = await BodyService.getVolumeForDate(dateStr);
+
+        // Range Stats (Muscle Split)
+        const split = await BodyService.getMuscleSplit(splitRange);
+
         setStats({
             workouts: completed.length,
-            volume: 0 // TODO: Real volume aggregation
+            volume: vol
         });
+        setMuscleSplit(split);
+
+        // Load Metrics
+        const h = await BodyService.getHeight();
+        const wHist = await BodyService.getWeightHistory();
+        setWeightHistory(wHist);
+
+        const latestW = await BodyService.getLatestWeight();
+
+        if (h) setMetrics(prev => ({ ...prev, height: h }));
+        setMetrics(prev => ({ ...prev, weight: latestW }));
     };
 
-    return (
-        <ScrollView className="flex-1 bg-background pt-4 px-6" showsVerticalScrollIndicator={false}>
-            <Text className="text-white text-3xl font-bold mb-6 tracking-tighter">ANALYTICS</Text>
+    const handleSaveMetrics = async () => {
+        await BodyService.updateHeight(metrics.height);
+        const dateStr = DateUtils.getDateString(new Date());
+        await BodyService.logWeight(metrics.weight, dateStr);
+        setEditMetrics(false);
+        loadData();
+    };
 
+    const getBMI = () => {
+        const hM = metrics.height / 100;
+        return (metrics.weight / (hM * hM)).toFixed(1);
+    };
+
+    const renderWeightGraph = () => {
+        if (weightHistory.length < 2) return (
+            <View className="h-40 items-center justify-center border border-zinc-800 rounded-xl bg-black/40 mb-6">
+                <Text className="text-zinc-500 text-xs">Log more weight data to see a trend graph.</Text>
+            </View>
+        );
+
+        const width = Dimensions.get('window').width - 64; // padding
+        const height = 160;
+        const weights = weightHistory.map(w => w.weight);
+        const minW = Math.min(...weights) - 2;
+        const maxW = Math.max(...weights) + 2;
+        const range = maxW - minW;
+
+        const points = weightHistory.map((d, i) => {
+            const x = (i / (weightHistory.length - 1)) * width;
+            const y = height - ((d.weight - minW) / range) * height;
+            return `${x},${y}`;
+        }).join(' ');
+
+        return (
             <View className="mb-6">
+                <Text className="text-zinc-500 text-xs uppercase font-bold mb-4">Weight Trend (Last 30 Logged Weights)</Text>
+                <View className="h-40 border border-zinc-800 rounded-xl bg-zinc-900/50 p-4">
+                    <Svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`}>
+                        <Line x1="0" y1="0" x2={width} y2="0" stroke="#333" strokeDasharray="5,5" />
+                        <Line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#333" strokeDasharray="5,5" />
+                        <Line x1="0" y1={height} x2={width} y2={height} stroke="#333" strokeDasharray="5,5" />
+                        <Path d={`M ${points}`} fill="none" stroke="#CCFF00" strokeWidth="3" />
+                        {weightHistory.map((d, i) => {
+                            const x = (i / (weightHistory.length - 1)) * width;
+                            const y = height - ((d.weight - minW) / range) * height;
+                            return <Circle key={i} cx={x} cy={y} r="4" fill="#000" stroke="#CCFF00" strokeWidth="2" />;
+                        })}
+                    </Svg>
+                </View>
+            </View>
+        );
+    };
+
+    // Calculate max value for relative bar scaling
+    const maxSplitVal = Math.max(...muscleSplit.map(m => m.val), 0.01);
+
+    return (
+        <ScrollView className="flex-1 bg-background" showsVerticalScrollIndicator={false}>
+            {/* 1. Sticky Header */}
+            <View className="bg-background pt-4 pb-2 px-6 z-20">
+                <Text className="text-white text-3xl font-bold mb-4 tracking-tighter">ANALYTICS</Text>
                 <CalendarStrip selectedDate={selectedDate} onSelectDate={setSelectedDate} />
             </View>
 
-            {/* Zone 1: Body Heatmap */}
-            <View className="bg-surface p-6 rounded-3xl mb-6 border border-surfaceHighlight flex-row justify-between items-center relative min-h-[250px]">
-                {/* View Toggle */}
-                <View className="absolute top-4 right-4 z-10 flex-row bg-zinc-900 rounded-full p-1 border border-zinc-800">
+            {/* 2. Section 1: The Hero Map */}
+            <View className="h-[420px] bg-black items-center justify-center relative border-b border-zinc-900">
+                {/* Floating Toggle */}
+                <View className="absolute top-4 right-6 z-10 flex-row bg-zinc-900/80 rounded-full p-1 border border-zinc-800 backdrop-blur-md">
                     <TouchableOpacity
                         onPress={() => setViewMode('front')}
-                        className={`px-3 py-1 rounded-full ${viewMode === 'front' ? 'bg-zinc-700' : ''}`}
+                        className={`px-4 py-2 rounded-full ${viewMode === 'front' ? 'bg-zinc-700' : ''}`}
                     >
                         <Text className={`text-[10px] font-bold ${viewMode === 'front' ? 'text-white' : 'text-zinc-500'}`}>FRONT</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => setViewMode('back')}
-                        className={`px-3 py-1 rounded-full ${viewMode === 'back' ? 'bg-zinc-700' : ''}`}
+                        className={`px-4 py-2 rounded-full ${viewMode === 'back' ? 'bg-zinc-700' : ''}`}
                     >
                         <Text className={`text-[10px] font-bold ${viewMode === 'back' ? 'text-white' : 'text-zinc-500'}`}>BACK</Text>
                     </TouchableOpacity>
                 </View>
 
-                <View>
-                    <Text className="text-secondary uppercase text-xs font-bold mb-2 tracking-widest">Recovery Status</Text>
-                    <Text className="text-white font-bold text-2xl mb-1">Full Body</Text>
-                    <Text className="text-neonGreen text-xs font-bold">READY TO TRAIN</Text>
+                {/* The Map */}
+                <BodyHeatmap
+                    frontData={recentMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
+                    backData={recentMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
+                    viewSide={viewMode}
+                    scale={1.8}
+                />
+            </View>
 
-                    <View className="mt-8">
-                        <Text className="text-secondary uppercase text-xs font-bold mb-1">Recent Focus</Text>
-                        <Text className="text-white font-medium w-32">{recentMuscles.slice(0, 3).join(', ') || 'None'}</Text>
+            <View className="px-6 pb-20">
+                {/* 3. Section 2: Heads Up Display */}
+                <View className="py-6 border-b border-zinc-900 mb-6">
+                    <Text className="text-zinc-500 uppercase text-[10px] font-bold mb-2 tracking-widest">Focus (Daily)</Text>
+                    <Text className="text-white text-xl font-medium tracking-tight leading-7">
+                        {recentMuscles.length > 0 ? recentMuscles.join(', ') : 'Full Body'}
+                    </Text>
+                </View>
+
+                {/* 4. Section 3: Metrics Grid */}
+                <View className="flex-row gap-3 mb-3">
+                    <View className="flex-1 bg-surface p-5 rounded-2xl border border-surfaceHighlight justify-between h-32">
+                        <Ionicons name="barbell" size={24} color="#CCFF00" />
+                        <View>
+                            <Text className="text-white text-3xl font-bold tracking-tighter">{stats.workouts}</Text>
+                            <Text className="text-zinc-500 text-[10px] uppercase font-bold mt-1">Daily Sessions</Text>
+                        </View>
+                    </View>
+                    <View className="flex-1 bg-surface p-5 rounded-2xl border border-surfaceHighlight justify-between h-32">
+                        <Ionicons name="trending-up" size={24} color="#CCFF00" />
+                        <View>
+                            <Text className="text-white text-3xl font-bold tracking-tighter">{(stats.volume / 1000).toFixed(1)}<Text className="text-zinc-500 text-lg">k</Text></Text>
+                            <Text className="text-zinc-500 text-[10px] uppercase font-bold mt-1">Daily Volume (KG)</Text>
+                        </View>
                     </View>
                 </View>
 
-                {/* The Interactive Body Map */}
-                <View className="mr-4 mt-6">
-                    <BodyHeatmap
-                        muscleIntensities={recentMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
-                        side={viewMode}
-                        scale={1.2}
-                    />
-                </View>
-            </View>
-
-            {/* Zone 2: Stats Grid */}
-            <View className="flex-row gap-4 mb-6">
-                <View className="flex-1 bg-surface p-4 rounded-2xl border border-surfaceHighlight">
-                    <Ionicons name="barbell" size={24} color="#CCFF00" />
-                    <Text className="text-white text-2xl font-bold mt-2">{stats.workouts}</Text>
-                    <Text className="text-zinc-500 text-xs uppercase font-bold">Sessions</Text>
-                </View>
-                <View className="flex-1 bg-surface p-4 rounded-2xl border border-surfaceHighlight">
-                    <Ionicons name="trending-up" size={24} color="#CCFF00" />
-                    <Text className="text-white text-2xl font-bold mt-2">{(stats.volume / 1000).toFixed(1)}k</Text>
-                    <Text className="text-zinc-500 text-xs uppercase font-bold">Vol (KG)</Text>
-                </View>
-            </View>
-
-            <View className="bg-surface p-6 rounded-2xl mb-20 border border-surfaceHighlight">
-                <Text className="text-secondary uppercase text-xs font-bold mb-4">Muscle Split (Last 30 Days)</Text>
-
-                {/* Mock Bar Chart using Views */}
-                <View className="gap-3">
-                    {['Chest', 'Back', 'Legs', 'Arms'].map(m => (
-                        <View key={m} className="flex-row items-center gap-4">
-                            <Text className="text-zinc-400 text-xs w-10 font-bold">{m.toUpperCase()}</Text>
-                            <View className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
-                                <View
-                                    className="h-full bg-neonGreen opacity-80"
-                                    style={{ width: `${Math.random() * 80 + 10}%` }}
-                                />
-                            </View>
+                {/* Body Metrics Card */}
+                <TouchableOpacity
+                    onPress={() => setEditMetrics(true)}
+                    className="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 mb-8 flex-row justify-between items-center"
+                >
+                    <View className="flex-row items-center gap-4">
+                        <View className="w-10 h-10 rounded-full bg-zinc-800 items-center justify-center">
+                            <Ionicons name="scale" size={20} color="white" />
                         </View>
-                    ))}
+                        <View>
+                            <Text className="text-white font-bold text-lg">{metrics.weight} <Text className="text-sm text-zinc-500 font-normal">KG</Text></Text>
+                            <Text className="text-zinc-500 text-[10px] uppercase font-bold">Current Weight</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Text className="text-white font-bold text-lg text-right">{getBMI()}</Text>
+                        <Text className="text-zinc-500 text-[10px] uppercase font-bold text-right">BMI Score</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* 5. Section 4: Deep Dive */}
+                <View>
+                    <View className="flex-row items-center justify-between mb-4">
+                        <Text className="text-white text-xl font-bold tracking-tight">Muscle Split</Text>
+                        <View className="flex-row bg-zinc-900 rounded-lg p-1 border border-zinc-800">
+                            {[7, 14, 30].map(days => (
+                                <TouchableOpacity
+                                    key={days}
+                                    onPress={() => setSplitRange(days as any)}
+                                    className={`px-3 py-1 rounded-md ${splitRange === days ? 'bg-zinc-700' : ''}`}
+                                >
+                                    <Text className={`text-xs font-bold ${splitRange === days ? 'text-white' : 'text-zinc-500'}`}>
+                                        {days}D
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+                    <View className="bg-surface p-6 rounded-2xl border border-surfaceHighlight gap-4">
+                        {muscleSplit.length > 0 ? (
+                            muscleSplit.map((m, index) => (
+                                <View key={m.name} className={`flex-row items-center justify-between py-3 ${index !== muscleSplit.length - 1 ? 'border-b border-zinc-800' : ''}`}>
+                                    <Text className="text-zinc-400 text-base font-bold">{m.name.toUpperCase()}</Text>
+                                    <Text className="text-white text-base font-bold">{m.count} sets</Text>
+                                </View>
+                            ))
+                        ) : (
+                            <Text className="text-zinc-600 italic text-center text-xs">No workout data in last {splitRange} days.</Text>
+                        )}
+                        <Text className="text-zinc-600 text-[10px] text-center mt-2 font-mono">Last {splitRange} Days Activity</Text>
+                    </View>
                 </View>
             </View>
+
+            {/* Metrics Edit Modal */}
+            <Modal visible={editMetrics} animationType="slide">
+                <View className="flex-1 bg-black p-6">
+                    <View className="flex-row items-center justify-between mb-8 mt-10">
+                        <Text className="text-white text-3xl font-bold">Body Metrics</Text>
+                        <TouchableOpacity onPress={() => setEditMetrics(false)} className="bg-zinc-800 p-2 rounded-full">
+                            <Ionicons name="close" size={24} color="white" />
+                        </TouchableOpacity>
+                    </View>
+
+                    <Text className="text-zinc-500 text-xs uppercase font-bold mb-2">
+                        Weight for {new Date().toLocaleDateString()} (KG)
+                    </Text>
+                    <TextInput
+                        value={metrics.weight.toString()}
+                        onChangeText={(t) => setMetrics(p => ({ ...p, weight: parseFloat(t) || 0 }))}
+                        className="bg-zinc-900 text-white p-4 rounded-xl text-lg font-bold mb-4 border border-zinc-800"
+                        keyboardType="numeric"
+                    />
+
+                    <Text className="text-zinc-500 text-xs uppercase font-bold mb-2">Update Height (CM)</Text>
+                    <TextInput
+                        value={metrics.height.toString()}
+                        onChangeText={(t) => setMetrics(p => ({ ...p, height: parseFloat(t) || 0 }))}
+                        className="bg-zinc-900 text-white p-4 rounded-xl text-lg font-bold mb-6 border border-zinc-800"
+                        keyboardType="numeric"
+                    />
+
+                    <TouchableOpacity
+                        onPress={handleSaveMetrics}
+                        className="w-full bg-neonGreen p-4 rounded-xl items-center"
+                    >
+                        <Text className="text-black font-bold text-lg">Save & Log</Text>
+                    </TouchableOpacity>
+
+                    <View className="mt-8">
+                        <Text className="text-zinc-500 text-xs uppercase font-bold mb-4">History</Text>
+                        {weightHistory.length === 0 ? (
+                            <Text className="text-zinc-600 text-sm italic">No weight history logged yet.</Text>
+                        ) : (
+                            <ScrollView className="max-h-60">
+                                {weightHistory.map((h, i) => {
+                                    const bmi = (h.weight / ((metrics.height / 100) ** 2)).toFixed(1);
+                                    return (
+                                        <View key={i} className="flex-row justify-between py-3 border-b border-zinc-800">
+                                            <Text className="text-white font-bold">{h.date}</Text>
+                                            <View className="flex-row gap-4">
+                                                <Text className="text-zinc-500 font-mono text-xs mt-1">BMI {bmi}</Text>
+                                                <Text className="text-neonGreen font-mono font-bold">{h.weight} kg</Text>
+                                            </View>
+                                        </View>
+                                    );
+                                })}
+                            </ScrollView>
+                        )}
+                    </View>
+                </View>
+            </Modal>
         </ScrollView>
     );
 }

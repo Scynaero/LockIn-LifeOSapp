@@ -186,10 +186,32 @@ export const DatabaseService = {
           id TEXT PRIMARY KEY NOT NULL,
           name TEXT NOT NULL,
           target_muscle TEXT NOT NULL,
+          secondary_muscles TEXT,
           equipment TEXT NOT NULL,
           is_custom INTEGER DEFAULT 0
         );
       `);
+
+      // Migration for secondary_muscles and data backfill
+      try {
+        const exerciseTableInfo = await db.getAllAsync<{ name: string }>('PRAGMA table_info(exercises)');
+        if (!exerciseTableInfo.some(c => c.name === 'secondary_muscles')) {
+          console.log('Adding secondary_muscles column...');
+          await db.runAsync('ALTER TABLE exercises ADD COLUMN secondary_muscles TEXT');
+
+          console.log('Backfilling exercise data...');
+          const exercisesData = require('../assets/exercises.json');
+          for (const exercise of exercisesData) {
+            await db.runAsync(
+              'UPDATE exercises SET secondary_muscles = ? WHERE id = ?',
+              [JSON.stringify(exercise.secondary_muscles || []), exercise.id]
+            );
+          }
+          console.log('Exercise data backfilled.');
+        }
+      } catch (e) {
+        console.error('Migration for secondary_muscles failed:', e);
+      }
 
       // Workouts Table
       await db.execAsync(`
@@ -199,9 +221,22 @@ export const DatabaseService = {
           name TEXT,
           duration_sec INTEGER DEFAULT 0,
           bodyweight REAL,
-          status TEXT CHECK(status IN ('active', 'completed')) DEFAULT 'active'
+          status TEXT CHECK(status IN ('active', 'completed')) DEFAULT 'active',
+          timer_start TEXT,
+          is_timer_running INTEGER DEFAULT 0
         );
       `);
+
+      // Migration for timer fields
+      try {
+        const workoutTableInfo = await db.getAllAsync<{ name: string }>('PRAGMA table_info(workouts)');
+        if (!workoutTableInfo.some(c => c.name === 'timer_start')) {
+          await db.runAsync('ALTER TABLE workouts ADD COLUMN timer_start TEXT');
+          await db.runAsync('ALTER TABLE workouts ADD COLUMN is_timer_running INTEGER DEFAULT 0');
+        }
+      } catch (e) {
+        console.error('Migration for workout timer failed:', e);
+      }
 
       // Workout Sets Table
       await db.execAsync(`
@@ -246,20 +281,27 @@ export const DatabaseService = {
       `);
 
       // Seeding Exercises
-      const exercisesValues = await db.getAllAsync('SELECT count(*) as count FROM exercises');
-      // @ts-ignore
-      // Re-seed if count is low (indicating only initial seed or empty)
-      if (exercisesValues[0].count < 15) {
-        console.log('Seeding exercises...');
-        const exercisesData = require('../assets/exercises.json');
+      const exercisesData = require('../assets/exercises.json');
+      const exercisesValues = await db.getAllAsync<{ count: number }>('SELECT count(*) as count FROM exercises');
+
+      // Sync if we have more exercises in JSON than in DB (or if count is low)
+      if (exercisesValues[0].count < exercisesData.length) {
+        console.log(`Syncing exercises... DB: ${exercisesValues[0].count}, JSON: ${exercisesData.length}`);
 
         for (const exercise of exercisesData) {
           await db.runAsync(
-            'INSERT OR IGNORE INTO exercises (id, name, target_muscle, equipment, is_custom) VALUES (?, ?, ?, ?, ?)',
-            [exercise.id, exercise.name, exercise.target_muscle, exercise.equipment, exercise.is_custom]
+            'INSERT OR IGNORE INTO exercises (id, name, target_muscle, secondary_muscles, equipment, is_custom) VALUES (?, ?, ?, ?, ?, ?)',
+            [
+              exercise.id,
+              exercise.name,
+              exercise.target_muscle,
+              JSON.stringify(exercise.secondary_muscles || []),
+              exercise.equipment,
+              exercise.is_custom
+            ]
           );
         }
-        console.log('Exercises seeded.');
+        console.log('Exercises synced.');
       }
 
       console.log('Database initialized successfully');

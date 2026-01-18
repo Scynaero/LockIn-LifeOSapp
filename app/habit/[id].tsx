@@ -11,11 +11,86 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { NotificationService } from "../../services/NotificationService";
 import { DateUtils } from "../../utils/DateUtils";
 
+// Comprehensive emoji list (deduplicated)
+const EMOJI_LIST = Array.from(new Set([
+  // Smileys & People
+  '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🤎', '🤍', '🖤', '❤️', '🧡', '💛', '💚', '💙', '💜',
+  // Animals
+  '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐽', '🐸', '🐵', '🐒', '🦍', '🦧', '🐔', '🐦', '🐤', '🐣', '🐥', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🪱', '🐛', '🦋', '🐌', '🐞', '🐜', '🪰', '🦟', '🦗', '🕷️', '🦂', '🐢', '🐍', '🦎', '🦖', '🦕', '🐙', '🦑', '🦐', '🦞', '🦀', '🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆', '🦓', '🦛', '🐘', '🦏', '🐪', '🐫', '🦒', '🦘', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦌', '🦥', '🦣', '🐐',
+  // Food & Drink
+  '🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🌽', '🥔', '🍠', '🥐', '🥯', '🍞', '🥖', '🥨', '🧀', '🥚', '🍳', '🧈', '🥞', '🧇', '🥓', '🍗', '🍖', '🌭', '🍔', '🍟', '🍕', '🥪', '🥙', '🧆', '🌮', '🌯', '🥗', '🥘', '🥫', '🍝', '🍜', '🍲', '🍛', '🍣', '🍱', '🥟', '🦪', '🍤', '🍙', '🍚', '🍘', '🍥', '🥠', '🥮', '🍢', '🍡', '🍧', '🍨', '🍦', '🥧', '🍰', '🎂', '🍮', '🍭', '🍬', '🍫', '🍿', '🍩', '🍪', '🌰', '🥜', '🍯', '🥛', '🍼', '☕', '🍵', '🍶', '🍾', '🍷', '🍸', '🍹', '🍺', '🍻', '🥂', '🥃',
+  // Activities & Sports
+  '⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎳', '🏏', '🏑', '🏒', '🥍', '🏓', '🏸', '🥊', '🥋', '🥅', '⛳', '⛸️', '🎣', '🎽', '🎿', '⛷️', '🛂', '🛷', '🥌', '🎯', '🪃', '🎪', '🏊', '⛹️', '🏋️', '🚴', '🚵', '🤸', '🤺', '🤼', '🤾', '🏌️', '🏇', '🧘', '🏄', '🤽', '🚣', '🧗', '🎖️', '🏆', '🏅',
+  // Travel & Places
+  '✈️', '🚀', '🛸', '🚁', '🛶', '⛵', '🚤', '🛳️', '⛴️', '🛥️', '🚢', '⚓', '⛽', '🚧', '🚨', '🚔', '🚍', '🚘', '🚖', '🚡', '🚠', '🚟', '🚃', '🚋', '🚞', '🚝', '🚄', '🚅', '🚈', '🚂', '🚆', '🚇', '🚊', '🚉', '🎢', '🎡', '🎠', '⛲', '⛺', '🏖️', '🏝️', '🏜️', '🌍', '🌎', '🌏', '🗾', '🗿', '🗽', '🗼', '⛩️', '🏔️', '⛰️', '🌋', '🏕️', '🏠', '🏡', '🏘️', '🏚️', '🏗️', '🏭', '🏢', '🏬', '🏣', '🏤', '🏥', '🏦', '🏧', '🏨', '🏪', '🏫', '🏩', '💒', '🏛️', '⛪', '🕌', '🕍', '🛕', '🕋',
+  // Objects & Tools
+  '⌚', '📱', '💻', '⌨️', '🖥️', '🖨️', '🖱️', '🖲️', '🕹️', '🗜️', '💽', '💾', '💿', '📀', '📼', '📷', '📸', '📹', '🎥', '🎬', '📽️', '🎞️', '📞', '☎️', '📟', '📠', '📺', '📻', '🎙️', '🎚️', '🎛️', '📡', '🔔', '🔕', '📢', '📣', '📯', '🎶', '🎵', '🎼', '🎤', '🎧', '🎷', '🎸', '🎹', '🥁', '🎺', '🎻', '🎲', '♟️', '🎳', '🎮', '🎰', '🧩', '🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐', '🛻', '🚚', '🚛', '🚜', '🏍️', '🛵', '🦯', '🦽', '🦼', '🛺', '🚲', '🛴', '🛹', '🛼', '💡', '🔦', '🏮', '📔', '📕', '📖', '📗', '📘', '📙', '📚', '📓', '📒', '📑', '🧷', '🧹', '🧺', '🧻', '🪣', '🪒', '🧼', '🪐', '🧯', '🛒', '🚬', '⚰️', '⚱️', '🏺', '🔮', '📿', '💈', '⚗️', '🔭', '🔬', '🕯️', '🎀', '🎁', '🎈', '🎏', '🎎', '🎐', '🎑', '🪅', '🪆', '🎊', '🎉',
+  // Symbols
+  '💔', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '👋', '🤚', '🖐️', '✋', '🖖', '👌', '🤏', '✌️', '🤞', '🫰', '🤟', '🤘', '🤙', '👍', '👎', '✊', '👊', '🤛', '🤜', '👏', '🙌', '👐', '🫲', '🫱', '🤲', '🤝', '🦾', '🦿', '👇', '👈', '👉', '☝️', '👆', '☮️', '☢️', '☣️', '⚛️', '✡️', '☪️', '✝️', '☦️', '☸️', '☯️', '☴️', '⚖️', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚡', '☄️', '☀️', '🌤️', '⛅', '🌥️', '☁️', '🌦️', '🌧️', '⛈️', '🌩️', '🌨️', '❄️', '☃️', '⛄', '🌬️', '💨', '💧', '💦', '☔',
+  // Professional & Work
+  '💼', '👔', '🎓', '✏️', '📝', '📄', '📃', '📑', '📊', '📈', '📉', '📋', '📇', '🗂️', '🗳️', '🗄️', '📦', '📫', '📪', '📬', '📭', '📮', '✉️', '📧', '📨', '📩', '📤', '📥', '🏷️', '🔖', '🔗', '📎', '🖇️', '📐', '📏', '🧮', '📌', '📍', '✂️', '🖊️', '🖋️', '✒️', '🖌️', '🖍️',
+  // Health & Wellness
+  '💊', '💉', '🩸', '🧬', '🦷', '🦴', '🧠', '🫀', '🫁', '💪', '👁️', '👀', '👃', '👂', '🦻', '👅', '🧴', '🚿', '🛁', '🛀',
+  // Hobbies & Indoor
+  '🎨', '🎭', '🎪', '🎬', '🌌',
+  // Bathroom/Personal Care
+  '🪥',
+])) as string[];
+
+// Map of emoji keywords for searching
+const EMOJI_KEYWORDS: Record<string, string[]> = {
+  '😀': ['happy', 'smile', 'face'],
+  '💪': ['strong', 'muscle', 'power'],
+  '🏃': ['run', 'exercise', 'cardio'],
+  '🧘': ['yoga', 'meditate', 'relax'],
+  '🚴': ['bike', 'cycling', 'exercise'],
+  '🏋️': ['workout', 'lift', 'exercise', 'gym'],
+  '📚': ['read', 'book', 'study', 'learning'],
+  '🍎': ['apple', 'fruit', 'health', 'eat'],
+  '💧': ['water', 'drink', 'hydrate'],
+  '😴': ['sleep', 'rest', 'bed'],
+  '🧠': ['brain', 'study', 'think', 'learn'],
+  '❤️': ['heart', 'love', 'health'],
+  '🎯': ['goal', 'target', 'focus'],
+  '⚡': ['energy', 'power', 'lightning', 'strong'],
+  '🪥': ['toothbrush', 'brush', 'teeth', 'dental'],
+  '🧼': ['wash', 'clean', 'soap'],
+  '🏆': ['win', 'trophy', 'champion', 'success'],
+  '👍': ['good', 'like', 'positive', 'approve'],
+  '🔥': ['fire', 'hot', 'intense', 'awesome'],
+  '✨': ['sparkle', 'shine', 'magical', 'great'],
+  '🌟': ['star', 'shine', 'great', 'excellent'],
+  '💚': ['green', 'heart', 'health', 'nature'],
+  '💙': ['blue', 'heart', 'calm', 'peaceful'],
+  '🎨': ['art', 'paint', 'creative', 'design'],
+  '🎭': ['theater', 'acting', 'performance'],
+  '🎮': ['game', 'gaming', 'fun', 'play'],
+  '🍽️': ['eat', 'food', 'dining', 'meal'],
+  '🏃': ['run', 'running', 'exercise', 'cardio', 'jog'],
+  '🤸': ['stretch', 'exercise', 'flexibility', 'yoga'],
+  '🏊': ['swim', 'swimming', 'water', 'exercise'],
+  '🧗': ['climb', 'climbing', 'hiking', 'sport'],
+  '🚴': ['cycle', 'bike', 'cycling', 'exercise'],
+  '⛹️': ['basketball', 'ball', 'sport'],
+  '🏌️': ['golf', 'sport'],
+  '🎾': ['tennis', 'sport'],
+  '⚽': ['soccer', 'football', 'sport'],
+  '🏀': ['basketball', 'sport'],
+  '🥊': ['boxing', 'fight', 'sport'],
+  '🏋️': ['weightlifting', 'gym', 'strength', 'exercise'],
+  '💼': ['work', 'job', 'business', 'professional'],
+  '📖': ['read', 'book', 'study', 'learning'],
+  '✏️': ['write', 'pencil', 'study'],
+  '🎓': ['learn', 'school', 'education', 'university'],
+};
+
 export default function HabitDetailScreen() {
-    const { id } = useLocalSearchParams();
+    const { id, viewDate } = useLocalSearchParams<{ id: string; viewDate?: string }>();
     const router = useRouter();
+    const currentViewDate = viewDate || DateUtils.getTodayDateString();
     const [habit, setHabit] = useState<Habit | null>(null);
     const [history, setHistory] = useState<Record<string, number>>({});
+    const [freezeList, setFreezeList] = useState<{ date: string; used_at?: number }[]>([]);
     const [stats, setStats] = useState({ streak: 0, total: 0 });
     const [activeTab, setActiveTab] = useState<'overview' | 'notes'>('overview');
 
@@ -28,9 +103,14 @@ export default function HabitDetailScreen() {
     const [isEditing, setIsEditing] = useState(false);
     const [editName, setEditName] = useState('');
     const [editDesc, setEditDesc] = useState('');
+    const [editIcon, setEditIcon] = useState('⚡️');
+    const [editIconColor, setEditIconColor] = useState('#18181B');
     const [editReminder, setEditReminder] = useState<Date | null>(null);
     const [editFrequency, setEditFrequency] = useState<string[] | 'daily'>('daily');
     const [showTimePicker, setShowTimePicker] = useState(false);
+    const [showEmojiInput, setShowEmojiInput] = useState(false);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [emojiSearch, setEmojiSearch] = useState('');
 
     const loadData = async () => {
         if (!id || typeof id !== 'string') return;
@@ -40,14 +120,27 @@ export default function HabitDetailScreen() {
             setHabit(found);
             setEditName(found.name);
             setEditDesc(found.description || '');
+            setEditIcon(found.icon || '⚡️');
+            setEditIconColor((found as any).icon_color || found.color || '#18181B');
             setEditReminder(found.reminder_time ? new Date(found.reminder_time) : null);
             setEditFrequency(found.frequency as any);
 
-            const hist = await HabitService.getHabitHistory(id);
-            setHistory(hist);
+            const rawHistory = await HabitService.getHabitHistory(id);
+
+            // Process History for Heatmap (Map)
+            const map: Record<string, number> = {};
+            rawHistory.forEach(item => {
+                map[item.date] = item.value;
+            });
+            setHistory(map);
+
+            // Process History for Freeze List
+            const freezes = rawHistory.filter(h => h.value === 2);
+            setFreezeList(freezes);
+
             setStats({
                 streak: found.current_streak,
-                total: Object.keys(hist).length
+                total: rawHistory.length
             });
 
             // Load Notes
@@ -66,9 +159,11 @@ export default function HabitDetailScreen() {
         await HabitService.updateHabit(habit.id, {
             name: editName,
             description: editDesc,
+            icon: editIcon,
             reminder_time: editReminder ? editReminder.toISOString() : undefined,
-            frequency: editFrequency
-        });
+            frequency: editFrequency,
+            icon_color: editIconColor
+        } as any);
 
         // Update Notification
         if (editReminder) {
@@ -170,7 +265,7 @@ export default function HabitDetailScreen() {
     const toggleFreeze = async () => {
         if (!habit) return;
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-        await HabitService.freezeDate(habit.id, DateUtils.getTodayDateString());
+        await HabitService.freezeDate(habit.id, currentViewDate);
         loadData();
     };
 
@@ -208,8 +303,8 @@ export default function HabitDetailScreen() {
             {activeTab === 'overview' ? (
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View className="items-center mb-8">
-                        <View className="w-20 h-20 rounded-full bg-surface items-center justify-center mb-4 border-2 shadow-lg" style={{ borderColor: habit.color, shadowColor: habit.color }}>
-                            <Text className="text-3xl">{habit.icon || '⚡️'}</Text>
+                        <View className="w-20 h-20 rounded-full items-center justify-center mb-4 border-2 shadow-lg" style={{ backgroundColor: (habit as any).icon_color || habit.color, borderColor: habit.color, shadowColor: habit.color }}>
+                            <Text className="text-3xl">{Array.from(habit.icon || '⚡️')[0]}</Text>
                         </View>
                         <Text className="text-3xl font-bold text-white tracking-tighter text-center">{habit.name}</Text>
                         {habit.description && (
@@ -220,7 +315,7 @@ export default function HabitDetailScreen() {
                     {/* Stats Grid */}
                     <View className="flex-row gap-3 mb-6">
                         <View className="flex-1 bg-surface p-4 rounded-2xl border border-surfaceHighlight items-center">
-                            <Text className="text-3xl font-bold" style={{ color: history[DateUtils.getTodayDateString()] === 2 ? '#60A5FA' : habit.color }}>{stats.streak}</Text>
+                            <Text className="text-3xl font-bold" style={{ color: history[currentViewDate] === 2 ? '#60A5FA' : habit.color }}>{stats.streak}</Text>
                             <Text className="text-secondary text-xs uppercase tracking-widest mt-1">
                                 {habit.type === 'quit' ? 'Days Free' : 'Current Streak'}
                             </Text>
@@ -234,27 +329,88 @@ export default function HabitDetailScreen() {
                     {/* Freeze Control */}
                     <Pressable
                         onPress={toggleFreeze}
-                        className={`p-4 rounded-2xl mb-6 flex-row items-center justify-between border ${history[DateUtils.getTodayDateString()] === 2 ? 'bg-blue-900/40 border-blue-500' : 'bg-surface border-surfaceHighlight'}`}
+                        className={`p-4 rounded-2xl mb-6 flex-row items-center justify-between border ${history[currentViewDate] === 2 ? 'bg-blue-900/40 border-blue-500' : 'bg-surface border-surfaceHighlight'}`}
                     >
                         <View>
-                            <Text className={`font-bold text-lg ${history[DateUtils.getTodayDateString()] === 2 ? 'text-blue-400' : 'text-white'}`}>
-                                {history[DateUtils.getTodayDateString()] === 2 ? 'Day Frozen 🧊' : 'Freeze Today?'}
+                            <Text className={`font-bold text-lg ${history[currentViewDate] === 2 ? 'text-blue-400' : 'text-white'}`}>
+                                {history[currentViewDate] === 2 ? 'Day Frozen 🧊' : `Freeze ${currentViewDate === DateUtils.getTodayDateString() ? 'Today' : new Date(currentViewDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}?`}
                             </Text>
                             <Text className="text-secondary text-xs">
-                                {history[DateUtils.getTodayDateString()] === 2 ? 'Streak is safe.' : 'Save streak proactively if busy.'}
+                                {history[currentViewDate] === 2 ? 'Streak is safe.' : 'Save streak proactively if busy.'}
                             </Text>
                         </View>
-                        <Ionicons name="snow" size={24} color={history[DateUtils.getTodayDateString()] === 2 ? '#60A5FA' : '#71717A'} />
+                        <Ionicons name="snow" size={24} color={history[currentViewDate] === 2 ? '#60A5FA' : '#71717A'} />
                     </Pressable>
+
+
+
+                    {/* Freeze History List */}
+                    <View className="bg-surface p-4 rounded-2xl border border-surfaceHighlight mb-6">
+                        <Text className="text-white font-bold mb-4 text-lg">Freeze History</Text>
+                        {freezeList.length > 0 ? (
+                            <View className="gap-3">
+                                {freezeList.map((freeze, index) => (
+                                    <Pressable
+                                        key={index}
+                                        onLongPress={() => {
+                                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                                            Alert.alert(
+                                                "Delete Freeze Record",
+                                                `Remove freeze for ${new Date(freeze.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}?`,
+                                                [
+                                                    { text: "Cancel", style: "cancel" },
+                                                    {
+                                                        text: "Delete",
+                                                        style: "destructive",
+                                                        onPress: async () => {
+                                                            if (typeof id === 'string') {
+                                                                await HabitService.deleteFreezeRecord(id, freeze.date);
+                                                                loadData();
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            );
+                                        }}
+                                        className="flex-row items-center gap-3 bg-zinc-900/50 p-3 rounded-xl border border-white/5 active:bg-zinc-800/50"
+                                    >
+                                        <View className="w-8 h-8 rounded-full bg-blue-500/10 items-center justify-center">
+                                            <Ionicons name="snow" size={16} color="#60A5FA" />
+                                        </View>
+                                        <View className="flex-1">
+                                            <Text className="text-white font-medium">Frozen on {new Date(freeze.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</Text>
+                                            {freeze.used_at ? (
+                                                <Text className="text-secondary text-xs">Applied on {new Date(freeze.used_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} at {new Date(freeze.used_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                                            ) : (
+                                                <Text className="text-secondary text-xs">Auto-applied</Text>
+                                            )}
+                                        </View>
+                                        <Ionicons name="trash-outline" size={16} color="#71717A" />
+                                    </Pressable>
+                                ))}
+                            </View>
+                        ) : (
+                            <View className="items-center py-4 opacity-50">
+                                <Ionicons name="snow-outline" size={32} color="#71717A" />
+                                <Text className="text-secondary mt-2">No freezes used yet.</Text>
+                            </View>
+                        )}
+                    </View>
 
                     {/* Individual Heatmap */}
                     <View className="bg-surface p-4 rounded-2xl border border-surfaceHighlight mb-6">
                         <Text className="text-white font-bold mb-4 text-lg">Consistency Map</Text>
-                        <Heatmap data={history} />
+                        <Heatmap data={history} startDate={habit.created_at} />
                     </View>
 
                     {/* Metadata / Edit Section */}
                     <View className="bg-surface p-4 rounded-2xl border border-surfaceHighlight gap-4 mb-10">
+                        <View className="flex-row justify-between items-center py-2 border-b border-white/5">
+                            <Text className="text-secondary">Created On</Text>
+                            <Text className="text-white font-bold">
+                                {habit.created_at ? new Date(habit.created_at).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' }) : 'Unknown'}
+                            </Text>
+                        </View>
                         <View className="flex-row justify-between items-center py-2 border-b border-white/5">
                             <Text className="text-secondary">Reminder</Text>
                             <Text className="text-white font-bold">
@@ -332,6 +488,34 @@ export default function HabitDetailScreen() {
                             <Text className="text-white text-xl font-bold">Edit Protocol</Text>
                             <Pressable onPress={() => setIsEditing(false)}>
                                 <Ionicons name="close-circle" size={30} color="gray" />
+                            </Pressable>
+                        </View>
+
+                        <View className="mb-4 items-center">
+                            <Pressable
+                                onPress={() => {
+                                    setIsEditing(false);
+                                    setShowEmojiInput(true);
+                                }}
+                                className="w-24 h-24 rounded-full items-center justify-center border-2 border-dashed border-white/30"
+                                style={{ backgroundColor: editIconColor }}
+                            >
+                                <Text className="text-4xl">{Array.from(editIcon || '⚡️')[0]}</Text>
+                                <View className="absolute bottom-0 right-0 bg-primary rounded-full p-1">
+                                    <Ionicons name="pencil" size={12} color="black" />
+                                </View>
+                            </Pressable>
+                            <Text className="text-secondary text-xs mt-2">Tap to change icon</Text>
+
+                            <Pressable
+                                onPress={() => {
+                                    setIsEditing(false);
+                                    setShowColorPicker(true);
+                                }}
+                                className="mt-3 flex-row items-center gap-2 bg-surface px-4 py-2 rounded-full border border-white/10"
+                            >
+                                <View className="w-4 h-4 rounded-full" style={{ backgroundColor: editIconColor }} />
+                                <Text className="text-white text-sm font-medium">Change Color</Text>
                             </Pressable>
                         </View>
 
@@ -456,6 +640,148 @@ export default function HabitDetailScreen() {
                     </View>
                 </View>
             </Modal>
+
+            {/* Emoji Input Modal with Search */}
+            <Modal visible={showEmojiInput} animationType="slide" transparent={true}>
+                <View className="flex-1 bg-black/80 justify-end">
+                    <View className="bg-surface rounded-t-3xl border-t border-surfaceHighlight max-h-[90%] flex-1">
+                        <View className="flex-row justify-between items-center p-6 pb-4">
+                            <Text className="text-white text-xl font-bold">Choose Emoji</Text>
+                            <Pressable onPress={() => {
+                                setEmojiSearch('');
+                                setShowEmojiInput(false);
+                                setIsEditing(true);
+                            }}>
+                                <Ionicons name="close-circle" size={30} color="gray" />
+                            </Pressable>
+                        </View>
+
+                        <View className="items-center px-6 pb-4">
+                            <View
+                                className="w-20 h-20 rounded-full items-center justify-center mb-3"
+                                style={{ backgroundColor: editIconColor }}
+                            >
+                                <Text className="text-5xl">{Array.from(editIcon || '⚡️')[0]}</Text>
+                            </View>
+                        </View>
+
+                        {/* Search Bar */}
+                        <View className="px-6 pb-4">
+                            <TextInput
+                                placeholder="Search emoji (e.g., toothbrush, run, book)..."
+                                placeholderTextColor="#666"
+                                value={emojiSearch}
+                                onChangeText={setEmojiSearch}
+                                className="bg-background text-white p-3 rounded-lg border border-white/10 text-sm"
+                            />
+                        </View>
+
+                        {/* Emoji Grid */}
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            className="flex-1 px-6"
+                        >
+                            <View className="flex-row flex-wrap gap-2 pb-6">
+                                {(() => {
+                                    const searchLower = emojiSearch.toLowerCase();
+                                    const filteredEmojis = !searchLower ? EMOJI_LIST : EMOJI_LIST.filter(emoji => {
+                                        const keywords = EMOJI_KEYWORDS[emoji] || [];
+                                        return keywords.some(kw => kw.includes(searchLower)) ||
+                                               keywords.some(kw => searchLower.includes(kw));
+                                    });
+
+                                    return filteredEmojis.map((emoji) => (
+                                        <Pressable
+                                            key={emoji}
+                                            onPress={() => {
+                                                setEditIcon(emoji);
+                                                setEmojiSearch('');
+                                                setShowEmojiInput(false);
+                                                setIsEditing(true);
+                                            }}
+                                            className={`w-14 h-14 items-center justify-center rounded-lg ${editIcon === emoji ? 'bg-primary border-2 border-white' : 'bg-background border border-white/10'}`}
+                                        >
+                                            <Text className="text-2xl">{emoji}</Text>
+                                        </Pressable>
+                                    ));
+                                })()}
+                            </View>
+                        </ScrollView>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Color Picker Modal */}
+            <Modal visible={showColorPicker} animationType="slide" transparent={true}>
+                <View className="flex-1 bg-black/80 justify-end">
+                    <Pressable className="bg-surface p-6 rounded-t-3xl border-t border-surfaceHighlight">
+                        <View className="flex-row justify-between items-center mb-6">
+                            <Text className="text-white text-xl font-bold">Icon Background Color</Text>
+                            <Pressable onPress={() => {
+                                setShowColorPicker(false);
+                                setIsEditing(true);
+                            }}>
+                                <Ionicons name="close-circle" size={30} color="gray" />
+                            </Pressable>
+                        </View>
+
+                        <View className="items-center mb-6">
+                            <View
+                                className="w-32 h-32 rounded-full items-center justify-center mb-6"
+                                style={{ backgroundColor: editIconColor }}
+                            >
+                                <Text className="text-6xl">{Array.from(editIcon || '⚡️')[0]}</Text>
+                            </View>
+                        </View>
+
+                        <View className="flex-row flex-wrap gap-3 justify-center mb-6">
+                            {[
+                                '#CCFF00', // Primary yellow
+                                '#FF4545', // Error red
+                                '#60A5FA', // Blue
+                                '#34D399', // Green
+                                '#F59E0B', // Amber
+                                '#8B5CF6', // Purple
+                                '#EC4899', // Pink
+                                '#14B8A6', // Teal
+                                '#F97316', // Orange
+                                '#6366F1', // Indigo
+                                '#A3E635', // Lime
+                                '#22D3EE', // Cyan
+                                '#18181B', // Dark (default)
+                                '#3F3F46', // Gray
+                                '#71717A', // Light gray
+                                '#FFFFFF', // White
+                            ].map((color) => (
+                                <Pressable
+                                    key={color}
+                                    onPress={() => {
+                                        setEditIconColor(color);
+                                        Haptics.selectionAsync();
+                                    }}
+                                    className={`w-14 h-14 rounded-full items-center justify-center ${editIconColor === color ? 'border-4 border-white' : 'border-2 border-white/20'}`}
+                                    style={{ backgroundColor: color }}
+                                >
+                                    {editIconColor === color && (
+                                        <Ionicons name="checkmark" size={24} color={color === '#FFFFFF' ? 'black' : 'white'} />
+                                    )}
+                                </Pressable>
+                            ))}
+                        </View>
+
+                        <Pressable
+                            onPress={() => {
+                                setShowColorPicker(false);
+                                setIsEditing(true);
+                            }}
+                            className="bg-primary p-4 rounded-xl items-center"
+                        >
+                            <Text className="text-black font-bold text-lg">Done</Text>
+                        </Pressable>
+                    </Pressable>
+                </View>
+            </Modal>
+
         </SafeAreaView>
     );
 }

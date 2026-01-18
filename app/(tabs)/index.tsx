@@ -95,11 +95,11 @@ export default function HomeScreen() {
                                     </View>
                                 </View>
                             </View>
-                            <Link href="/create" asChild>
-                                <Pressable className="bg-primary w-10 h-10 rounded-full items-center justify-center active:opacity-80">
-                                    <Ionicons name="add" size={24} color="black" />
-                                </Pressable>
-                            </Link>
+                            <Pressable
+                                onPress={() => router.push(`/create?startDate=${DateUtils.getDateString(selectedDate)}`)}
+                                className="bg-primary w-10 h-10 rounded-full items-center justify-center active:opacity-80">
+                                <Ionicons name="add" size={24} color="black" />
+                            </Pressable>
                         </View>
 
                         <CalendarStrip selectedDate={selectedDate} onSelectDate={setSelectedDate} />
@@ -155,7 +155,7 @@ export default function HomeScreen() {
                                 Haptics.selectionAsync();
                                 drag();
                             }}
-                            onPress={() => router.push(`/habit/${item.id}`)}
+                            onPress={() => router.push(`/habit/${item.id}?viewDate=${DateUtils.getDateString(selectedDate)}`)}
                             disabled={isActive}
                             className={`bg-surface p-4 rounded-2xl mb-3 flex-row justify-between items-center border ${isActive ? 'border-primary' : 'border-surfaceHighlight'}`}
                         >

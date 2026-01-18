@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Pressable, ScrollView, Switch, Platform } from "react-native";
 import { useState, useEffect } from "react";
 import { HabitService } from "../services/HabitService";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { X } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { NotificationService } from "../services/NotificationService";
 
 export default function CreateHabitScreen() {
+    const { startDate } = useLocalSearchParams<{ startDate?: string }>();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [type, setType] = useState<'build' | 'quit'>('build');
@@ -98,7 +99,8 @@ export default function CreateHabitScreen() {
             finalIcon,
             description,
             finalGoal, // target_value
-            useHealthKit ? healthType : undefined
+            useHealthKit ? healthType : undefined,
+            startDate // Pass the startDate from query params
         );
 
         if (reminderTime) {

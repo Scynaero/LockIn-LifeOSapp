@@ -60,6 +60,7 @@ export default function LiftView() {
                     <ActiveWorkout
                         workout={activeWorkout}
                         onFinish={handleFinish}
+                        onRefresh={checkWorkoutForDate}
                         readOnly={false} // Always editable for now as requested
                     />
                 ) : (
