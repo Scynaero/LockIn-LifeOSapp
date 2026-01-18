@@ -1,0 +1,275 @@
+[
+    {
+        "id": "chest_press_machine",
+        "name": "Chest Press (Machine)",
+        "target_muscle": "chest",
+        "equipment": "machine",
+        "is_custom": 0
+    },
+    {
+        "id": "pec_deck",
+        "name": "Pec Deck (Fly)",
+        "target_muscle": "chest",
+        "equipment": "machine",
+        "is_custom": 0
+    },
+    {
+        "id": "push_up",
+        "name": "Push Up",
+        "target_muscle": "chest",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "incline_dumbbell_press",
+        "name": "Incline Dumbbell Press",
+        "target_muscle": "chest",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "cable_crossover",
+        "name": "Cable Crossover",
+        "target_muscle": "chest",
+        "equipment": "cable",
+        "is_custom": 0
+    },
+    {
+        "id": "lat_pulldown_cable",
+        "name": "Lat Pulldown (Cable)",
+        "target_muscle": "back",
+        "equipment": "cable",
+        "is_custom": 0
+    },
+    {
+        "id": "seated_row_cable",
+        "name": "Seated Row (Cable)",
+        "target_muscle": "back",
+        "equipment": "cable",
+        "is_custom": 0
+    },
+    {
+        "id": "bent_over_row_barbell",
+        "name": "Bent Over Row (Barbell)",
+        "target_muscle": "back",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "single_arm_dumbbell_row",
+        "name": "Single Arm Dumbbell Row",
+        "target_muscle": "back",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "face_pull",
+        "name": "Face Pull",
+        "target_muscle": "shoulders",
+        "equipment": "cable",
+        "is_custom": 0
+    },
+    {
+        "id": "shoulder_press_dumbbell",
+        "name": "Shoulder Press (Dumbbell)",
+        "target_muscle": "shoulders",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "lateral_raise_dumbbell",
+        "name": "Lateral Raise (Dumbbell)",
+        "target_muscle": "shoulders",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "front_raise_dumbbell",
+        "name": "Front Raise (Dumbbell)",
+        "target_muscle": "shoulders",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "arnold_press",
+        "name": "Arnold Press",
+        "target_muscle": "shoulders",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "bicep_curl_barbell",
+        "name": "Bicep Curl (Barbell)",
+        "target_muscle": "arms",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "hammer_curl",
+        "name": "Hammer Curl",
+        "target_muscle": "arms",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "tricep_pushdown",
+        "name": "Tricep Pushdown",
+        "target_muscle": "arms",
+        "equipment": "cable",
+        "is_custom": 0
+    },
+    {
+        "id": "skullcrusher",
+        "name": "Skullcrusher",
+        "target_muscle": "arms",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "preacher_curl",
+        "name": "Preacher Curl",
+        "target_muscle": "arms",
+        "equipment": "machine",
+        "is_custom": 0
+    },
+    {
+        "id": "squat_goblet",
+        "name": "Goblet Squat",
+        "target_muscle": "legs",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "leg_extension",
+        "name": "Leg Extension",
+        "target_muscle": "legs",
+        "equipment": "machine",
+        "is_custom": 0
+    },
+    {
+        "id": "leg_curl",
+        "name": "Leg Curl (Hamstring)",
+        "target_muscle": "legs",
+        "equipment": "machine",
+        "is_custom": 0
+    },
+    {
+        "id": "bulgarian_split_squat",
+        "name": "Bulgarian Split Squat",
+        "target_muscle": "legs",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "calf_raise_standing",
+        "name": "Calf Raise (Standing)",
+        "target_muscle": "legs",
+        "equipment": "machine",
+        "is_custom": 0
+    },
+    {
+        "id": "romanian_deadlift",
+        "name": "Romanian Deadlift",
+        "target_muscle": "legs",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "plank",
+        "name": "Plank",
+        "target_muscle": "abs",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "leg_raise_hanging",
+        "name": "Hanging Leg Raise",
+        "target_muscle": "abs",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "russian_twist",
+        "name": "Russian Twist",
+        "target_muscle": "abs",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "ab_roller",
+        "name": "Ab Wheel Rollout",
+        "target_muscle": "abs",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "bench_press_barbell",
+        "name": "Bench Press (Barbell)",
+        "target_muscle": "chest",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "squat_barbell",
+        "name": "Squat (Barbell)",
+        "target_muscle": "legs",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "deadlift_barbell",
+        "name": "Deadlift (Barbell)",
+        "target_muscle": "back",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "overhead_press_barbell",
+        "name": "Overhead Press (Barbell)",
+        "target_muscle": "shoulders",
+        "equipment": "barbell",
+        "is_custom": 0
+    },
+    {
+        "id": "pull_up",
+        "name": "Pull Up",
+        "target_muscle": "back",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "dumbbell_curl",
+        "name": "Dumbbell Curl",
+        "target_muscle": "arms",
+        "equipment": "dumbbell",
+        "is_custom": 0
+    },
+    {
+        "id": "tricep_dip",
+        "name": "Tricep Dip",
+        "target_muscle": "arms",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "crunch",
+        "name": "Crunch",
+        "target_muscle": "abs",
+        "equipment": "bodyweight",
+        "is_custom": 0
+    },
+    {
+        "id": "leg_press",
+        "name": "Leg Press",
+        "target_muscle": "legs",
+        "equipment": "machine",
+        "is_custom": 0
+    },
+    {
+        "id": "lat_pulldown",
+        "name": "Lat Pulldown",
+        "target_muscle": "back",
+        "equipment": "machine",
+        "is_custom": 0
+    }
+]

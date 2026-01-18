@@ -34,8 +34,9 @@ export default function Layout() {
                     headerShown: false,
                     contentStyle: { backgroundColor: '#000000' }
                 }}>
-                    <Stack.Screen name="index" />
+                    <Stack.Screen name="(tabs)" />
                     <Stack.Screen name="create" options={{ presentation: 'modal' }} />
+                    <Stack.Screen name="add-transaction" options={{ presentation: 'modal' }} />
                 </Stack>
             </SafeAreaProvider>
         </GestureHandlerRootView>

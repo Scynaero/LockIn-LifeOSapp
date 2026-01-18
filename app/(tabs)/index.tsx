@@ -1,39 +1,37 @@
 import { View, Text, Pressable, Alert } from "react-native";
-import { Link, useFocusEffect } from "expo-router";
+import { Link, useFocusEffect, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useState, useCallback } from "react";
-import { HabitService, Habit } from "../services/HabitService";
-import { CalendarStrip } from "../components/CalendarStrip";
-import { StatsDashboard } from "../components/StatsDashboard";
-import { Heatmap } from "../components/Heatmap";
+import { HabitService, Habit } from "../../services/HabitService";
+import { CalendarStrip } from "../../components/CalendarStrip";
+import { Heatmap } from "../../components/Heatmap";
 import * as Haptics from 'expo-haptics';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { router } from "expo-router";
-import { Plus } from "lucide-react-native";
-import { DateUtils } from "../utils/DateUtils";
-import { ProgressRing } from "../components/ProgressRing";
-import { LogValueModal } from "../components/LogValueModal";
+import { DateUtils } from "../../utils/DateUtils";
+import { ProgressRing } from "../../components/ProgressRing";
+import { LogValueModal } from "../../components/LogValueModal";
 
 export default function HomeScreen() {
+    const router = useRouter();
     const [habits, setHabits] = useState<Habit[]>([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [heatmapData, setHeatmapData] = useState<Record<string, number>>({});
     const [stats, setStats] = useState({ streak: 0, completionRate: 0, breakdown: { build: 0, quit: 0, frozen: 0, total: 0 } });
     const [logHabit, setLogHabit] = useState<Habit | null>(null);
-
-    // ...
+    const [userMeta, setUserMeta] = useState({ level: 1, xp: 0 });
 
     const loadData = async () => {
         const dateStr = DateUtils.getDateString(selectedDate);
-        // Pass the selected date to get status for THAT day
         const h = await HabitService.getHabits(dateStr);
         setHabits(h);
         const map = await HabitService.getHeatmapData();
         setHeatmapData(map);
         const s = await HabitService.getStats(dateStr);
-        console.log('STATS DEBUG:', JSON.stringify(s, null, 2));
         setStats({ streak: s.currentStreak, completionRate: s.completionRate, breakdown: s.breakdown });
+
+        const meta = await HabitService.getUserXP();
+        setUserMeta(meta);
     };
 
     useFocusEffect(
@@ -44,14 +42,14 @@ export default function HomeScreen() {
                 loadData();
             };
             init();
-        }, [selectedDate]) // Reload when date changes
+        }, [selectedDate])
     );
 
     const toggleHabit = async (id: string) => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         const dateStr = DateUtils.getDateString(selectedDate);
         await HabitService.logCompletion(id, dateStr, 1);
-        loadData(); // Refresh UI
+        loadData();
     };
 
     const handleLogSave = async (val: number) => {
@@ -59,7 +57,6 @@ export default function HomeScreen() {
         const dateStr = DateUtils.getDateString(selectedDate);
 
         let finalVal = val;
-        // Convert Hours to Min for Sleep
         if (logHabit.health_type === 'sleep') {
             finalVal = Math.round(val * 60);
         }
@@ -67,25 +64,6 @@ export default function HomeScreen() {
         await HabitService.logCompletion(logHabit.id, dateStr, finalVal);
         loadData();
         setLogHabit(null);
-    };
-
-    const confirmDelete = (habit: Habit) => {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-        Alert.alert(
-            "Delete Protocol",
-            `Are you sure you want to delete "${habit.name}"? This cannot be undone.`,
-            [
-                { text: "Cancel", style: "cancel" },
-                {
-                    text: "Delete",
-                    style: "destructive",
-                    onPress: async () => {
-                        await HabitService.deleteHabit(habit.id);
-                        loadData();
-                    }
-                }
-            ]
-        );
     };
 
     return (
@@ -102,7 +80,21 @@ export default function HomeScreen() {
                 ListHeaderComponent={
                     <>
                         <View className="flex-row justify-between items-center mb-6">
-                            <Text className="text-3xl font-bold text-primary tracking-tighter">LOCK-IN</Text>
+                            <View>
+                                <Text className="text-3xl font-bold text-primary tracking-tighter">LOCK-IN</Text>
+                                <View className="flex-row items-center gap-2 mt-1">
+                                    <View className="bg-surface px-2 py-0.5 rounded-md border border-surfaceHighlight">
+                                        <Text className="text-xs text-secondary font-bold">LVL {userMeta.level}</Text>
+                                    </View>
+                                    <Text className="text-secondary text-xs">{userMeta.xp} XP</Text>
+                                    <View className="w-20 h-1 bg-surfaceHighlight rounded-full overflow-hidden">
+                                        <View
+                                            className="h-full bg-primary"
+                                            style={{ width: `${Math.min((userMeta.xp % 100), 100)}%` }}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
                             <Link href="/create" asChild>
                                 <Pressable className="bg-primary w-10 h-10 rounded-full items-center justify-center active:opacity-80">
                                     <Ionicons name="add" size={24} color="black" />
@@ -111,7 +103,6 @@ export default function HomeScreen() {
                         </View>
 
                         <CalendarStrip selectedDate={selectedDate} onSelectDate={setSelectedDate} />
-
 
                         {/* Daily Progress Widget */}
                         <View className="flex-row items-center justify-between mb-8 bg-surface p-6 rounded-3xl border border-surfaceHighlight">
@@ -168,10 +159,8 @@ export default function HomeScreen() {
                             disabled={isActive}
                             className={`bg-surface p-4 rounded-2xl mb-3 flex-row justify-between items-center border ${isActive ? 'border-primary' : 'border-surfaceHighlight'}`}
                         >
-                            {/* Deep Dive Interaction */}
                             <View className="flex-1">
                                 <Text className="text-primary font-bold text-lg">{item.name}</Text>
-
                                 {item.target_value > 1 ? (
                                     <Text className="text-primary font-bold text-base mt-0.5">
                                         {item.health_type === 'sleep'
@@ -184,13 +173,20 @@ export default function HomeScreen() {
                                         }</Text>
                                     </Text>
                                 ) : (
-                                    item.description ? <Text className="text-secondary text-sm" numberOfLines={1}>{item.description}</Text> : null
+                                    <View className="h-4" />
                                 )}
 
-                                <Text className="text-secondary text-xs mt-1">{item.current_streak} Day Streak</Text>
+                                <View className="flex-row items-center gap-1 mt-2">
+                                    {(item as any).recent_history?.map((val: number, idx: number) => (
+                                        <View
+                                            key={idx}
+                                            className={`w-1.5 h-1.5 rounded-full ${val === 1 ? 'bg-green-500' : (val === 2 ? 'bg-blue-400' : 'bg-zinc-800')}`}
+                                        />
+                                    ))}
+                                    <Text className="text-secondary text-xs ml-2 opacity-50">{item.current_streak} Day Streak</Text>
+                                </View>
                             </View>
 
-                            {/* Completion Interaction */}
                             <Pressable
                                 onPress={(e) => {
                                     e.stopPropagation();

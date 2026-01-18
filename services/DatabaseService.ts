@@ -84,6 +84,55 @@ export const DatabaseService = {
         );
       `);
 
+      // Notes Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS notes (
+          id TEXT PRIMARY KEY NOT NULL,
+          content TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          is_pinned INTEGER DEFAULT 0,
+          habit_id TEXT,
+          log_id TEXT,
+          reminder_time TEXT,
+          is_deleted INTEGER DEFAULT 0,
+          FOREIGN KEY (habit_id) REFERENCES habits (id) ON DELETE CASCADE
+        );
+      `);
+
+      try {
+        await db.execAsync('ALTER TABLE notes ADD COLUMN reminder_time TEXT;');
+      } catch (e) { }
+
+      try {
+        await db.execAsync('ALTER TABLE notes ADD COLUMN is_deleted INTEGER DEFAULT 0;');
+      } catch (e) { }
+
+      // Migration for is_deleted (re-checking for robustness, though already in CREATE TABLE and try-catch)
+      // This block is likely intended for older schemas that might not have 'is_deleted'
+      try {
+        const tableInfo = await db.getAllAsync<{ name: string }>('PRAGMA table_info(notes)');
+        const hasIsDeleted = tableInfo.some(col => col.name === 'is_deleted');
+        if (!hasIsDeleted) {
+          await db.runAsync('ALTER TABLE notes ADD COLUMN is_deleted INTEGER DEFAULT 0');
+        }
+      } catch (e) {
+        console.warn("Migration for 'is_deleted' column on 'notes' table failed or not needed:", e);
+      }
+
+      // Migration for Voice, Theme, Location
+      try {
+        const tableInfo = await db.getAllAsync<{ name: string }>('PRAGMA table_info(notes)');
+        const hasAudioUri = tableInfo.some(col => col.name === 'audio_uri');
+        if (!hasAudioUri) {
+          await db.runAsync('ALTER TABLE notes ADD COLUMN audio_uri TEXT');
+          await db.runAsync('ALTER TABLE notes ADD COLUMN audio_duration INTEGER');
+          await db.runAsync('ALTER TABLE notes ADD COLUMN color TEXT');
+          await db.runAsync('ALTER TABLE notes ADD COLUMN location_text TEXT');
+        }
+      } catch (e) {
+        console.warn("Migration for audio/theme/location columns on 'notes' table failed or not needed:", e);
+      }
+
       // User Meta Table (for XP, Level, Milestones)
       await db.execAsync(`
         CREATE TABLE IF NOT EXISTS user_meta (
@@ -91,6 +140,127 @@ export const DatabaseService = {
           value TEXT NOT NULL
         );
       `);
+
+      // Expenses Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS expenses (
+          id TEXT PRIMARY KEY NOT NULL,
+          amount REAL NOT NULL,
+          category TEXT NOT NULL,
+          date TEXT NOT NULL,
+          note TEXT,
+          is_recurring INTEGER DEFAULT 0
+        );
+      `);
+
+      // Debts Table
+      await db.execAsync(`
+         CREATE TABLE IF NOT EXISTS debts (
+          id TEXT PRIMARY KEY NOT NULL,
+          person_name TEXT NOT NULL,
+          amount REAL NOT NULL,
+          type TEXT CHECK(type IN ('owed_to_me', 'i_owe')) NOT NULL,
+          status TEXT CHECK(status IN ('pending', 'paid')) DEFAULT 'pending',
+          related_expense_id TEXT,
+          date TEXT NOT NULL,
+          FOREIGN KEY (related_expense_id) REFERENCES expenses (id) ON DELETE SET NULL
+        );
+      `);
+
+      // Subscriptions Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS subscriptions (
+          id TEXT PRIMARY KEY NOT NULL,
+          name TEXT NOT NULL,
+          amount REAL NOT NULL,
+          billing_cycle TEXT CHECK(billing_cycle IN ('monthly', 'yearly')) NOT NULL,
+          next_billing_date TEXT NOT NULL
+        );
+      `);
+
+      // --- Body Module Tables ---
+
+      // Exercises Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS exercises (
+          id TEXT PRIMARY KEY NOT NULL,
+          name TEXT NOT NULL,
+          target_muscle TEXT NOT NULL,
+          equipment TEXT NOT NULL,
+          is_custom INTEGER DEFAULT 0
+        );
+      `);
+
+      // Workouts Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS workouts (
+          id TEXT PRIMARY KEY NOT NULL,
+          date TEXT NOT NULL,
+          name TEXT,
+          duration_sec INTEGER DEFAULT 0,
+          bodyweight REAL,
+          status TEXT CHECK(status IN ('active', 'completed')) DEFAULT 'active'
+        );
+      `);
+
+      // Workout Sets Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS workout_sets (
+          id TEXT PRIMARY KEY NOT NULL,
+          workout_id TEXT NOT NULL,
+          exercise_id TEXT NOT NULL,
+          weight REAL NOT NULL,
+          reps INTEGER NOT NULL,
+          rpe REAL,
+          is_completed INTEGER DEFAULT 0,
+          type TEXT CHECK(type IN ('normal', 'warmup', 'drop', 'failure')) DEFAULT 'normal',
+          FOREIGN KEY (workout_id) REFERENCES workouts (id) ON DELETE CASCADE,
+          FOREIGN KEY (exercise_id) REFERENCES exercises (id) ON DELETE CASCADE
+        );
+      `);
+
+      // Migration for is_completed
+      try {
+        await db.execAsync('ALTER TABLE workout_sets ADD COLUMN is_completed INTEGER DEFAULT 0;');
+      } catch (e) { }
+
+      // Sports Logs Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS sports_logs(
+        id TEXT PRIMARY KEY NOT NULL,
+        activity_name TEXT NOT NULL,
+        start_time TEXT NOT NULL,
+        duration_min INTEGER NOT NULL,
+        calories REAL NOT NULL,
+        met_value REAL NOT NULL
+      );
+      `);
+
+      // Weight Logs Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS weight_logs (
+          id TEXT PRIMARY KEY NOT NULL,
+          weight REAL NOT NULL,
+          date TEXT NOT NULL
+        );
+      `);
+
+      // Seeding Exercises
+      const exercisesValues = await db.getAllAsync('SELECT count(*) as count FROM exercises');
+      // @ts-ignore
+      // Re-seed if count is low (indicating only initial seed or empty)
+      if (exercisesValues[0].count < 15) {
+        console.log('Seeding exercises...');
+        const exercisesData = require('../assets/exercises.json');
+
+        for (const exercise of exercisesData) {
+          await db.runAsync(
+            'INSERT OR IGNORE INTO exercises (id, name, target_muscle, equipment, is_custom) VALUES (?, ?, ?, ?, ?)',
+            [exercise.id, exercise.name, exercise.target_muscle, exercise.equipment, exercise.is_custom]
+          );
+        }
+        console.log('Exercises seeded.');
+      }
 
       console.log('Database initialized successfully');
     } catch (error) {

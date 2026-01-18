@@ -56,9 +56,28 @@ export const NotificationService = {
 
     cancelReminder: async (habitId: string) => {
         // Current limitation: we don't track notification IDs in DB yet.
-        // Ideally we cancel all by category or store IDs.
-        // For MVP, we will rely on cancelAll for debugging or handle this more robustly later.
         await Notifications.cancelAllScheduledNotificationsAsync();
-        // WARNING: This cancels ALL. Needs refinement in next step.
+    },
+
+    scheduleNoteReminder: async (noteId: string, content: string, date: Date) => {
+        const trigger = date;
+        // Schedule for the specific date
+        // Note: trigger must be in the future
+        if (trigger.getTime() <= Date.now()) return;
+
+        await Notifications.scheduleNotificationAsync({
+            identifier: `note-${noteId}`,
+            content: {
+                title: "Note Reminder",
+                body: content,
+                sound: true,
+                data: { url: `/note/${noteId}` }
+            },
+            trigger: {
+                type: Notifications.SchedulableTriggerInputTypes.DATE,
+                date: trigger, // Pass the Date object here
+            },
+        });
+        console.log(`Scheduled note reminder for ${noteId} at ${date.toISOString()}`);
     }
 };

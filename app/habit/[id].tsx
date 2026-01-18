@@ -1,9 +1,10 @@
-import { View, Text, ScrollView, Pressable, Alert, Modal, TextInput, Switch } from "react-native";
+import { View, Text, ScrollView, Pressable, Alert, Modal, TextInput, Switch, FlatList } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import { HabitService, Habit } from "../../services/HabitService";
+import { NotesService, Note } from "../../services/NotesService";
 import { Heatmap } from "../../components/Heatmap";
 import * as Haptics from 'expo-haptics';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -16,9 +17,12 @@ export default function HabitDetailScreen() {
     const [habit, setHabit] = useState<Habit | null>(null);
     const [history, setHistory] = useState<Record<string, number>>({});
     const [stats, setStats] = useState({ streak: 0, total: 0 });
+    const [activeTab, setActiveTab] = useState<'overview' | 'notes'>('overview');
 
-
-    // Edit State
+    // Notes State
+    const [notes, setNotes] = useState<Note[]>([]);
+    const [isAddingNote, setIsAddingNote] = useState(false);
+    const [newNote, setNewNote] = useState('');
 
     // Edit State
     const [isEditing, setIsEditing] = useState(false);
@@ -46,7 +50,9 @@ export default function HabitDetailScreen() {
                 total: Object.keys(hist).length
             });
 
-
+            // Load Notes
+            const habitNotes = await NotesService.getNotes({ habitId: id });
+            setNotes(habitNotes);
         }
     };
 
@@ -81,6 +87,21 @@ export default function HabitDetailScreen() {
         setIsEditing(false);
         loadData();
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    };
+
+    const handleSaveNote = async () => {
+        if (!newNote.trim() || !habit) return;
+        await NotesService.createNote(newNote.trim(), habit.id);
+        setNewNote('');
+        setIsAddingNote(false);
+        loadData();
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    };
+
+    const handleDeleteNote = async (noteId: string) => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        await NotesService.deleteNote(noteId);
+        loadData();
     };
 
     const handleDelete = () => {
@@ -168,74 +189,142 @@ export default function HabitDetailScreen() {
                 </Pressable>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View className="items-center mb-8">
-                    <View className="w-20 h-20 rounded-full bg-surface items-center justify-center mb-4 border-2 shadow-lg" style={{ borderColor: habit.color, shadowColor: habit.color }}>
-                        <Text className="text-3xl">{habit.icon || '⚡️'}</Text>
-                    </View>
-                    <Text className="text-3xl font-bold text-white tracking-tighter text-center">{habit.name}</Text>
-                    {habit.description && (
-                        <Text className="text-secondary text-base mt-2 text-center px-4">{habit.description}</Text>
-                    )}
-                </View>
-
-                {/* Stats Grid */}
-                <View className="flex-row gap-3 mb-6">
-                    <View className="flex-1 bg-surface p-4 rounded-2xl border border-surfaceHighlight items-center">
-                        <Text className="text-3xl font-bold" style={{ color: history[DateUtils.getTodayDateString()] === 2 ? '#60A5FA' : habit.color }}>{stats.streak}</Text>
-                        <Text className="text-secondary text-xs uppercase tracking-widest mt-1">
-                            {habit.type === 'quit' ? 'Days Free' : 'Current Streak'}
-                        </Text>
-                    </View>
-                    <View className="flex-1 bg-surface p-4 rounded-2xl border border-surfaceHighlight items-center">
-                        <Text className="text-3xl font-bold text-white">{stats.total}</Text>
-                        <Text className="text-secondary text-xs uppercase tracking-widest mt-1">Total Days</Text>
-                    </View>
-                </View>
-
-                {/* Freeze Control */}
+            {/* Custom Tab Switcher */}
+            <View className="flex-row bg-surface p-1 rounded-xl mb-6 border border-surfaceHighlight">
                 <Pressable
-                    onPress={toggleFreeze}
-                    className={`p-4 rounded-2xl mb-6 flex-row items-center justify-between border ${history[DateUtils.getTodayDateString()] === 2 ? 'bg-blue-900/40 border-blue-500' : 'bg-surface border-surfaceHighlight'}`}
+                    onPress={() => setActiveTab('overview')}
+                    className={`flex-1 py-2 items-center rounded-lg ${activeTab === 'overview' ? 'bg-primary' : 'transparent'}`}
                 >
-                    <View>
-                        <Text className={`font-bold text-lg ${history[DateUtils.getTodayDateString()] === 2 ? 'text-blue-400' : 'text-white'}`}>
-                            {history[DateUtils.getTodayDateString()] === 2 ? 'Day Frozen 🧊' : 'Freeze Today?'}
-                        </Text>
-                        <Text className="text-secondary text-xs">
-                            {history[DateUtils.getTodayDateString()] === 2 ? 'Streak is safe.' : 'Save streak proactively if busy.'}
-                        </Text>
-                    </View>
-                    <Ionicons name="snow" size={24} color={history[DateUtils.getTodayDateString()] === 2 ? '#60A5FA' : '#71717A'} />
+                    <Text className={`font-bold ${activeTab === 'overview' ? 'text-black' : 'text-secondary'}`}>Overview</Text>
                 </Pressable>
+                <Pressable
+                    onPress={() => setActiveTab('notes')}
+                    className={`flex-1 py-2 items-center rounded-lg ${activeTab === 'notes' ? 'bg-primary' : 'transparent'}`}
+                >
+                    <Text className={`font-bold ${activeTab === 'notes' ? 'text-black' : 'text-secondary'}`}>Notes ({notes.length})</Text>
+                </Pressable>
+            </View>
 
-                {/* Individual Heatmap */}
-                <View className="bg-surface p-4 rounded-2xl border border-surfaceHighlight mb-6">
-                    <Text className="text-white font-bold mb-4 text-lg">Consistency Map</Text>
-                    <Heatmap data={history} />
-                </View>
-
-                {/* Metadata / Edit Section */}
-                <View className="bg-surface p-4 rounded-2xl border border-surfaceHighlight gap-4">
-                    <View className="flex-row justify-between items-center py-2 border-b border-white/5">
-                        <Text className="text-secondary">Reminder</Text>
-                        <Text className="text-white font-bold">
-                            {habit.reminder_time
-                                ? new Date(habit.reminder_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                                : 'Off'}
-                        </Text>
+            {activeTab === 'overview' ? (
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View className="items-center mb-8">
+                        <View className="w-20 h-20 rounded-full bg-surface items-center justify-center mb-4 border-2 shadow-lg" style={{ borderColor: habit.color, shadowColor: habit.color }}>
+                            <Text className="text-3xl">{habit.icon || '⚡️'}</Text>
+                        </View>
+                        <Text className="text-3xl font-bold text-white tracking-tighter text-center">{habit.name}</Text>
+                        {habit.description && (
+                            <Text className="text-secondary text-base mt-2 text-center px-4">{habit.description}</Text>
+                        )}
                     </View>
 
-                    <Pressable
-                        onPress={() => setIsEditing(true)}
-                        className="mt-2 bg-white/10 p-3 rounded-xl items-center active:bg-white/20"
-                    >
-                        <Text className="text-white font-bold">Edit Details</Text>
-                    </Pressable>
-                </View>
-            </ScrollView>
+                    {/* Stats Grid */}
+                    <View className="flex-row gap-3 mb-6">
+                        <View className="flex-1 bg-surface p-4 rounded-2xl border border-surfaceHighlight items-center">
+                            <Text className="text-3xl font-bold" style={{ color: history[DateUtils.getTodayDateString()] === 2 ? '#60A5FA' : habit.color }}>{stats.streak}</Text>
+                            <Text className="text-secondary text-xs uppercase tracking-widest mt-1">
+                                {habit.type === 'quit' ? 'Days Free' : 'Current Streak'}
+                            </Text>
+                        </View>
+                        <View className="flex-1 bg-surface p-4 rounded-2xl border border-surfaceHighlight items-center">
+                            <Text className="text-3xl font-bold text-white">{stats.total}</Text>
+                            <Text className="text-secondary text-xs uppercase tracking-widest mt-1">Total Days</Text>
+                        </View>
+                    </View>
 
-            {/* Edit Modal */}
+                    {/* Freeze Control */}
+                    <Pressable
+                        onPress={toggleFreeze}
+                        className={`p-4 rounded-2xl mb-6 flex-row items-center justify-between border ${history[DateUtils.getTodayDateString()] === 2 ? 'bg-blue-900/40 border-blue-500' : 'bg-surface border-surfaceHighlight'}`}
+                    >
+                        <View>
+                            <Text className={`font-bold text-lg ${history[DateUtils.getTodayDateString()] === 2 ? 'text-blue-400' : 'text-white'}`}>
+                                {history[DateUtils.getTodayDateString()] === 2 ? 'Day Frozen 🧊' : 'Freeze Today?'}
+                            </Text>
+                            <Text className="text-secondary text-xs">
+                                {history[DateUtils.getTodayDateString()] === 2 ? 'Streak is safe.' : 'Save streak proactively if busy.'}
+                            </Text>
+                        </View>
+                        <Ionicons name="snow" size={24} color={history[DateUtils.getTodayDateString()] === 2 ? '#60A5FA' : '#71717A'} />
+                    </Pressable>
+
+                    {/* Individual Heatmap */}
+                    <View className="bg-surface p-4 rounded-2xl border border-surfaceHighlight mb-6">
+                        <Text className="text-white font-bold mb-4 text-lg">Consistency Map</Text>
+                        <Heatmap data={history} />
+                    </View>
+
+                    {/* Metadata / Edit Section */}
+                    <View className="bg-surface p-4 rounded-2xl border border-surfaceHighlight gap-4 mb-10">
+                        <View className="flex-row justify-between items-center py-2 border-b border-white/5">
+                            <Text className="text-secondary">Reminder</Text>
+                            <Text className="text-white font-bold">
+                                {habit.reminder_time
+                                    ? new Date(habit.reminder_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                    : 'Off'}
+                            </Text>
+                        </View>
+
+                        <Pressable
+                            onPress={() => setIsEditing(true)}
+                            className="mt-2 bg-white/10 p-3 rounded-xl items-center active:bg-white/20"
+                        >
+                            <Text className="text-white font-bold">Edit Details</Text>
+                        </Pressable>
+                    </View>
+                </ScrollView>
+            ) : (
+                <View className="flex-1">
+                    {/* Add Note Input */}
+                    <View className="bg-surface p-4 rounded-2xl mb-4 border border-surfaceHighlight">
+                        <TextInput
+                            value={newNote}
+                            onChangeText={setNewNote}
+                            onSubmitEditing={handleSaveNote}
+                            placeholder="Add a context note..."
+                            placeholderTextColor="#52525B"
+                            className="text-white font-medium text-lg min-h-[40px]"
+                            multiline
+                            blurOnSubmit={true}
+                        />
+                        {newNote.length > 0 && (
+                            <Pressable onPress={handleSaveNote} className="self-end mt-2 bg-primary px-4 py-2 rounded-full">
+                                <Text className="text-black font-bold text-xs">ADD NOTE</Text>
+                            </Pressable>
+                        )}
+                    </View>
+
+                    <FlatList
+                        data={notes}
+                        keyExtractor={item => item.id}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => (
+                            <Pressable
+                                onLongPress={() => {
+                                    Alert.alert("Delete Note", "Remove this note?", [
+                                        { text: "Cancel", style: "cancel" },
+                                        { text: "Delete", style: "destructive", onPress: () => handleDeleteNote(item.id) }
+                                    ]);
+                                }}
+                                className="bg-surface p-4 rounded-xl mb-3 border border-surfaceHighlight"
+                            >
+                                <Text className="text-white text-base">{item.content}</Text>
+                                <Text className="text-secondary text-xs mt-2 opacity-50">
+                                    {new Date(item.created_at).toLocaleDateString()}
+                                </Text>
+                            </Pressable>
+                        )}
+                        ListEmptyComponent={
+                            <View className="items-center justify-center py-10 opacity-30">
+                                <Ionicons name="document-text-outline" size={48} color="white" />
+                                <Text className="text-white mt-4 font-bold text-center">No notes linked.</Text>
+                                <Text className="text-white text-xs mt-1 text-center">Add context to your habit journey.</Text>
+                            </View>
+                        }
+                    />
+                </View>
+            )}
+
+            {/* Edit Modal (Preserved as is) */}
             <Modal visible={isEditing} animationType="slide" transparent={true}>
                 <View className="flex-1 bg-black/80 justify-end">
                     <View className="bg-surface p-6 rounded-t-3xl border-t border-surfaceHighlight">

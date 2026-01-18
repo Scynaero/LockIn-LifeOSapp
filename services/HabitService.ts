@@ -166,7 +166,8 @@ export const HabitService = {
             // Virtual Streak: Use DB value if today, else calculate
             current_streak: targetDate === DateUtils.getTodayDateString()
                 ? h.current_streak
-                : await HabitService.calculateStreakForDate(h.id, targetDate)
+                : await HabitService.calculateStreakForDate(h.id, targetDate),
+            recent_history: await HabitService.getRecentHistory(h.id, targetDate)
         })));
 
         return habits;
@@ -192,24 +193,27 @@ export const HabitService = {
             const target = habit?.target_value || 1;
 
             if (target === 1) {
-                // Boolean toggle
+                // Boolean toggle off
                 await db.runAsync('DELETE FROM logs WHERE id = ?', [existing.id]);
+                // Remove XP? Maybe complex to track. Let's strictly add XP on complete, maybe remove on toggle off?
+                // For simplicity, we won't deduct XP to avoid negative reinforcement anxiety, 
+                // OR we deduct to prevent farming. Let's deduct.
+                await HabitService.addXP(-10);
             } else {
                 // Quantitative: Add to existing? Or remove if full?
                 // For MVP reliability, let's treat "tap" on home as "Toggle Complete/Incomplete"
                 // If logs exist, delete all for today.
                 await db.runAsync('DELETE FROM logs WHERE habit_id = ? AND date = ?', [habitId, date]);
+                await HabitService.addXP(-10);
             }
         } else {
             // Create log
             // For quantitative, we log the FULL GOAL value on a simple tap.
-            // Detail view will allow partials.
-            // Fetch habit goal/target?
-            // For now assume value passed is correct.
             await db.runAsync(
                 `INSERT INTO logs (id, habit_id, date, value, note, timestamp) VALUES (?, ?, ?, ?, ?, ?)`,
                 [id, habitId, date, value, note || null, timestamp]
             );
+            await HabitService.addXP(10);
         }
 
         // recalculate streak
@@ -634,5 +638,62 @@ export const HabitService = {
                 total: totalHabits
             }
         };
+    },
+
+    // --- Gamification ---
+    getUserXP: async (): Promise<{ xp: number, level: number }> => {
+        const db = DatabaseService.getDB();
+        const xpRes = await db.getFirstAsync<{ value: string }>('SELECT value FROM user_meta WHERE key = ?', ['xp']);
+        const xp = parseInt(xpRes?.value || '0');
+
+        // Level Formula: Level = Floor(Sqrt(XP / 100)) + 1
+        // XP Needed for Level L: 100 * (L-1)^2
+        // Level 1: 0-99
+        // Level 2: 100-399
+        // Level 3: 400-899
+        const level = Math.floor(Math.sqrt(xp / 100)) + 1;
+
+        return { xp, level };
+    },
+
+    addXP: async (amount: number) => {
+        const db = DatabaseService.getDB();
+        const current = await HabitService.getUserXP();
+        const newXP = current.xp + amount;
+
+        await db.runAsync(`
+            INSERT INTO user_meta (key, value) VALUES ('xp', ?)
+            ON CONFLICT(key) DO UPDATE SET value = ?
+        `, [newXP.toString(), newXP.toString()]);
+
+        return newXP;
+    },
+
+    // --- Weekly History helper ---
+    getRecentHistory: async (habitId: string, referneceDate: string): Promise<number[]> => { // 0=None, 1=Done, 2=Frozen
+        const db = DatabaseService.getDB();
+        const history: number[] = [];
+        const checkDate = new Date(referneceDate);
+
+        // Get last 7 days INCLUDING reference date
+        for (let i = 0; i < 7; i++) {
+            const dStr = DateUtils.getDateString(checkDate);
+
+            // Check Log
+            const log = await db.getFirstAsync('SELECT id FROM logs WHERE habit_id = ? AND date = ?', [habitId, dStr]);
+            if (log) {
+                history.unshift(1); // Done
+            } else {
+                // Check Freeze
+                const freeze = await db.getFirstAsync('SELECT id FROM streak_freezes WHERE habit_id = ? AND date = ?', [habitId, dStr]);
+                if (freeze) {
+                    history.unshift(2); // Frozen
+                } else {
+                    history.unshift(0); // Missed/Nothing
+                }
+            }
+            checkDate.setDate(checkDate.getDate() - 1);
+        }
+        return history;
     }
 };
