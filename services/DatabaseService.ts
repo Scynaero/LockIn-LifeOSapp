@@ -310,5 +310,53 @@ export const DatabaseService = {
     }
   },
 
+  initGamification: async () => {
+    try {
+      // User Stats Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS user_stats (
+          id TEXT PRIMARY KEY NOT NULL,
+          total_xp INTEGER DEFAULT 0,
+          level INTEGER DEFAULT 1,
+          current_streak INTEGER DEFAULT 0,
+          longest_streak INTEGER DEFAULT 0,
+          total_workouts INTEGER DEFAULT 0,
+          total_volume REAL DEFAULT 0
+        );
+      `);
+
+      // Achievements Table
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS achievements (
+          id TEXT PRIMARY KEY NOT NULL,
+          name TEXT NOT NULL,
+          description TEXT NOT NULL,
+          xp_reward INTEGER DEFAULT 0,
+          icon TEXT NOT NULL,
+          unlocked_at TEXT,
+          category TEXT
+        );
+      `);
+
+      // Seed default achievements if table is empty
+      const existingAchievements = await db.getAllAsync('SELECT id FROM achievements LIMIT 1');
+      if (existingAchievements.length === 0) {
+        await db.execAsync(`
+          INSERT INTO achievements (id, name, description, xp_reward, icon, category) VALUES
+          ('first_workout', 'First Steps', 'Complete your first workout', 50, '🎯', 'workout'),
+          ('week_warrior', 'Week Warrior', 'Complete 7 workouts', 100, '💪', 'workout'),
+          ('volume_king', 'Volume King', 'Lift 10,000kg total', 200, '👑', 'volume'),
+          ('streak_starter', 'Streak Starter', 'Maintain a 7-day streak', 150, '🔥', 'streak'),
+          ('level_5', 'Rising Star', 'Reach level 5', 100, '⭐', 'level'),
+          ('level_10', 'Elite Athlete', 'Reach level 10', 300, '🏆', 'level');
+        `);
+      }
+
+      console.log('Gamification tables initialized');
+    } catch (error) {
+      console.error('Gamification initialization error:', error);
+    }
+  },
+
   getDB: () => db,
 };

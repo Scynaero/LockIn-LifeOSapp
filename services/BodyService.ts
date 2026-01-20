@@ -273,6 +273,51 @@ export const BodyService = {
         return result.map(r => r.target_muscle);
     },
 
+    getRecentPrimaryMuscles: async (dateStr: string): Promise<string[]> => {
+        const db = DatabaseService.getDB();
+        const result = await db.getAllAsync<{ target_muscle: string }>(`
+            SELECT DISTINCT e.target_muscle 
+            FROM workout_sets s
+            JOIN workouts w ON s.workout_id = w.id
+            JOIN exercises e ON s.exercise_id = e.id
+            WHERE w.status IN ('active', 'completed')
+            AND w.date LIKE ?
+        `, [`${dateStr}%`]);
+        return result.map(r => r.target_muscle);
+    },
+
+    getRecentSecondaryMuscles: async (dateStr: string): Promise<string[]> => {
+        const db = DatabaseService.getDB();
+        const result = await db.getAllAsync<{ secondary_muscles: string | null }>(`
+            SELECT DISTINCT e.secondary_muscles 
+            FROM workout_sets s
+            JOIN workouts w ON s.workout_id = w.id
+            JOIN exercises e ON s.exercise_id = e.id
+            WHERE w.status IN ('active', 'completed')
+            AND w.date LIKE ?
+            AND e.secondary_muscles IS NOT NULL
+        `, [`${dateStr}%`]);
+
+        // Parse JSON arrays and flatten
+        const allSecondary: string[] = [];
+        result.forEach(r => {
+            if (r.secondary_muscles) {
+                try {
+                    const muscles = JSON.parse(r.secondary_muscles);
+                    if (Array.isArray(muscles)) {
+                        allSecondary.push(...muscles);
+                    }
+                } catch (e) {
+                    console.error('Failed to parse secondary_muscles:', e);
+                }
+            }
+        });
+
+        // Return unique values
+        return [...new Set(allSecondary)];
+    },
+
+
     getMusclesForRange: async (days: number = 7): Promise<string[]> => {
         const db = DatabaseService.getDB();
 
@@ -327,6 +372,27 @@ export const BodyService = {
             WHERE w.date LIKE ? AND s.is_completed = 1
         `, [`${dateStr}%`]);
         return result?.volume || 0;
+    },
+
+    getVolumeHistory: async (days: number = 30): Promise<{ date: string, volume: number }[]> => {
+        const db = DatabaseService.getDB();
+        const dateLimit = new Date();
+        dateLimit.setDate(dateLimit.getDate() - days);
+        const dateLimitStr = dateLimit.toISOString().split('T')[0]; // YYYY-MM-DD
+
+        const result = await db.getAllAsync<{ date: string, volume: number }>(`
+            SELECT 
+                DATE(w.date) as date,
+                SUM(s.weight * s.reps) as volume
+            FROM workout_sets s
+            JOIN workouts w ON s.workout_id = w.id
+            WHERE DATE(w.date) >= ?
+            AND s.is_completed = 1
+            GROUP BY DATE(w.date)
+            ORDER BY DATE(w.date) ASC
+        `, [dateLimitStr]);
+
+        return result.map(r => ({ date: r.date, volume: r.volume || 0 }));
     },
 
     getMuscleSplit: async (days: number): Promise<{ name: string, val: number, count: number }[]> => {

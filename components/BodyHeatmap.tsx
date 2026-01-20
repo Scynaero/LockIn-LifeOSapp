@@ -9,7 +9,11 @@ interface BodyHeatmapProps {
     frontData: MuscleIntensityMap;
     backData: MuscleIntensityMap;
     viewSide: 'front' | 'back';
-    // Allow switching themes (e.g., 'blue' for active, 'green' for secondary)
+    // Separate data for primary vs secondary muscles
+    frontPrimaryData?: MuscleIntensityMap;
+    backPrimaryData?: MuscleIntensityMap;
+    frontSecondaryData?: MuscleIntensityMap;
+    backSecondaryData?: MuscleIntensityMap;
     primaryColor?: string;
     scale?: number;
     onMusclePress?: (muscleId: string) => void;
@@ -93,6 +97,10 @@ export default function BodyHeatmap({
     frontData,
     backData,
     viewSide,
+    frontPrimaryData,
+    backPrimaryData,
+    frontSecondaryData,
+    backSecondaryData,
     primaryColor = '#00EAFF',
     scale = 1,
     onMusclePress
@@ -100,6 +108,8 @@ export default function BodyHeatmap({
 
     const currentPaths = viewSide === 'front' ? BODY_PATHS.front : BODY_PATHS.back;
     const activeData = viewSide === 'front' ? frontData : backData;
+    const primaryData = viewSide === 'front' ? (frontPrimaryData || frontData) : (backPrimaryData || backData);
+    const secondaryData = viewSide === 'front' ? (frontSecondaryData || {}) : (backSecondaryData || {});
 
     // Helper to resolve intensity handling mapping
     const getMuscleIntensity = (muscleId: string): number => {
@@ -129,19 +139,52 @@ export default function BodyHeatmap({
     };
 
     const getMuscleStyle = (muscleId: string) => {
-        const intensity = getMuscleIntensity(muscleId);
+        // Check if muscle is in primary or secondary data
+        const primaryIntensity = getMuscleIntensityFromData(muscleId, primaryData);
+        const secondaryIntensity = getMuscleIntensityFromData(muscleId, secondaryData);
 
-        if (!intensity || intensity === 0) return { opacity: 0 };
+        // Primary takes precedence
+        if (primaryIntensity > 0) {
+            return {
+                fill: 'url(#neonBlue)', // Bright cyan for primary
+                fillOpacity: 0.6 + (primaryIntensity * 0.3), // 0.6-0.9 opacity
+                stroke: '#00EAFF',
+                strokeWidth: 1.5,
+                strokeOpacity: 0.8,
+                opacity: 1
+            };
+        }
 
-        // Logic: High intensity = Blue/Cyan, Lower intensity = Green
-        // Using fixed gradients as requested in props
-        const gradientUrl = intensity > 0.7 ? "url(#neonBlue)" : "url(#neonGreen)";
+        if (secondaryIntensity > 0) {
+            return {
+                fill: 'url(#neonGreen)', // Dimmer green for secondary
+                fillOpacity: 0.3 + (secondaryIntensity * 0.2), // 0.3-0.5 opacity
+                stroke: '#00FF88',
+                strokeWidth: 1.0,
+                strokeOpacity: 0.5,
+                opacity: 1
+            };
+        }
 
-        return {
-            fill: gradientUrl,
-            fillOpacity: intensity, // The higher the volume, the more solid the light
-            opacity: 1 // Visible
-        };
+        return { opacity: 0 };
+    };
+
+    // Helper to get intensity from specific dataset
+    const getMuscleIntensityFromData = (muscleId: string, data: MuscleIntensityMap): number => {
+        if (data[muscleId] !== undefined) return data[muscleId];
+
+        let maxInt = 0;
+        Object.entries(data).forEach(([key, val]) => {
+            const normalized = key.toLowerCase();
+            const parts = normalized.split(/[,\/]/).map(p => p.trim());
+            for (const part of parts) {
+                const targets = NORMALIZE_MAP[part] || NORMALIZE_MAP[normalized];
+                if (targets && targets.includes(muscleId)) {
+                    if (val > maxInt) maxInt = val;
+                }
+            }
+        });
+        return maxInt;
     };
 
     return (
@@ -205,6 +248,9 @@ export default function BodyHeatmap({
                                 d={d}
                                 fill={style.fill}
                                 fillOpacity={style.fillOpacity}
+                                stroke={style.stroke}
+                                strokeWidth={style.strokeWidth}
+                                strokeOpacity={style.strokeOpacity}
                                 opacity={style.opacity}
                                 onPress={() => onMusclePress && onMusclePress(key)}
                             />

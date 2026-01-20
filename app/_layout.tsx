@@ -14,6 +14,7 @@ export default function Layout() {
         async function prepare() {
             try {
                 await DatabaseService.init();
+                await DatabaseService.initGamification();
                 await HabitService.migrateColors(); // Ensure schema is up to date
             } catch (e) {
                 console.error('Startup error', e);

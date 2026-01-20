@@ -6,10 +6,12 @@ import BodyHeatmap from '../../components/BodyHeatmap';
 import { Ionicons } from '@expo/vector-icons';
 import { CalendarStrip } from '../../components/CalendarStrip';
 import { DateUtils } from '../../utils/DateUtils';
-import { Svg, Path, Circle, Line } from 'react-native-svg';
+import { Svg, Path, Circle, Line, Text as SvgText } from 'react-native-svg';
 
 export default function ProgressView() {
     const [recentMuscles, setRecentMuscles] = useState<string[]>([]);
+    const [primaryMuscles, setPrimaryMuscles] = useState<string[]>([]);
+    const [secondaryMuscles, setSecondaryMuscles] = useState<string[]>([]);
     const [stats, setStats] = useState({ workouts: 0, volume: 0 });
     const [viewMode, setViewMode] = useState<'front' | 'back'>('front');
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -18,8 +20,10 @@ export default function ProgressView() {
     // Weight/BMI State
     const [metrics, setMetrics] = useState({ height: 175, weight: 70 });
     const [weightHistory, setWeightHistory] = useState<{ date: string, weight: number }[]>([]);
+    const [volumeHistory, setVolumeHistory] = useState<{ date: string, volume: number }[]>([]);
     const [editMetrics, setEditMetrics] = useState(false);
     const [muscleSplit, setMuscleSplit] = useState<{ name: string, val: number, count: number }[]>([]);
+    const [graphMode, setGraphMode] = useState<'weight' | 'bmi'>('weight');
 
     useFocusEffect(
         useCallback(() => {
@@ -32,7 +36,12 @@ export default function ProgressView() {
 
         // Daily Stats (Heatmap, Volume, Sessions)
         const muscles = await BodyService.getRecentMuscles(dateStr);
+        const primary = await BodyService.getRecentPrimaryMuscles(dateStr);
+        const secondary = await BodyService.getRecentSecondaryMuscles(dateStr);
+
         setRecentMuscles(muscles);
+        setPrimaryMuscles(primary);
+        setSecondaryMuscles(secondary);
 
         const workouts = await BodyService.getWorkoutsForDate(dateStr);
         const completed = workouts.filter(w => w.status === 'completed');
@@ -51,7 +60,9 @@ export default function ProgressView() {
         // Load Metrics
         const h = await BodyService.getHeight();
         const wHist = await BodyService.getWeightHistory();
+        const vHist = await BodyService.getVolumeHistory(30);
         setWeightHistory(wHist);
+        setVolumeHistory(vHist);
 
         const latestW = await BodyService.getLatestWeight();
 
@@ -79,33 +90,148 @@ export default function ProgressView() {
             </View>
         );
 
-        const width = Dimensions.get('window').width - 64; // padding
+        const width = Dimensions.get('window').width - 64;
         const height = 160;
-        const weights = weightHistory.map(w => w.weight);
-        const minW = Math.min(...weights) - 2;
-        const maxW = Math.max(...weights) + 2;
-        const range = maxW - minW;
 
-        const points = weightHistory.map((d, i) => {
-            const x = (i / (weightHistory.length - 1)) * width;
-            const y = height - ((d.weight - minW) / range) * height;
+        // Calculate BMI for each entry
+        const dataPoints = weightHistory.map(w => {
+            const hM = metrics.height / 100;
+            const bmi = w.weight / (hM * hM);
+            return { ...w, bmi };
+        });
+
+        // Get values based on mode
+        const values = graphMode === 'weight'
+            ? dataPoints.map(d => d.weight)
+            : dataPoints.map(d => d.bmi);
+
+        const minVal = Math.min(...values) - 2;
+        const maxVal = Math.max(...values) + 2;
+        const range = maxVal - minVal;
+
+        const points = dataPoints.map((d, i) => {
+            const x = (i / (dataPoints.length - 1)) * width;
+            const val = graphMode === 'weight' ? d.weight : d.bmi;
+            const y = height - ((val - minVal) / range) * height;
             return `${x},${y}`;
         }).join(' ');
 
+        const lineColor = graphMode === 'weight' ? '#CCFF00' : '#00EAFF';
+        const label = graphMode === 'weight' ? 'Weight Trend (Last 30 Logged Weights)' : 'BMI Trend (Last 30 Logged Weights)';
+
         return (
             <View className="mb-6">
-                <Text className="text-zinc-500 text-xs uppercase font-bold mb-4">Weight Trend (Last 30 Logged Weights)</Text>
+                {/* Toggle */}
+                <View className="flex-row justify-between items-center mb-4">
+                    <Text className="text-zinc-500 text-xs uppercase font-bold">{label}</Text>
+                    <View className="flex-row bg-zinc-900 rounded-full p-1 border border-zinc-800">
+                        <TouchableOpacity
+                            onPress={() => setGraphMode('weight')}
+                            className={`px-3 py-1 rounded-full ${graphMode === 'weight' ? 'bg-zinc-700' : ''}`}
+                        >
+                            <Text className={`text-[10px] font-bold ${graphMode === 'weight' ? 'text-white' : 'text-zinc-500'}`}>KG</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setGraphMode('bmi')}
+                            className={`px-3 py-1 rounded-full ${graphMode === 'bmi' ? 'bg-zinc-700' : ''}`}
+                        >
+                            <Text className={`text-[10px] font-bold ${graphMode === 'bmi' ? 'text-white' : 'text-zinc-500'}`}>BMI</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <View className="h-40 border border-zinc-800 rounded-xl bg-zinc-900/50 p-4">
                     <Svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`}>
                         <Line x1="0" y1="0" x2={width} y2="0" stroke="#333" strokeDasharray="5,5" />
                         <Line x1="0" y1={height / 2} x2={width} y2={height / 2} stroke="#333" strokeDasharray="5,5" />
                         <Line x1="0" y1={height} x2={width} y2={height} stroke="#333" strokeDasharray="5,5" />
-                        <Path d={`M ${points}`} fill="none" stroke="#CCFF00" strokeWidth="3" />
-                        {weightHistory.map((d, i) => {
-                            const x = (i / (weightHistory.length - 1)) * width;
-                            const y = height - ((d.weight - minW) / range) * height;
-                            return <Circle key={i} cx={x} cy={y} r="4" fill="#000" stroke="#CCFF00" strokeWidth="2" />;
+                        <Path d={`M ${points}`} fill="none" stroke={lineColor} strokeWidth="3" />
+                        {dataPoints.map((d, i) => {
+                            const x = (i / (dataPoints.length - 1)) * width;
+                            const val = graphMode === 'weight' ? d.weight : d.bmi;
+                            const y = height - ((val - minVal) / range) * height;
+                            return <Circle key={i} cx={x} cy={y} r="4" fill="#000" stroke={lineColor} strokeWidth="2" />;
                         })}
+                    </Svg>
+                </View>
+            </View>
+        );
+    };
+
+    const renderVolumeChart = () => {
+        if (volumeHistory.length < 2) return null;
+
+        const width = Dimensions.get('window').width - 64;
+        const height = 160;
+        const padding = { left: 45, right: 20, top: 20, bottom: 30 };
+        const graphWidth = width - padding.left - padding.right;
+        const graphHeight = height - padding.top - padding.bottom;
+
+        const volumes = volumeHistory.map(v => v.volume);
+        const minVol = Math.min(...volumes);
+        const maxVol = Math.max(...volumes);
+        const range = maxVol - minVol || 1;
+        const currentVol = volumes[volumes.length - 1];
+
+        const points = volumeHistory.map((d, i) => {
+            const x = padding.left + (i / (volumeHistory.length - 1)) * graphWidth;
+            const y = padding.top + graphHeight - ((d.volume - minVol) / range) * graphHeight;
+            return `${x},${y}`;
+        }).join(' ');
+
+        return (
+            <View className="mb-6">
+                {/* Header with current value */}
+                <View className="mb-4">
+                    <Text className="text-zinc-500 text-xs uppercase font-bold">Volume Trend</Text>
+                    <Text className="text-white text-2xl font-bold mt-1">
+                        {(currentVol / 1000).toFixed(1)}
+                        <Text className="text-zinc-500 text-sm"> tons</Text>
+                    </Text>
+                </View>
+                <View className="h-40 border border-zinc-800 rounded-xl bg-zinc-900/50 p-2">
+                    <Svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`}>
+                        {/* Grid lines */}
+                        <Line x1={padding.left} y1={padding.top} x2={width - padding.right} y2={padding.top} stroke="#333" strokeDasharray="5,5" />
+                        <Line x1={padding.left} y1={padding.top + graphHeight / 2} x2={width - padding.right} y2={padding.top + graphHeight / 2} stroke="#333" strokeDasharray="5,5" />
+                        <Line x1={padding.left} y1={padding.top + graphHeight} x2={width - padding.right} y2={padding.top + graphHeight} stroke="#333" strokeDasharray="5,5" />
+
+                        {/* Y-axis labels (in kg) */}
+                        <SvgText x="5" y={padding.top + 5} fill="#71717a" fontSize="10" fontFamily="monospace">
+                            {(maxVol / 1000).toFixed(1)}k
+                        </SvgText>
+                        <SvgText x="5" y={padding.top + graphHeight / 2 + 5} fill="#71717a" fontSize="10" fontFamily="monospace">
+                            {((minVol + maxVol) / 2000).toFixed(1)}k
+                        </SvgText>
+                        <SvgText x="5" y={padding.top + graphHeight + 5} fill="#71717a" fontSize="10" fontFamily="monospace">
+                            {(minVol / 1000).toFixed(1)}k
+                        </SvgText>
+
+                        {/* Trend line */}
+                        <Path d={`M ${points}`} fill="none" stroke="#FF6B35" strokeWidth="3" />
+
+                        {/* Data points */}
+                        {volumeHistory.map((d, i) => {
+                            const x = padding.left + (i / (volumeHistory.length - 1)) * graphWidth;
+                            const y = padding.top + graphHeight - ((d.volume - minVol) / range) * graphHeight;
+                            return <Circle key={i} cx={x} cy={y} r="4" fill="#000" stroke="#FF6B35" strokeWidth="2" />;
+                        })}
+
+                        {/* X-axis date labels */}
+                        {volumeHistory.length > 0 && (
+                            <>
+                                <SvgText x={padding.left} y={height - 5} fill="#71717a" fontSize="9" fontFamily="monospace">
+                                    {new Date(volumeHistory[0].date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                </SvgText>
+                                {volumeHistory.length > 2 && (
+                                    <SvgText x={padding.left + graphWidth / 2} y={height - 5} fill="#71717a" fontSize="9" fontFamily="monospace" textAnchor="middle">
+                                        {new Date(volumeHistory[Math.floor(volumeHistory.length / 2)].date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    </SvgText>
+                                )}
+                                <SvgText x={padding.left + graphWidth} y={height - 5} fill="#71717a" fontSize="9" fontFamily="monospace" textAnchor="end">
+                                    {new Date(volumeHistory[volumeHistory.length - 1].date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                </SvgText>
+                            </>
+                        )}
                     </Svg>
                 </View>
             </View>
@@ -145,6 +271,10 @@ export default function ProgressView() {
                 <BodyHeatmap
                     frontData={recentMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
                     backData={recentMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
+                    frontPrimaryData={primaryMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
+                    backPrimaryData={primaryMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
+                    frontSecondaryData={secondaryMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
+                    backSecondaryData={secondaryMuscles.reduce((acc, m) => ({ ...acc, [m.toLowerCase()]: 1 }), {})}
                     viewSide={viewMode}
                     scale={1.8}
                 />
@@ -197,7 +327,13 @@ export default function ProgressView() {
                     </View>
                 </TouchableOpacity>
 
-                {/* 5. Section 4: Deep Dive */}
+                {/* 5. Trend Graph */}
+                {renderWeightGraph()}
+
+                {/* 6. Volume Trend */}
+                {renderVolumeChart()}
+
+                {/* 7. Section 4: Deep Dive */}
                 <View>
                     <View className="flex-row items-center justify-between mb-4">
                         <Text className="text-white text-xl font-bold tracking-tight">Muscle Split</Text>
