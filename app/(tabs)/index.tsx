@@ -39,6 +39,10 @@ export default function HomeScreen() {
             const init = async () => {
                 await HabitService.migrateColors();
                 await HabitService.recalculateAllStreaks();
+
+                // Auto-sync HealthKit data
+                await HabitService.syncHealthKitData();
+
                 loadData();
             };
             init();

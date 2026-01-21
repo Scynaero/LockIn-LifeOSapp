@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 interface Props {
     workout: Workout;
     onFinish: () => void;
+    onRefresh?: () => void;
     readOnly?: boolean;
 }
 

@@ -26,6 +26,7 @@ export interface Habit {
     completed_value?: number; // Virtual field
     frozen_today?: boolean; // Virtual field
     archived_at?: string;
+    created_at?: string;
 }
 
 export const HabitService = {
@@ -750,5 +751,83 @@ export const HabitService = {
             }
         }
         return history;
+    },
+
+    // HealthKit Integration Methods
+    getHealthKitHabits: async (): Promise<Habit[]> => {
+        const db = DatabaseService.getDB();
+        const habits = await db.getAllAsync<Habit>(
+            'SELECT * FROM habits WHERE health_type IS NOT NULL AND archived = 0'
+        );
+        return habits;
+    },
+
+    syncHealthKitData: async (date?: string): Promise<{ synced: number, errors: string[] }> => {
+        const { getHealthKitService } = require('./MockHealthKitService');
+        const HealthKit = getHealthKitService();
+
+        const targetDate = date || DateUtils.getTodayDateString();
+        const healthHabits = await HabitService.getHealthKitHabits();
+
+        let syncedCount = 0;
+        const errors: string[] = [];
+
+        for (const habit of healthHabits) {
+            try {
+                const db = DatabaseService.getDB();
+                const existingLog = await db.getFirstAsync<{ id: string, value: number }>(
+                    'SELECT id, value FROM logs WHERE habit_id = ? AND date = ?',
+                    [habit.id, targetDate]
+                );
+
+                if (existingLog && existingLog.value > 0) {
+                    continue;
+                }
+
+                let healthValue = 0;
+                switch (habit.health_type) {
+                    case 'steps':
+                        healthValue = await HealthKit.getSteps(targetDate);
+                        break;
+                    case 'sleep':
+                        const sleepMinutes = await HealthKit.getSleepMinutes(targetDate);
+                        healthValue = sleepMinutes / 60;
+                        break;
+                    case 'water':
+                        healthValue = await HealthKit.getWater(targetDate);
+                        break;
+                    case 'calories':
+                        healthValue = await HealthKit.getActiveCalories?.(targetDate) || 0;
+                        break;
+                    case 'workout':
+                        healthValue = await HealthKit.getWorkoutMinutes?.(targetDate) || 0;
+                        break;
+                    default:
+                        continue;
+                }
+
+                if (healthValue >= habit.goal) {
+                    if (existingLog) {
+                        await db.runAsync(
+                            'UPDATE logs SET value = ? WHERE id = ?',
+                            [healthValue, existingLog.id]
+                        );
+                    } else {
+                        const logId = Crypto.randomUUID();
+                        await db.runAsync(
+                            'INSERT INTO logs (id, habit_id, date, value, timestamp) VALUES (?, ?, ?, ?, ?)',
+                            [logId, habit.id, targetDate, healthValue, Date.now()]
+                        );
+                    }
+                    syncedCount++;
+                }
+            } catch (error) {
+                errors.push(`${habit.name}: ${error}`);
+                console.error(`[HealthKit Sync] Error syncing ${habit.name}:`, error);
+            }
+        }
+
+        console.log(`[HealthKit Sync] Synced ${syncedCount} habits, ${errors.length} errors`);
+        return { synced: syncedCount, errors };
     }
 };
