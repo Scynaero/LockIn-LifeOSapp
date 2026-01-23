@@ -7,7 +7,7 @@ import { NotesService, Note } from '../../services/NotesService';
 import { NotificationService } from '../../services/NotificationService';
 import * as Haptics from 'expo-haptics';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Audio } from 'expo-av';
+import { useAudioPlayer, useAudioPlayerStatus, useAudioRecorder, useAudioRecorderState, RecordingPresets, requestRecordingPermissionsAsync } from 'expo-audio';
 import * as Location from 'expo-location';
 
 const COLORS = [
@@ -33,10 +33,19 @@ export default function NoteDetailScreen() {
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     // Voice Notes
-    const [recording, setRecording] = useState<Audio.Recording | null>(null);
-    const [sound, setSound] = useState<Audio.Sound | null>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [audioDuration, setAudioDuration] = useState<number | null>(null);
+    const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+    const recorderState = useAudioRecorderState(recorder);
+    const isRecording = recorderState.isRecording;
+
+    const playerSource = note?.audio_uri ?? null;
+    const player = useAudioPlayer(playerSource);
+    const playerStatus = useAudioPlayerStatus(player);
+    const isPlaying = playerStatus.playing;
+
+    // Derived State
+    const currentAudioDuration = isRecording
+        ? recorderState.durationMillis
+        : (note?.audio_duration ?? (playerStatus.duration * 1000));
 
     // Location
     const [locationLoading, setLocationLoading] = useState(false);
@@ -61,11 +70,6 @@ export default function NoteDetailScreen() {
 
     useEffect(() => {
         loadNote();
-        return () => {
-            if (sound) {
-                sound.unloadAsync();
-            }
-        };
     }, [id]);
 
     const loadNote = async () => {
@@ -77,9 +81,6 @@ export default function NoteDetailScreen() {
             setContent(found.content);
             if (found.reminder_time) {
                 setReminderDate(new Date(found.reminder_time));
-            }
-            if (found.audio_duration) {
-                setAudioDuration(found.audio_duration);
             }
         }
     };
@@ -113,14 +114,13 @@ export default function NoteDetailScreen() {
         }
     };
 
-    // --- Audio Logic ---
     const startRecording = async () => {
         try {
-            const permission = await Audio.requestPermissionsAsync();
-            if (permission.status === 'granted') {
-                await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
-                const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
-                setRecording(recording);
+            const { granted } = await requestRecordingPermissionsAsync();
+            if (granted) {
+                // Prepare not strictly needed if we just call record(), but good practice
+                // await recorder.prepareToRecordAsync(); 
+                recorder.record();
                 Haptics.selectionAsync();
             } else {
                 Alert.alert("Permission required", "Please grant microphone access to record voice notes.");
@@ -131,51 +131,35 @@ export default function NoteDetailScreen() {
     };
 
     const stopRecording = async () => {
-        if (!recording) return;
-        setRecording(null);
-        await recording.stopAndUnloadAsync();
-        const uri = recording.getURI();
-        const status = await recording.getStatusAsync();
-        // @ts-ignore
-        const durationFn = status.durationMillis;
+        if (!isRecording) return;
+
+        // Capture duration before stopping fully resets state? 
+        // Usually recorderState might persist, but verify.
+        // Actually, let's just stop.
+        await recorder.stop();
+
+        const uri = recorder.uri;
+        const duration = recorderState.durationMillis; // Duration of the recording that just finished
 
         if (uri && note) {
-            await NotesService.updateNoteAudio(note.id, uri, durationFn);
-            setAudioDuration(durationFn);
+            await NotesService.updateNoteAudio(note.id, uri, duration);
+            // setAudioDuration(duration); // No longer needed as state is derived
             loadNote(); // Refresh to ensure state sync
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         }
     };
 
-    const playSound = async () => {
+    const playSound = () => {
         if (!note?.audio_uri) return;
 
-        if (sound) {
-            // Already loaded, just play/pause
-            if (isPlaying) {
-                await sound.pauseAsync();
-                setIsPlaying(false);
-            } else {
-                await sound.playAsync();
-                setIsPlaying(true);
-            }
+        if (isPlaying) {
+            player.pause();
         } else {
-            // Load new sound
-            try {
-                const { sound: newSound } = await Audio.Sound.createAsync({ uri: note.audio_uri });
-                setSound(newSound);
-                setIsPlaying(true);
-                await newSound.playAsync();
-                newSound.setOnPlaybackStatusUpdate((status) => {
-                    if (status.isLoaded && status.didJustFinish) {
-                        setIsPlaying(false);
-                        newSound.setPositionAsync(0);
-                    }
-                });
-            } catch (e) {
-                console.log("Error playing sound", e);
-                Alert.alert("Error", "Could not play audio file.");
+            // Check if finished, maybe seek to 0?
+            if (playerStatus.currentTime >= playerStatus.duration) {
+                player.seekTo(0);
             }
+            player.play();
         }
     };
 
@@ -310,15 +294,15 @@ export default function NoteDetailScreen() {
                         )}
 
                         {/* Audio Row */}
-                        {(recording || note.audio_uri) && (
+                        {(isRecording || note.audio_uri) && (
                             <View className={`mt-2 p-3 rounded-xl flex-row items-center gap-3 ${noteColor ? 'bg-black/10' : 'bg-surface'}`}>
-                                <Pressable onPress={startRecording} disabled={!!note.audio_uri} className={recording ? "opacity-50" : ""}>
-                                    <View className={`w-8 h-8 rounded-full items-center justify-center ${recording ? 'bg-red-500' : (noteColor ? 'bg-black' : 'bg-surfaceHighlight')}`}>
-                                        <Ionicons name={recording ? "stop" : "mic"} size={16} color="white" />
+                                <Pressable onPress={startRecording} disabled={!!note.audio_uri} className={isRecording ? "opacity-50" : ""}>
+                                    <View className={`w-8 h-8 rounded-full items-center justify-center ${isRecording ? 'bg-red-500' : (noteColor ? 'bg-black' : 'bg-surfaceHighlight')}`}>
+                                        <Ionicons name={isRecording ? "stop" : "mic"} size={16} color="white" />
                                     </View>
                                 </Pressable>
 
-                                {recording ? (
+                                {isRecording ? (
                                     <View className="flex-1">
                                         <Text className={`${noteColor ? 'text-black' : 'text-white'} font-medium`}>Recording...</Text>
                                         <Pressable onPress={stopRecording}>
@@ -335,7 +319,7 @@ export default function NoteDetailScreen() {
                                             {/* Logic for progress bar would go here if using playback status callback state */}
                                         </View>
                                         <Text className={`text-xs ${noteColor ? 'text-black' : 'text-secondary'}`}>
-                                            {audioDuration ? `${Math.round(audioDuration / 1000)}s` : 'Audio'}
+                                            {currentAudioDuration ? `${Math.round(currentAudioDuration / 1000)}s` : 'Audio'}
                                         </Text>
                                     </View>
                                 )}
@@ -448,7 +432,7 @@ export default function NoteDetailScreen() {
                 {/* Custom Toolbar */}
                 <View className={`border-t px-4 py-3 flex-row justify-between items-center ${noteColor ? 'bg-black/10 border-black/10' : 'bg-surface border-surfaceHighlight'}`}>
                     <Pressable className="p-2" onPress={note.audio_uri ? () => Alert.alert("Audio", "Audio already attached") : startRecording}>
-                        <Ionicons name={recording ? "stop" : "mic-outline"} size={24} color={noteColor ? "black" : (recording ? "#EF4444" : "#71717A")} />
+                        <Ionicons name={isRecording ? "stop" : "mic-outline"} size={24} color={noteColor ? "black" : (isRecording ? "#EF4444" : "#71717A")} />
                     </Pressable>
                     <View className={`w-[1px] h-6 ${noteColor ? 'bg-black/10' : 'bg-surfaceHighlight'}`} />
                     <Pressable className="p-2" onPress={handleTogglePin}>
