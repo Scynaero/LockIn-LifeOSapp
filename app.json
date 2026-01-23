@@ -15,11 +15,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lockin.tracker",
+      "bundleIdentifier": "com.lockin.tracker.dev.saishashank",
       "infoPlist": {
-        "UIBackgroundModes": [
-          "remote-notification"
-        ]
+        "UIBackgroundModes": [],
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -29,7 +28,15 @@
       },
       "package": "com.lockin.tracker",
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,12 +44,6 @@
     "plugins": [
       "expo-sqlite",
       "expo-router",
-      [
-        "react-native-health",
-        {
-          "isClinicalDataEnabled": false
-        }
-      ],
       [
         "expo-calendar",
         {
@@ -59,6 +60,12 @@
       "@react-native-community/datetimepicker",
       "expo-secure-store",
       "expo-audio"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "abc98661-b867-4a93-b415-d7c5b07f3137"
+      }
+    }
   }
 }
