@@ -1,89 +1,51 @@
-# LockIn - React Native Habit Tracker
+# LockIn 🔒
 
-A comprehensive, all-in-one life management application built with React Native and Expo. Integrates habit tracking, workout logging, financial management, and journaling into a single cohesive experience.
+**Integrated Life Management System**
+*Habits • Body • Wallet • Mind*
 
-## Features
+> 📘 **Full Documentation**: [Read the Project Documentation](./PROJECT_DOCUMENTATION.md) for detailed architecture, feature guides, and development history.
 
-### 📅 Habit Tracking (Core)
+---
 
-- **Flexible Habits**: Support for daily, weekly, and custom frequency habits.
-- **Streak System**: Logic for streaks, freezes, and "perfect days".
-- **Visualizations**: Yearly heatmaps, progress rings, and detailed statistics.
-- **HealthKit Integration**: Syncs steps, sleep, and workouts on iOS.
+## 🚀 Quick Start
 
-### 💪 Body & Training
+**LockIn** is a React Native app with native modules (HealthKit, SQLite). You must build the native client to run it.
 
-- **Workout Logging**: Track exercises, sets, reps, and weights.
-- **Exercise Database**: Built-in catalogue of exercises.
-- **Body Metrics**: Log and visualize weight and other body stats over time.
-
-### 💰 Wallet & Finance
-
-- **Expense Tracking**: Log daily expenses and view summaries.
-- **Debt Manager**: Track money owed to you and debts you owe.
-- **Subscriptions**: Manage recurring payments.
-
-### 🧠 Mind & Notes
-
-- **Journaling**: Create notes with rich metadata.
-- **Voice Notes**: Record audio attachments.
-- **Context**: Location tagging and reminders for notes.
-
-## Tech Stack
-
-- **Framework**: [Expo](https://expo.dev/) (SDK 54) & React Native
-- **Router**: `expo-router` (File-based routing)
-- **Language**: TypeScript
-- **Database**: `expo-sqlite` (Local persistence)
-- **Styling**: [NativeWind](https://www.nativewind.dev/) (Tailwind CSS)
-- **Animations**: `react-native-reanimated`, `lottie-react-native`
-- **Charts**: `victory-native`, `react-native-skia`
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js
-- npm or yarn
-- React Native development environment setup (Android Studio / Xcode)
-
-### Installation
-
-1. Clone the repository.
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-### Running the App
-
-Start the Expo development server:
+### 1. Install Dependencies
 
 ```bash
-npm run start
+npm install
 ```
 
-Run on specific platforms:
+### 2. Build & Run
 
-- **iOS**: `npm run ios`
-- **Android**: `npm run android`
-- **Web**: `npm run web`
+```bash
+# iOS (Simulator/Device)
+npx expo run:ios
 
-## Architecture
+# Android
+npx expo run:android
+```
 
-The project follows a Service-Oriented Architecture on the frontend:
+---
 
-- **`app/`**: Contains the UI screens and navigation structure (Expo Router).
-- **`components/`**: Reusable UI components.
-- **`services/`**: logic layer handling business rules and database interactions (e.g., `HabitService`, `DatabaseService`).
-- **`db`**: Data persistence using SQLite (`lockin.db`).
+## ✨ Key Features
 
-For a deep dive into the code structure, database schema, and development guidelines, please refer to the **[WARP.md](./WARP.md)** file included in this repository.
+- **Habit Tracking**: Advanced streaks, freezes, and heatmaps.
+- **Body Module**: Anatomical workout logging with 120+ exercises.
+- **Wallet**: Monthly budgeting, expense tracking, and debt management.
+- **Mind**: Private, secure journaling with voice notes.
+- **HealthKit**: Syncs bio-metrics (Heart Rate, Energy, Sleep) on iOS.
 
-## detailed Documentation
+## 🛠️ Tech Stack
 
-This project includes detailed developer documentation:
+- **Expo SDK 54** + **React Native** (New Architecture)
+- **Expo Router** (Navigation)
+- **Expo SQLite** (Local Persistence)
+- **NativeWind** (Styling)
+- **Reanimated** (Animations)
 
-- [WARP.md](./WARP.md): Comprehensive guide for AI assistants and developers, covering architecture, services, and detailed implementation notes.
-- [BODY_MODULE_GUIDE.md](./BODY_MODULE_GUIDE.md): Specific documentation for the workout and body tracking module.
+---
+
+**Status**: v1.0.0 (Release Candidate)
+*See [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md) for Phase reports and Changelog.*

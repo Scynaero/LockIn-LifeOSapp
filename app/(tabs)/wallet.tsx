@@ -8,6 +8,7 @@ import DonutChart from '../../components/wallet/DonutChart';
 import ActiveDebtsCard from '../../components/wallet/ActiveDebtsCard';
 import TransactionList from '../../components/wallet/TransactionList';
 import { FinanceService } from '../../services/FinanceService';
+import BudgetOverview from '../../components/wallet/BudgetOverview';
 
 export default function WalletScreen() {
     const router = useRouter();
@@ -30,11 +31,6 @@ export default function WalletScreen() {
         setRefreshing(true);
         // Refetch everything
         await fetchChartData();
-        // Note: Child components like ActiveDebtsCard and TransactionList have their own useFocusEffect/useEffect,
-        // but we might want a global context or refetch mechanism. 
-        // For simplicity, we just wait a bit or could trigger them via props (e.g., refreshKey).
-        // Since they use useFocusEffect, navigating away and back refreshes them. 
-        // Pull-to-refresh might need to pass a signal.
         setRefreshing(false);
     }, []);
 
@@ -56,9 +52,12 @@ export default function WalletScreen() {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#fff" />
                 }
             >
+                {/* Budget & Income Overview */}
+                <BudgetOverview />
+
                 {/* Spending Chart Section */}
                 <View className="mb-8">
-                    <Text className="text-zinc-500 text-sm font-medium mb-4 uppercase tracking-widest">This Month's Spending</Text>
+                    <Text className="text-zinc-500 text-sm font-medium mb-4 uppercase tracking-widest">Spending Breakdown</Text>
                     <DonutChart data={expenses} />
                 </View>
 

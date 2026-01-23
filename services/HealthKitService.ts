@@ -1,9 +1,11 @@
-import AppleHealthKit, {
+import {
     HealthValue,
     HealthKitPermissions,
     HealthInputOptions,
 } from 'react-native-health';
 import { Platform } from 'react-native';
+
+const AppleHealthKit = require('react-native-health');
 import { DateUtils } from '../utils/DateUtils';
 
 const permissions: HealthKitPermissions = {
@@ -12,7 +14,10 @@ const permissions: HealthKitPermissions = {
             AppleHealthKit.Constants.Permissions.Steps,
             AppleHealthKit.Constants.Permissions.SleepAnalysis,
             AppleHealthKit.Constants.Permissions.Workout,
-            AppleHealthKit.Constants.Permissions.Water, // Make sure this exists in types
+            AppleHealthKit.Constants.Permissions.HeartRate,
+            AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
+            AppleHealthKit.Constants.Permissions.DistanceWalkingRunning,
+            AppleHealthKit.Constants.Permissions.MindfulSession,
         ],
         write: [],
     },
@@ -46,6 +51,10 @@ export const HealthKitService = {
         };
 
         return new Promise((resolve) => {
+            if (typeof AppleHealthKit.getStepCount !== 'function') {
+                resolve(0);
+                return;
+            }
             AppleHealthKit.getStepCount(options, (err: Object, results: HealthValue) => {
                 if (err) {
                     console.log('[HealthKit] getSteps error:', err);
@@ -74,6 +83,10 @@ export const HealthKitService = {
         };
 
         return new Promise((resolve) => {
+            if (typeof AppleHealthKit.getSleepSamples !== 'function') {
+                resolve(0);
+                return;
+            }
             AppleHealthKit.getSleepSamples(options, (err: Object, results: any[]) => {
                 if (err) {
                     resolve(0);
@@ -114,6 +127,25 @@ export const HealthKitService = {
         return 0;
     },
 
+    getDistance: async (date: string): Promise<number> => {
+        if (!HealthKitService.isAvailable) return 0;
+        const options: HealthInputOptions = {
+            startDate: new Date(date).toISOString(),
+            includeManuallyAdded: true,
+        };
+
+        return new Promise((resolve) => {
+            if (typeof AppleHealthKit.getDistanceWalkingRunning !== 'function') {
+                resolve(0);
+                return;
+            }
+            AppleHealthKit.getDistanceWalkingRunning(options, (err: Object, results: HealthValue) => {
+                if (err) { resolve(0); return; }
+                resolve(results.value || 0);
+            });
+        });
+    },
+
     getWorkoutMinutes: async (date: string): Promise<number> => {
         if (!HealthKitService.isAvailable) return 0;
 
@@ -125,21 +157,99 @@ export const HealthKitService = {
         const options: any = {
             startDate: start.toISOString(),
             endDate: end.toISOString(),
-            type: 'Workout', // Helper might be different
+            type: 'Workout',
         };
 
         return new Promise((resolve) => {
+            if (typeof AppleHealthKit.getSamples !== 'function') {
+                resolve(0);
+                return;
+            }
             AppleHealthKit.getSamples(options, (err: Object, results: any[]) => {
                 if (err) { resolve(0); return; }
-                // Sum duration
                 let duration = 0;
                 results.forEach(w => {
-                    if (w.duration) duration += w.duration; // Duration is usually in seconds or minutes?
-                    // HKWorkout duration is in seconds.
+                    if (w.duration) duration += w.duration;
                 });
                 resolve(Math.round(duration / 60));
             });
         });
-    }
+    },
+
+    getHeartRate: async (date: string): Promise<number> => {
+        if (!HealthKitService.isAvailable) return 0;
+        const options: HealthInputOptions = {
+            startDate: new Date(date).toISOString(), // Should probably be range
+            endDate: new Date(new Date(date).getTime() + 86400000).toISOString(),
+        };
+
+        return new Promise((resolve) => {
+            // Safety check for method existence
+            if (typeof AppleHealthKit.getHeartRateSamples !== 'function') {
+                console.warn('[HealthKit] getHeartRateSamples not available');
+                resolve(0);
+                return;
+            }
+
+            AppleHealthKit.getHeartRateSamples(options, (err: Object, results: HealthValue[]) => {
+                if (err || !results || results.length === 0) { resolve(0); return; }
+                const sum = results.reduce((acc, curr) => acc + curr.value, 0);
+                resolve(Math.round(sum / results.length));
+            });
+        });
+    },
+
+    getActiveCalories: async (date: string): Promise<number> => {
+        if (!HealthKitService.isAvailable) return 0;
+
+        return new Promise((resolve) => {
+            // Safety check for method existence
+            if (typeof AppleHealthKit.getActiveEnergyBurned !== 'function') {
+                console.warn('[HealthKit] getActiveEnergyBurned not available');
+                resolve(0);
+                return;
+            }
+
+            // @ts-ignore
+            AppleHealthKit.getActiveEnergyBurned({ startDate: new Date(date).toISOString(), endDate: new Date(new Date(date).getTime() + 86400000).toISOString() }, (err: Object, results: any[]) => {
+                if (err) { resolve(0); return; }
+                // results might be daily summaries
+                if (results && results.length > 0) {
+                    // Sum them up just in case
+                    const total = results.reduce((acc, r) => acc + (r.value || 0), 0);
+                    resolve(Math.round(total));
+                }
+                resolve(0);
+            });
+        });
+    },
+
+    getMindfulMinutes: async (date: string): Promise<number> => {
+        if (!HealthKitService.isAvailable) return 0;
+        const start = new Date(date); start.setHours(0, 0, 0, 0);
+        const end = new Date(date); end.setHours(23, 59, 59, 999);
+        const options: any = {
+            startDate: start.toISOString(),
+            endDate: end.toISOString(),
+        };
+
+        return new Promise((resolve) => {
+            if (typeof AppleHealthKit.getMindfulSession !== 'function') {
+                console.warn('[HealthKit] getMindfulSession not available');
+                resolve(0);
+                return;
+            }
+            AppleHealthKit.getMindfulSession(options, (err: Object, results: any[]) => {
+                if (err) { resolve(0); return; }
+                let totalMs = 0;
+                results.forEach(r => {
+                    const s = new Date(r.startDate).getTime();
+                    const e = new Date(r.endDate).getTime();
+                    totalMs += (e - s);
+                });
+                resolve(Math.round(totalMs / 60000));
+            });
+        });
+    },
 
 };

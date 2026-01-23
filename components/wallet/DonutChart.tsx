@@ -12,14 +12,21 @@ type ChartData = {
 // Mock data for initial visualization if real data is empty
 const MOCK_DATA: ChartData[] = [];
 
+import { CurrencyService } from '../../services/CurrencyService';
+import { useState, useEffect } from 'react';
+
+// ...
+
 export default function DonutChart({ data }: { data?: ChartData[] }) {
-    // Use a system font or load a custom one if available. 
-    // For simplicity in this step, we won't heavily rely on the font object inside the chart unless needed for labels.
-    // Victory Native XL (Skia) often handles fonts differently, but basic Pie doesn't strictly MANDATE it for shapes.
+    const [currencySymbol, setCurrencySymbol] = useState('₹');
+
+    useEffect(() => {
+        CurrencyService.getCurrency().then(curr => {
+            setCurrencySymbol(CurrencyService.getSymbol(curr));
+        });
+    }, [data]); // Reload if data changes (e.g. refresh), or just on mount
 
     const chartData = (data && data.length > 0) ? data : MOCK_DATA;
-
-    // Calculate total for center label
     const total = chartData.reduce((acc, curr) => acc + curr.y, 0);
 
     return (
@@ -37,7 +44,7 @@ export default function DonutChart({ data }: { data?: ChartData[] }) {
                 {/* Center Label Overlay */}
                 <View className="absolute inset-0 items-center justify-center pointer-events-none">
                     <Text className="text-zinc-500 text-xs font-medium uppercase tracking-widest">Total</Text>
-                    <Text className="text-white text-2xl font-bold">₹{total}</Text>
+                    <Text className="text-white text-2xl font-bold">{currencySymbol}{total}</Text>
                 </View>
             </View>
         </View>

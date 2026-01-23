@@ -190,5 +190,85 @@ export const FinanceService = {
             y: e.amount,
             color: colors[e.category] || '#CCCCCC'
         }));
+    },
+
+    // --- Budget & Income ---
+    getFinancePeriod: async (month: number, year: number) => {
+        const db = DatabaseService.getDB();
+        let period = await db.getFirstAsync<{ id: string, income_amount: number }>(
+            'SELECT * FROM finance_periods WHERE month = ? AND year = ?',
+            [month, year]
+        );
+
+        if (!period) {
+            const id = Crypto.randomUUID();
+            await db.runAsync(
+                'INSERT INTO finance_periods (id, month, year, income_amount) VALUES (?, ?, ?, 0)',
+                [id, month, year]
+            );
+            period = { id, income_amount: 0 };
+        }
+        return period;
+    },
+
+    setIncome: async (month: number, year: number, amount: number) => {
+        const db = DatabaseService.getDB();
+        const period = await FinanceService.getFinancePeriod(month, year);
+        await db.runAsync('UPDATE finance_periods SET income_amount = ? WHERE id = ?', [amount, period.id]);
+    },
+
+    setBudget: async (category: string, limitAmount: number, month: number, year: number) => {
+        const db = DatabaseService.getDB();
+        const period = await FinanceService.getFinancePeriod(month, year);
+
+        // Upsert logic
+        await db.runAsync(`
+            INSERT INTO finance_budgets (id, category, limit_amount, period_id)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(period_id, category) DO UPDATE SET limit_amount = ?
+        `, [
+            Crypto.randomUUID(),
+            category,
+            limitAmount,
+            period.id,
+            limitAmount
+        ]);
+    },
+
+    getBudgets: async (month: number, year: number) => {
+        const db = DatabaseService.getDB();
+        const period = await FinanceService.getFinancePeriod(month, year);
+
+        // Get budgets
+        const budgets = await db.getAllAsync<{ category: string, limit_amount: number }>(
+            'SELECT category, limit_amount FROM finance_budgets WHERE period_id = ?',
+            [period.id]
+        );
+
+        // Get actual spending
+        const spending = await FinanceService.getExpenseSummary(month, year);
+
+        // Combine
+        return budgets.map(b => {
+            const spent = spending.find(s => s.x === b.category)?.y || 0;
+            return {
+                category: b.category,
+                limit: b.limit_amount,
+                spent: spent,
+                remaining: b.limit_amount - spent
+            };
+        });
+    },
+
+    getMonthlyOverview: async (month: number, year: number) => {
+        const period = await FinanceService.getFinancePeriod(month, year);
+        const spending = await FinanceService.getExpenseSummary(month, year);
+        const totalSpent = spending.reduce((acc, curr) => acc + curr.y, 0);
+
+        return {
+            income: period.income_amount,
+            spent: totalSpent,
+            remaining: period.income_amount - totalSpent
+        };
     }
 };

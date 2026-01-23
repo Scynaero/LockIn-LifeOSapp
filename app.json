@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "React-Native-HabitTrackerApp",
-    "slug": "React-Native-HabitTrackerApp",
+    "name": "LockIn",
+    "slug": "lockin-tracker",
     "version": "1.0.0",
     "scheme": "lockin",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -15,13 +15,19 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.React-Native-HabitTrackerApp"
+      "bundleIdentifier": "com.lockin.tracker",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#09090B"
       },
+      "package": "com.lockin.tracker",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
@@ -31,8 +37,27 @@
     "plugins": [
       "expo-sqlite",
       "expo-router",
-      "react-native-health",
-      "@react-native-community/datetimepicker"
+      [
+        "react-native-health",
+        {
+          "isClinicalDataEnabled": false
+        }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "The app needs access to your calendar to sync scheduled habits.",
+          "remindersPermission": "The app needs access to reminders to alert you about habits."
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow LockIn to use Face ID to unlock your private journal and wallet."
+        }
+      ],
+      "@react-native-community/datetimepicker",
+      "expo-secure-store"
     ]
   }
 }

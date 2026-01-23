@@ -5,8 +5,9 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { NotesService, Note } from '../../services/NotesService';
 import { NotificationService } from '../../services/NotificationService';
 import Animated, { FadeIn, SlideInUp } from 'react-native-reanimated';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { Ionicons } from '@expo/vector-icons';
+import NoteItem from '../../components/note/NoteItem';
+
 import * as Haptics from 'expo-haptics';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -60,11 +61,15 @@ export default function MindView() {
         loadNotes();
     };
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = useCallback(async (id: string) => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         await NotesService.deleteNote(id);
         setNotes(prev => prev.filter(n => n.id !== id));
-    };
+    }, []);
+
+    const handleNotePress = useCallback((id: string) => {
+        router.push(`/note/${id}`);
+    }, [router]);
 
     const startCreating = () => {
         setIsCreating(true);
@@ -96,29 +101,7 @@ export default function MindView() {
         setTimeout(() => inputRef.current?.focus(), 100);
     };
 
-    const renderRightActions = (id: string, progress: any, dragX: any) => {
-        return (
-            <Pressable
-                onPress={() => handleDelete(id)}
-                className="bg-green-500 justify-center items-end px-6 h-full"
-                style={{ width: SCREEN_WIDTH }}
-            >
-                <Ionicons name="checkmark-circle-outline" size={32} color="white" />
-            </Pressable>
-        );
-    };
 
-    const renderLeftActions = (id: string, progress: any, dragX: any) => {
-        return (
-            <Pressable
-                onPress={() => handleDelete(id)}
-                className="bg-red-500 justify-center items-start px-6 h-full"
-                style={{ width: SCREEN_WIDTH }}
-            >
-                <Ionicons name="trash-outline" size={24} color="white" />
-            </Pressable>
-        );
-    };
 
     return (
         <SafeAreaView className="flex-1 bg-black px-4" edges={['top']}>
@@ -171,6 +154,12 @@ export default function MindView() {
                                     size={24}
                                     color={reminderDate ? "#10B981" : "#71717A"}
                                 />
+                            </Pressable>
+                            <Pressable
+                                onPress={handleCreate}
+                                className="p-2 ml-1"
+                            >
+                                <Ionicons name="checkmark-circle" size={28} color={newNoteContent.trim() ? "#10B981" : "#52525B"} />
                             </Pressable>
                         </View>
                         {reminderDate && (
@@ -233,54 +222,11 @@ export default function MindView() {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 100 }}
                     renderItem={({ item }) => (
-                        <Swipeable
-                            renderRightActions={(p, d) => renderRightActions(item.id, p, d)}
-                            renderLeftActions={(p, d) => renderLeftActions(item.id, p, d)}
-                            onSwipeableLeftOpen={() => handleDelete(item.id)}
-                            onSwipeableRightOpen={() => handleDelete(item.id)}
-                            overshootRight={false}
-                            overshootLeft={false}
-                        >
-                            <Pressable
-                                onPress={() => router.push(`/note/${item.id}`)}
-                                className={`p-4 border-b border-surfaceHighlight bg-black ${item.is_pinned ? 'bg-surface/30' : ''}`}
-                                style={item.color ? { backgroundColor: item.color } : {}}
-                            >
-                                <View className="flex-row justify-between items-start mb-1">
-                                    <Text
-                                        numberOfLines={1}
-                                        className={`text-lg font-bold flex-1 mr-4 ${item.is_pinned ? 'text-primary' : (item.color ? 'text-black' : 'text-white')}`}
-                                    >
-                                        {item.content.split('\n')[0]}
-                                    </Text>
-                                    {!!item.is_pinned && <Ionicons name="star" size={14} color={item.color ? "black" : "#EAB308"} style={{ marginTop: 4 }} />}
-                                </View>
-
-                                <View className="flex-row items-center gap-2">
-                                    {/* Reminder Indicator */}
-                                    <Text className={`${item.reminder_time ? (item.color ? 'text-black font-bold' : 'text-green-500') : (item.color ? 'text-gray-800' : 'text-red-400')} text-xs font-medium`}>
-                                        {item.reminder_time
-                                            ? new Date(item.reminder_time).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-                                            : new Date(item.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-                                        }
-                                    </Text>
-
-                                    {/* Audio Indicator */}
-                                    {item.audio_uri && (
-                                        <Ionicons name="mic" size={12} color={item.color ? "black" : "#71717A"} />
-                                    )}
-
-                                    {/* Location Indicator */}
-                                    {item.location_text && (
-                                        <Ionicons name="location" size={12} color={item.color ? "black" : "#71717A"} />
-                                    )}
-
-                                    <Text className={`${item.color ? 'text-black' : 'text-secondary'} text-xs flex-1`} numberOfLines={1}>
-                                        {item.content.split('\n').slice(1).join(' ') || 'No additional text'}
-                                    </Text>
-                                </View>
-                            </Pressable>
-                        </Swipeable>
+                        <NoteItem
+                            item={item}
+                            onPress={handleNotePress}
+                            onDelete={handleDelete}
+                        />
                     )}
                     ListEmptyComponent={
                         !isCreating ? (

@@ -178,6 +178,30 @@ export const DatabaseService = {
         );
       `);
 
+      // Finance Periods Table (Budget/Income)
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS finance_periods (
+          id TEXT PRIMARY KEY NOT NULL,
+          month INTEGER NOT NULL,
+          year INTEGER NOT NULL,
+          income_amount REAL DEFAULT 0,
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+          UNIQUE(month, year)
+        );
+      `);
+
+      // Finance Budgets Table (Category Limits)
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS finance_budgets (
+          id TEXT PRIMARY KEY NOT NULL,
+          category TEXT NOT NULL,
+          limit_amount REAL NOT NULL,
+          period_id TEXT NOT NULL,
+          FOREIGN KEY(period_id) REFERENCES finance_periods(id) ON DELETE CASCADE,
+          UNIQUE(period_id, category)
+        );
+      `);
+
       // --- Body Module Tables ---
 
       // Exercises Table

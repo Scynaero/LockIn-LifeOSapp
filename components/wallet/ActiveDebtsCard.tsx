@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FinanceService } from '../../services/FinanceService';
+import { CurrencyService } from '../../services/CurrencyService';
 import { useFocusEffect, useRouter } from 'expo-router';
 
 export default function ActiveDebtsCard() {
     const router = useRouter();
     const [owedToMe, setOwedToMe] = useState(0);
     const [iOwe, setIOwe] = useState(0);
+    const [currencySymbol, setCurrencySymbol] = useState('₹');
 
     const fetchData = async () => {
         const toMe = await FinanceService.getTotalOwedToMe();
         const meOwe = await FinanceService.getTotalIOwe();
         setOwedToMe(toMe);
         setIOwe(meOwe);
+        const curr = await CurrencyService.getCurrency();
+        setCurrencySymbol(CurrencyService.getSymbol(curr));
     };
 
     useFocusEffect(
@@ -36,7 +40,7 @@ export default function ActiveDebtsCard() {
                 </View>
                 <Text className="text-zinc-400 text-xs font-medium mb-1">Owed to me</Text>
                 <Text className="text-white text-xl font-bold">
-                    ₹{owedToMe.toFixed(0)}
+                    {currencySymbol}{owedToMe.toFixed(0)}
                 </Text>
             </TouchableOpacity>
 
@@ -52,7 +56,7 @@ export default function ActiveDebtsCard() {
                 </View>
                 <Text className="text-zinc-400 text-xs font-medium mb-1">I owe</Text>
                 <Text className="text-white text-xl font-bold">
-                    ₹{iOwe.toFixed(0)}
+                    {currencySymbol}{iOwe.toFixed(0)}
                 </Text>
             </TouchableOpacity>
         </View>

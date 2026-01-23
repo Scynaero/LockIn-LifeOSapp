@@ -3,8 +3,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from 'expo-router';
 import { useState, useCallback } from 'react';
 import { HabitService, Habit } from '../../services/HabitService';
+import { HealthKitService } from '../../services/HealthKitService';
 import { DateUtils } from '../../utils/DateUtils';
 import Svg, { Path, Line, Circle, Text as SvgText, Rect } from 'react-native-svg';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const CHART_HEIGHT = 220;
@@ -14,6 +16,7 @@ export default function StatsScreen() {
     const [trendData, setTrendData] = useState<{ date: string, rate: number }[]>([]);
     const [bestStreaks, setBestStreaks] = useState<Habit[]>([]);
     const [breakdown, setBreakdown] = useState({ build: 0, quit: 0 });
+    const [healthMetrics, setHealthMetrics] = useState({ heartRate: 0, calories: 0, distance: 0, mindMinutes: 0 });
 
     useFocusEffect(
         useCallback(() => {
@@ -48,6 +51,19 @@ export default function StatsScreen() {
         // 3. Breakdown
         const s = statsResults[statsResults.length - 1]; // Today's stats
         setBreakdown({ build: s.breakdown.build, quit: s.breakdown.quit });
+
+        // 4. Health Metrics
+        if (HealthKitService.isAvailable) {
+            const now = new Date();
+            const todayStr = DateUtils.getDateString(now);
+            const [hr, cal, min, dist] = await Promise.all([
+                HealthKitService.getHeartRate(todayStr),
+                HealthKitService.getActiveCalories(todayStr),
+                HealthKitService.getMindfulMinutes(todayStr),
+                HealthKitService.getDistance(todayStr) // We need this method in service if not added
+            ]);
+            setHealthMetrics({ heartRate: hr, calories: cal, mindMinutes: min, distance: dist || 0 });
+        }
     };
 
     // --- Chart Helpers ---
@@ -77,91 +93,118 @@ export default function StatsScreen() {
     return (
         <SafeAreaView className="flex-1 bg-black p-6">
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Text className="text-3xl font-bold text-primary mb-6 tracking-tighter">DATA ROOM</Text>
+                <Animated.View entering={FadeInUp.duration(600).delay(100)}>
+                    <Text className="text-3xl font-bold text-primary mb-6 tracking-tighter">DATA ROOM</Text>
 
-                {/* --- TREND CHART --- */}
-                <View className="mb-8">
-                    <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">14-Day Consistency</Text>
-                    <View className="bg-surface p-4 rounded-3xl border border-surfaceHighlight items-center justify-center">
-                        <Svg width={CHART_WIDTH} height={CHART_HEIGHT + 30}>
-                            {/* Grid Lines */}
-                            {[0, 25, 50, 75, 100].map(v => (
-                                <Line
-                                    key={v}
-                                    x1="0"
-                                    y1={CHART_HEIGHT - (v / 100) * CHART_HEIGHT}
-                                    x2={CHART_WIDTH}
-                                    y2={CHART_HEIGHT - (v / 100) * CHART_HEIGHT}
-                                    stroke="#333"
-                                    strokeWidth="1"
-                                    strokeDasharray="4"
-                                />
-                            ))}
+                    {/* --- TREND CHART --- */}
+                    <View className="mb-8">
+                        <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">14-Day Consistency</Text>
+                        <View className="bg-surface p-4 rounded-3xl border border-surfaceHighlight items-center justify-center">
+                            <Svg width={CHART_WIDTH} height={CHART_HEIGHT + 30}>
+                                {/* Grid Lines */}
+                                {[0, 25, 50, 75, 100].map(v => (
+                                    <Line
+                                        key={v}
+                                        x1="0"
+                                        y1={CHART_HEIGHT - (v / 100) * CHART_HEIGHT}
+                                        x2={CHART_WIDTH}
+                                        y2={CHART_HEIGHT - (v / 100) * CHART_HEIGHT}
+                                        stroke="#333"
+                                        strokeWidth="1"
+                                        strokeDasharray="4"
+                                    />
+                                ))}
 
-                            {/* Area Fill */}
-                            <Path d={buildAreaPath()} fill="rgba(204, 255, 0, 0.1)" />
+                                {/* Area Fill */}
+                                <Path d={buildAreaPath()} fill="rgba(204, 255, 0, 0.1)" />
 
-                            {/* Line */}
-                            <Path d={buildPath()} stroke="#CCFF00" strokeWidth="3" fill="none" />
+                                {/* Line */}
+                                <Path d={buildPath()} stroke="#CCFF00" strokeWidth="3" fill="none" />
 
-                            {/* Dots */}
-                            {trendData.map((d, i) => {
-                                const { x, y } = getCoordinates(i, d.rate);
-                                return (
-                                    <Circle key={i} cx={x} cy={y} r="4" fill="#000" stroke="#CCFF00" strokeWidth="2" />
-                                );
-                            })}
+                                {/* Dots */}
+                                {trendData.map((d, i) => {
+                                    const { x, y } = getCoordinates(i, d.rate);
+                                    return (
+                                        <Circle key={i} cx={x} cy={y} r="4" fill="#000" stroke="#CCFF00" strokeWidth="2" />
+                                    );
+                                })}
 
-                            {/* X-Axis Labels */}
-                            {trendData.map((d, i) => {
-                                if (i % 2 !== 0) return null; // Skip every other label
-                                const { x } = getCoordinates(i, 0);
-                                return (
-                                    <SvgText key={i} x={x} y={CHART_HEIGHT + 20} fontSize="10" fill="#71717A" textAnchor="middle">
-                                        {d.date}
-                                    </SvgText>
-                                );
-                            })}
-                        </Svg>
-                    </View>
-                </View>
-
-                {/* --- LEADERBOARD --- */}
-                <View className="mb-8">
-                    <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">Hall of Fame (Best Streaks)</Text>
-                    {bestStreaks.map((h, idx) => (
-                        <View key={h.id} className="bg-surface p-4 rounded-2xl mb-2 flex-row items-center border border-surfaceHighlight">
-                            <Text className={`text-lg font-bold w-8 ${idx === 0 ? 'text-yellow-400' : (idx === 1 ? 'text-gray-300' : (idx === 2 ? 'text-amber-600' : 'text-gray-600'))}`}>
-                                #{idx + 1}
-                            </Text>
-                            <View className="flex-1">
-                                <Text className="text-white font-bold">{h.name}</Text>
-                            </View>
-                            <View className="bg-zinc-800 px-3 py-1 rounded-full">
-                                <Text className="text-primary font-bold">{h.current_streak} days</Text>
-                            </View>
-                        </View>
-                    ))}
-                    {bestStreaks.length === 0 && <Text className="text-secondary opacity-50">No active habits to rank.</Text>}
-                </View>
-
-                {/* --- BREAKDOWN --- */}
-                <View className="mb-20">
-                    <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">War Chest</Text>
-                    <View className="flex-row gap-4">
-                        <View className="flex-1 bg-surface p-5 rounded-3xl border border-surfaceHighlight items-center">
-                            <Text className="text-4xl font-bold text-green-400">{breakdown.build}</Text>
-                            <Text className="text-white text-sm font-bold mt-1">BUILD</Text>
-                            <Text className="text-secondary text-xs text-center mt-2">Habits you are forging.</Text>
-                        </View>
-                        <View className="flex-1 bg-surface p-5 rounded-3xl border border-surfaceHighlight items-center">
-                            <Text className="text-4xl font-bold text-red-500">{breakdown.quit}</Text>
-                            <Text className="text-white text-sm font-bold mt-1">QUIT</Text>
-                            <Text className="text-secondary text-xs text-center mt-2">Vices you are destroying.</Text>
+                                {/* X-Axis Labels */}
+                                {trendData.map((d, i) => {
+                                    if (i % 2 !== 0) return null; // Skip every other label
+                                    const { x } = getCoordinates(i, 0);
+                                    return (
+                                        <SvgText key={i} x={x} y={CHART_HEIGHT + 20} fontSize="10" fill="#71717A" textAnchor="middle">
+                                            {d.date}
+                                        </SvgText>
+                                    );
+                                })}
+                            </Svg>
                         </View>
                     </View>
-                </View>
 
+                    {/* --- LEADERBOARD --- */}
+                    <View className="mb-8">
+                        <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">Hall of Fame (Best Streaks)</Text>
+                        {bestStreaks.map((h, idx) => (
+                            <View key={h.id} className="bg-surface p-4 rounded-2xl mb-2 flex-row items-center border border-surfaceHighlight">
+                                <Text className={`text-lg font-bold w-8 ${idx === 0 ? 'text-yellow-400' : (idx === 1 ? 'text-gray-300' : (idx === 2 ? 'text-amber-600' : 'text-gray-600'))}`}>
+                                    #{idx + 1}
+                                </Text>
+                                <View className="flex-1">
+                                    <Text className="text-white font-bold">{h.name}</Text>
+                                </View>
+                                <View className="bg-zinc-800 px-3 py-1 rounded-full">
+                                    <Text className="text-primary font-bold">{h.current_streak} days</Text>
+                                </View>
+                            </View>
+                        ))}
+                        {bestStreaks.length === 0 && <Text className="text-secondary opacity-50">No active habits to rank.</Text>}
+                    </View>
+
+                    {/* --- BREAKDOWN --- */}
+                    <View className="mb-8">
+                        <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">War Chest</Text>
+                        <View className="flex-row gap-4">
+                            <View className="flex-1 bg-surface p-5 rounded-3xl border border-surfaceHighlight items-center">
+                                <Text className="text-4xl font-bold text-green-400">{breakdown.build}</Text>
+                                <Text className="text-white text-sm font-bold mt-1">BUILD</Text>
+                                <Text className="text-secondary text-xs text-center mt-2">Habits you are forging.</Text>
+                            </View>
+                            <View className="flex-1 bg-surface p-5 rounded-3xl border border-surfaceHighlight items-center">
+                                <Text className="text-4xl font-bold text-red-500">{breakdown.quit}</Text>
+                                <Text className="text-white text-sm font-bold mt-1">QUIT</Text>
+                                <Text className="text-secondary text-xs text-center mt-2">Vices you are destroying.</Text>
+                            </View>
+                        </View>
+                    </View>
+
+                    {/* --- BIO-METRICS (HealthKit) --- */}
+                    <View className="mb-20">
+                        <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">Bio-Metrics (Today)</Text>
+                        <View className="flex-row gap-3 mb-3">
+                            <View className="flex-1 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
+                                <Text className="text-red-500 font-bold mb-1">Heart</Text>
+                                <Text className="text-white text-2xl font-bold">{healthMetrics.heartRate} <Text className="text-sm text-zinc-500">bpm</Text></Text>
+                            </View>
+                            <View className="flex-1 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
+                                <Text className="text-orange-500 font-bold mb-1">Energy</Text>
+                                <Text className="text-white text-2xl font-bold">{healthMetrics.calories} <Text className="text-sm text-zinc-500">kcal</Text></Text>
+                            </View>
+                        </View>
+                        <View className="flex-row gap-3">
+                            <View className="flex-1 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
+                                <Text className="text-blue-500 font-bold mb-1">Distance</Text>
+                                <Text className="text-white text-2xl font-bold">{(healthMetrics.distance / 1000).toFixed(1)} <Text className="text-sm text-zinc-500">km</Text></Text>
+                            </View>
+                            <View className="flex-1 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
+                                <Text className="text-purple-500 font-bold mb-1">Mindful</Text>
+                                <Text className="text-white text-2xl font-bold">{healthMetrics.mindMinutes} <Text className="text-sm text-zinc-500">min</Text></Text>
+                            </View>
+                        </View>
+                    </View>
+
+                </Animated.View>
             </ScrollView>
         </SafeAreaView>
     );

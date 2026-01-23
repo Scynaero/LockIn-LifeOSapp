@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { FinanceService, Expense, Debt } from '../../services/FinanceService'; // Assuming types are exported
+import { FinanceService, Expense, Debt } from '../../services/FinanceService';
+import { CurrencyService } from '../../services/CurrencyService';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from 'expo-router';
 
@@ -8,14 +9,15 @@ type Transaction = (Expense | Debt) & { type: 'expense' | 'debt' };
 
 import { Alert, TouchableOpacity } from 'react-native';
 
-// ... (imports)
-
 export default function TransactionList() {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [currencySymbol, setCurrencySymbol] = useState('₹');
 
     const fetchTransactions = async () => {
         const data = await FinanceService.getRecentTransactions(5);
         setTransactions(data as Transaction[]);
+        const curr = await CurrencyService.getCurrency();
+        setCurrencySymbol(CurrencyService.getSymbol(curr));
     };
 
     useFocusEffect(
@@ -95,7 +97,7 @@ export default function TransactionList() {
                     </View>
                 </View>
                 <Text className={`font-bold ${amountColor}`}>
-                    {amountPrefix}₹{item.amount.toFixed(2)}
+                    {amountPrefix}{currencySymbol}{item.amount.toFixed(2)}
                 </Text>
             </TouchableOpacity>
         );

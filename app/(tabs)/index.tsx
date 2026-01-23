@@ -11,6 +11,61 @@ import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatli
 import { DateUtils } from "../../utils/DateUtils";
 import { ProgressRing } from "../../components/ProgressRing";
 import { LogValueModal } from "../../components/LogValueModal";
+import { CalendarService } from "../../services/CalendarService";
+
+function CalendarWidget() {
+    const [events, setEvents] = useState<any[]>([]);
+    const [hasPermission, setHasPermission] = useState(false);
+
+    useFocusEffect(
+        useCallback(() => {
+            const loadEvents = async () => {
+                const granted = await CalendarService.requestPermissions();
+                setHasPermission(granted);
+                if (granted) {
+                    const evs = await CalendarService.getEventsForToday();
+                    setEvents(evs);
+                }
+            };
+            loadEvents();
+        }, [])
+    );
+
+    if (!hasPermission) {
+        return (
+            <View className="bg-surface p-4 rounded-xl border border-surfaceHighlight items-center">
+                <Text className="text-secondary text-sm">Calendar access required to show schedule.</Text>
+                <Pressable onPress={() => CalendarService.requestPermissions()} className="mt-2">
+                    <Text className="text-primary font-bold">Grant Permission</Text>
+                </Pressable>
+            </View>
+        );
+    }
+
+    if (events.length === 0) {
+        return (
+            <View className="bg-surface p-4 rounded-xl border border-surfaceHighlight">
+                <Text className="text-zinc-500 italic text-center">No events scheduled for today.</Text>
+            </View>
+        );
+    }
+
+    return (
+        <View className="gap-2">
+            {events.map((e, i) => (
+                <View key={e.id || i} className="bg-surface p-3 rounded-xl border border-surfaceHighlight flex-row items-center gap-3">
+                    <View className="w-1 h-8 bg-blue-500 rounded-full" />
+                    <View className="flex-1">
+                        <Text className="text-white font-bold text-sm" numberOfLines={1}>{e.title}</Text>
+                        <Text className="text-zinc-500 text-xs">
+                            {new Date(e.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(e.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </Text>
+                    </View>
+                </View>
+            ))}
+        </View>
+    );
+}
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -135,15 +190,16 @@ export default function HomeScreen() {
                         <Text className="text-secondary text-xs font-bold mb-4 tracking-widest uppercase">Today's Protocol</Text>
                     </>
                 }
-                ListEmptyComponent={
-                    <View className="items-center justify-center py-10">
-                        <Text className="text-secondary text-lg">No active protocols.</Text>
-                        <Text className="text-secondary opacity-50 text-sm mt-2">Initialize a habit to begin.</Text>
-                    </View>
-                }
                 ListFooterComponent={
                     <>
                         <Heatmap data={heatmapData} />
+
+                        {/* Calendar Events Widget */}
+                        <View className="mb-20 px-1 mt-6">
+                            <Text className="text-secondary text-xs font-bold tracking-widest mb-4 uppercase">Device Calendar</Text>
+                            <CalendarWidget />
+                        </View>
+
                         <LogValueModal
                             visible={!!logHabit}
                             habit={logHabit}
