@@ -9,15 +9,17 @@ export const CalendarService = {
 
     requestPermissions: async () => {
         const { status } = await Calendar.requestCalendarPermissionsAsync();
-        // For iOS, Reminders permission might also be needed if we were accessing Reminders
-        if (status === 'granted') {
-            if (Platform.OS === 'ios') {
-                const remindersStatus = await Calendar.requestRemindersPermissionsAsync();
-                return remindersStatus.status === 'granted';
-            }
-            return true;
+
+        if (status !== 'granted') {
+            return false;
         }
-        return status === 'granted';
+
+        if (Platform.OS === 'ios') {
+            const remindersStatus = await Calendar.requestRemindersPermissionsAsync();
+            return remindersStatus.status === 'granted';
+        }
+
+        return true;
     },
 
     getEventsForToday: async () => {
@@ -30,6 +32,10 @@ export const CalendarService = {
         const now = new Date();
         const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
         const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+
+        if (calendarIds.length === 0) {
+            return [];
+        }
 
         const events = await Calendar.getEventsAsync(calendarIds, startOfDay, endOfDay);
         return events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
