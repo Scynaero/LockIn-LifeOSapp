@@ -94,4 +94,4 @@ _layout.tsx (Root Stack)
 
 > **Status:** All Features Implemented (Phase 2-4). Native build required.
 > **Action:** User must run `npx expo run:ios` to compile HealthKit/Calendar/Auth dependencies.
-> **Then:** Move to Phase 5: World & Trigger (Publishing/Screenshots).
+> **Then:** Move to Phase 5: World & Trigger (Publishing/Screenshots), done.
