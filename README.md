@@ -1,51 +1,13 @@
-# LockIn 🔒
+# LockIn LifeOS
 
-**Integrated Life Management System**
-*Habits • Body • Wallet • Mind*
+This repository now contains the Kotlin Multiplatform (KMP) implementation of the LockIn application.
 
-> 📘 **Full Documentation**: [Read the Project Documentation](./PROJECT_DOCUMENTATION.md) for detailed architecture, feature guides, and development history.
+## Project Structure
 
----
+- `LockIn-KMP/`: The main Android/KMP project source code.
 
-## 🚀 Quick Start
+## Getting Started
 
-**LockIn** is a React Native app with native modules (HealthKit, SQLite). You must build the native client to run it.
-
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Build & Run
-
-```bash
-# iOS (Simulator/Device)
-npx expo run:ios
-
-# Android
-npx expo run:android
-```
-
----
-
-## ✨ Key Features
-
-- **Habit Tracking**: Advanced streaks, freezes, and heatmaps.
-- **Body Module**: Anatomical workout logging with 120+ exercises.
-- **Wallet**: Monthly budgeting, expense tracking, and debt management.
-- **Mind**: Private, secure journaling with voice notes.
-- **HealthKit**: Syncs bio-metrics (Heart Rate, Energy, Sleep) on iOS.
-
-## 🛠️ Tech Stack
-
-- **Expo SDK 54** + **React Native** (New Architecture)
-- **Expo Router** (Navigation)
-- **Expo SQLite** (Local Persistence)
-- **NativeWind** (Styling)
-- **Reanimated** (Animations)
-
----
-
-**Status**: v1.0.0 (Release Candidate)
-*See [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md) for Phase reports and Changelog.*
+1. Open the `LockIn-KMP` directory in Android Studio or IntelliJ IDEA.
+2. Sync the Gradle project.
+3. Run the `androidApp` configuration.

@@ -1,0 +1,23 @@
+CREATE TABLE weight_logs (
+    id TEXT NOT NULL PRIMARY KEY,
+    weight REAL NOT NULL,
+    date TEXT NOT NULL
+);
+
+getWeightHistory:
+SELECT * FROM weight_logs ORDER BY date DESC LIMIT 30;
+
+getLatestWeight:
+SELECT weight FROM weight_logs ORDER BY date DESC LIMIT 1;
+
+getWeightForDate:
+SELECT * FROM weight_logs WHERE date = ? LIMIT 1;
+
+insertWeight:
+INSERT INTO weight_logs (id, weight, date) VALUES (?, ?, ?);
+
+updateWeight:
+UPDATE weight_logs SET weight = ? WHERE date = ?;
+
+deleteWeight:
+DELETE FROM weight_logs WHERE id = ?;

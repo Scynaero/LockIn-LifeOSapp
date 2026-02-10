@@ -1,0 +1,36 @@
+CREATE TABLE streak_freezes (
+    id TEXT NOT NULL PRIMARY KEY,
+    habit_id TEXT NOT NULL,
+    date TEXT NOT NULL,
+    used_at INTEGER,
+    FOREIGN KEY (habit_id) REFERENCES habits (id) ON DELETE CASCADE
+);
+
+getFreezeForHabitOnDate:
+SELECT * FROM streak_freezes WHERE habit_id = ? AND date = ? LIMIT 1;
+
+getFreezesForHabit:
+SELECT * FROM streak_freezes WHERE habit_id = ? ORDER BY date DESC;
+
+getFreezeDates:
+SELECT DISTINCT date FROM streak_freezes WHERE habit_id = ? ORDER BY date DESC;
+
+getLastFreezeDate:
+SELECT date FROM streak_freezes WHERE habit_id = ? ORDER BY date DESC LIMIT 1;
+
+insertFreeze:
+INSERT OR IGNORE INTO streak_freezes (id, habit_id, date, used_at)
+VALUES (?, ?, ?, ?);
+
+deleteFreezeByHabitAndDate:
+DELETE FROM streak_freezes WHERE habit_id = ? AND date = ?;
+
+deleteAllFreezesForHabit:
+DELETE FROM streak_freezes WHERE habit_id = ?;
+
+-- Heatmap queries
+getFreezeCountsByDate:
+SELECT date, COUNT(DISTINCT habit_id) AS count FROM streak_freezes GROUP BY date;
+
+getFreezesForDate:
+SELECT DISTINCT habit_id FROM streak_freezes WHERE date = ?;

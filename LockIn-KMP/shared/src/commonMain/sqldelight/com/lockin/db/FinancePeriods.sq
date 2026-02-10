@@ -1,0 +1,19 @@
+CREATE TABLE finance_periods (
+    id TEXT NOT NULL PRIMARY KEY,
+    month INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    income_amount REAL NOT NULL DEFAULT 0,
+    created_at TEXT
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_finance_periods_month_year ON finance_periods(month, year);
+
+getByMonthYear:
+SELECT * FROM finance_periods WHERE month = ? AND year = ? LIMIT 1;
+
+upsertPeriod:
+INSERT OR REPLACE INTO finance_periods (id, month, year, income_amount, created_at)
+VALUES (?, ?, ?, ?, ?);
+
+updateIncome:
+UPDATE finance_periods SET income_amount = ? WHERE id = ?;

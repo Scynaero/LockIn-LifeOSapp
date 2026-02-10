@@ -1,0 +1,64 @@
+CREATE TABLE notes (
+    id TEXT NOT NULL PRIMARY KEY,
+    content TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    is_pinned INTEGER NOT NULL DEFAULT 0,
+    habit_id TEXT,
+    log_id TEXT,
+    reminder_time TEXT,
+    is_deleted INTEGER NOT NULL DEFAULT 0,
+    audio_uri TEXT,
+    audio_duration INTEGER,
+    color TEXT,
+    location_text TEXT,
+    FOREIGN KEY (habit_id) REFERENCES habits (id) ON DELETE CASCADE
+);
+
+getActiveNotes:
+SELECT * FROM notes WHERE is_deleted = 0
+ORDER BY is_pinned DESC, created_at DESC;
+
+getActiveNotesForHabit:
+SELECT * FROM notes WHERE is_deleted = 0 AND habit_id = ?
+ORDER BY is_pinned DESC, created_at DESC;
+
+getArchivedNotes:
+SELECT * FROM notes WHERE is_deleted = 1
+ORDER BY created_at DESC;
+
+getNoteById:
+SELECT * FROM notes WHERE id = ?;
+
+insertNote:
+INSERT INTO notes (id, content, created_at, is_pinned, habit_id, log_id, reminder_time, is_deleted, audio_uri, audio_duration, color, location_text)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateNoteContent:
+UPDATE notes SET content = ? WHERE id = ?;
+
+togglePin:
+UPDATE notes SET is_pinned = ? WHERE id = ?;
+
+setReminder:
+UPDATE notes SET reminder_time = ? WHERE id = ?;
+
+updateAudio:
+UPDATE notes SET audio_uri = ?, audio_duration = ? WHERE id = ?;
+
+updateColor:
+UPDATE notes SET color = ? WHERE id = ?;
+
+updateLocation:
+UPDATE notes SET location_text = ? WHERE id = ?;
+
+softDelete:
+UPDATE notes SET is_deleted = 1 WHERE id = ?;
+
+restore:
+UPDATE notes SET is_deleted = 0 WHERE id = ?;
+
+permanentDelete:
+DELETE FROM notes WHERE id = ?;
+
+clearArchive:
+DELETE FROM notes WHERE is_deleted = 1;

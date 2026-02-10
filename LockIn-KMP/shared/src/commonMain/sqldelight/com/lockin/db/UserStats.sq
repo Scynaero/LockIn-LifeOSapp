@@ -1,0 +1,16 @@
+CREATE TABLE user_stats (
+    id TEXT NOT NULL PRIMARY KEY,
+    total_xp INTEGER NOT NULL DEFAULT 0,
+    level INTEGER NOT NULL DEFAULT 1,
+    current_streak INTEGER NOT NULL DEFAULT 0,
+    longest_streak INTEGER NOT NULL DEFAULT 0,
+    total_workouts INTEGER NOT NULL DEFAULT 0,
+    total_volume REAL NOT NULL DEFAULT 0
+);
+
+getStats:
+SELECT * FROM user_stats LIMIT 1;
+
+upsertStats:
+INSERT OR REPLACE INTO user_stats (id, total_xp, level, current_streak, longest_streak, total_workouts, total_volume)
+VALUES (?, ?, ?, ?, ?, ?, ?);

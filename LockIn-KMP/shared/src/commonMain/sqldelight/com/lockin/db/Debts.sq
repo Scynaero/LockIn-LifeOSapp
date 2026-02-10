@@ -1,0 +1,41 @@
+CREATE TABLE debts (
+    id TEXT NOT NULL PRIMARY KEY,
+    person_name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    type TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    related_expense_id TEXT,
+    date TEXT NOT NULL,
+    FOREIGN KEY (related_expense_id) REFERENCES expenses (id) ON DELETE SET NULL
+);
+
+getAllDebts:
+SELECT * FROM debts ORDER BY date DESC;
+
+getPendingDebts:
+SELECT * FROM debts WHERE status = 'pending' ORDER BY date DESC;
+
+getOwedToMe:
+SELECT * FROM debts WHERE type = 'owed_to_me' AND status = 'pending' ORDER BY date DESC;
+
+getIOwe:
+SELECT * FROM debts WHERE type = 'i_owe' AND status = 'pending' ORDER BY date DESC;
+
+getTotalOwedToMe:
+SELECT SUM(amount) AS total FROM debts WHERE type = 'owed_to_me' AND status = 'pending';
+
+getTotalIOwe:
+SELECT SUM(amount) AS total FROM debts WHERE type = 'i_owe' AND status = 'pending';
+
+insertDebt:
+INSERT INTO debts (id, person_name, amount, type, status, related_expense_id, date)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+settleDebt:
+UPDATE debts SET status = 'paid' WHERE id = ?;
+
+updateDebtAmount:
+UPDATE debts SET amount = ? WHERE id = ?;
+
+deleteDebt:
+DELETE FROM debts WHERE id = ?;

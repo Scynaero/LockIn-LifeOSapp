@@ -1,0 +1,56 @@
+CREATE TABLE logs (
+    id TEXT NOT NULL PRIMARY KEY,
+    habit_id TEXT NOT NULL,
+    date TEXT NOT NULL,
+    value REAL NOT NULL,
+    note TEXT,
+    timestamp INTEGER,
+    FOREIGN KEY (habit_id) REFERENCES habits (id) ON DELETE CASCADE
+);
+
+getLogForHabitOnDate:
+SELECT * FROM logs WHERE habit_id = ? AND date = ? LIMIT 1;
+
+getLogsForHabit:
+SELECT * FROM logs WHERE habit_id = ? ORDER BY date DESC;
+
+getDistinctLogDates:
+SELECT DISTINCT date FROM logs WHERE habit_id = ? ORDER BY date DESC;
+
+getAllLogDates:
+SELECT habit_id, date, value FROM logs ORDER BY date DESC;
+
+getLogCountForHabit:
+SELECT COUNT(*) FROM logs WHERE habit_id = ?;
+
+insertLog:
+INSERT INTO logs (id, habit_id, date, value, note, timestamp)
+VALUES (?, ?, ?, ?, ?, ?);
+
+deleteLogByHabitAndDate:
+DELETE FROM logs WHERE habit_id = ? AND date = ?;
+
+deleteAllLogsForHabit:
+DELETE FROM logs WHERE habit_id = ?;
+
+deleteAllLogs:
+DELETE FROM logs;
+
+-- Heatmap queries
+getLogCountsByDate:
+SELECT date, COUNT(DISTINCT habit_id) AS count FROM logs GROUP BY date;
+
+getLogsForDate:
+SELECT DISTINCT l.habit_id, h.type
+FROM logs l
+JOIN habits h ON l.habit_id = h.id
+WHERE l.date = ?;
+
+getTotalActivityByDate:
+SELECT date, COUNT(DISTINCT habit_id) AS count
+FROM (
+    SELECT habit_id, date FROM logs
+    UNION
+    SELECT habit_id, date FROM streak_freezes
+)
+GROUP BY date;

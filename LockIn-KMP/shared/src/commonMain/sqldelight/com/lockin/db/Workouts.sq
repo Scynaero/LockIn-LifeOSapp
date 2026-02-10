@@ -1,0 +1,38 @@
+CREATE TABLE workouts (
+    id TEXT NOT NULL PRIMARY KEY,
+    date TEXT NOT NULL,
+    name TEXT,
+    duration_sec INTEGER NOT NULL DEFAULT 0,
+    bodyweight REAL,
+    status TEXT NOT NULL DEFAULT 'active',
+    timer_start TEXT,
+    is_timer_running INTEGER NOT NULL DEFAULT 0
+);
+
+getActiveWorkout:
+SELECT * FROM workouts WHERE status = 'active' ORDER BY date DESC LIMIT 1;
+
+getWorkoutsForDate:
+SELECT * FROM workouts WHERE date LIKE ? ORDER BY date DESC;
+
+getAllWorkouts:
+SELECT * FROM workouts ORDER BY date DESC;
+
+getWorkoutsForRange:
+SELECT * FROM workouts WHERE date >= ? ORDER BY date DESC;
+
+insertWorkout:
+INSERT INTO workouts (id, date, name, duration_sec, bodyweight, status, timer_start, is_timer_running)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+finishWorkout:
+UPDATE workouts SET status = 'completed', duration_sec = ?, bodyweight = ? WHERE id = ?;
+
+toggleTimer:
+UPDATE workouts SET timer_start = ?, is_timer_running = ? WHERE id = ?;
+
+resetTimer:
+UPDATE workouts SET timer_start = NULL, is_timer_running = 0 WHERE id = ?;
+
+deleteWorkout:
+DELETE FROM workouts WHERE id = ?;

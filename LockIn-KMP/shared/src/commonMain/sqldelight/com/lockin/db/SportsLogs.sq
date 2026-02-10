@@ -1,0 +1,21 @@
+CREATE TABLE sports_logs (
+    id TEXT NOT NULL PRIMARY KEY,
+    activity_name TEXT NOT NULL,
+    start_time TEXT NOT NULL,
+    duration_min INTEGER NOT NULL,
+    calories REAL NOT NULL,
+    met_value REAL NOT NULL
+);
+
+getAllSportsLogs:
+SELECT * FROM sports_logs ORDER BY start_time DESC;
+
+getSportsLogsForDate:
+SELECT * FROM sports_logs WHERE start_time LIKE ? ORDER BY start_time DESC;
+
+insertSportsLog:
+INSERT INTO sports_logs (id, activity_name, start_time, duration_min, calories, met_value)
+VALUES (?, ?, ?, ?, ?, ?);
+
+deleteSportsLog:
+DELETE FROM sports_logs WHERE id = ?;
