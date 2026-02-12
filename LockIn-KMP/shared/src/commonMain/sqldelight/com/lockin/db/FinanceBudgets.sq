@@ -1,0 +1,19 @@
+CREATE TABLE finance_budgets (
+    id TEXT NOT NULL PRIMARY KEY,
+    category TEXT NOT NULL,
+    limit_amount REAL NOT NULL,
+    period_id TEXT NOT NULL,
+    FOREIGN KEY (period_id) REFERENCES finance_periods (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_finance_budgets_period_category ON finance_budgets(period_id, category);
+
+getBudgetsForPeriod:
+SELECT * FROM finance_budgets WHERE period_id = ? ORDER BY category ASC;
+
+upsertBudget:
+INSERT OR REPLACE INTO finance_budgets (id, category, limit_amount, period_id)
+VALUES (?, ?, ?, ?);
+
+deleteBudget:
+DELETE FROM finance_budgets WHERE id = ?;

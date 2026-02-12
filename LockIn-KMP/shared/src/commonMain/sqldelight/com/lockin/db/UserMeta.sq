@@ -1,0 +1,10 @@
+CREATE TABLE user_meta (
+    key TEXT NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL
+);
+
+getValue:
+SELECT value FROM user_meta WHERE key = ?;
+
+upsert:
+INSERT OR REPLACE INTO user_meta (key, value) VALUES (?, ?);

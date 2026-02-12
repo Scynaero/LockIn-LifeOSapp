@@ -1,0 +1,78 @@
+CREATE TABLE habits (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    unit TEXT NOT NULL,
+    goal REAL NOT NULL,
+    frequency TEXT NOT NULL,
+    color TEXT NOT NULL,
+    icon TEXT NOT NULL,
+    freeze_inventory INTEGER NOT NULL DEFAULT 3,
+    streak_state TEXT NOT NULL DEFAULT 'active',
+    current_streak INTEGER NOT NULL DEFAULT 0,
+    health_type TEXT,
+    description TEXT,
+    archived INTEGER NOT NULL DEFAULT 0,
+    "order" INTEGER NOT NULL DEFAULT 0,
+    reminder_time TEXT,
+    tags TEXT,
+    target_value INTEGER NOT NULL DEFAULT 1,
+    daily_logs TEXT,
+    archived_at TEXT,
+    created_at TEXT,
+    icon_color TEXT
+);
+
+getActiveHabits:
+SELECT * FROM habits WHERE archived = 0 ORDER BY "order" ASC;
+
+getArchivedHabits:
+SELECT * FROM habits WHERE archived = 1 ORDER BY archived_at DESC;
+
+getAllHabits:
+SELECT * FROM habits ORDER BY "order" ASC;
+
+getHabitById:
+SELECT * FROM habits WHERE id = ?;
+
+getHealthKitHabits:
+SELECT * FROM habits WHERE health_type IS NOT NULL AND archived = 0;
+
+getMaxOrder:
+SELECT MAX("order") FROM habits WHERE archived = 0;
+
+insertHabit:
+INSERT INTO habits (id, name, type, unit, goal, frequency, color, icon, freeze_inventory, streak_state, current_streak, health_type, description, archived, "order", reminder_time, tags, target_value, daily_logs, archived_at, created_at, icon_color)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateHabit:
+UPDATE habits SET name = ?, description = ?, color = ?, icon = ?, reminder_time = ?, frequency = ?, icon_color = ? WHERE id = ?;
+
+updateHabitOrder:
+UPDATE habits SET "order" = ? WHERE id = ?;
+
+updateStreak:
+UPDATE habits SET current_streak = ? WHERE id = ?;
+
+updateStreakState:
+UPDATE habits SET streak_state = ? WHERE id = ?;
+
+archiveHabit:
+UPDATE habits SET archived = 1, archived_at = ? WHERE id = ?;
+
+restoreHabit:
+UPDATE habits SET archived = 0, archived_at = NULL WHERE id = ?;
+
+deleteHabit:
+DELETE FROM habits WHERE id = ?;
+
+resetAllStreaks:
+UPDATE habits SET current_streak = 0, streak_state = 'active';
+
+getHabitsForDate:
+SELECT id, type FROM habits
+WHERE (created_at IS NULL OR created_at <= ?)
+AND (archived = 0 OR (archived = 1 AND archived_at > ?));
+
+getActiveHabitIds:
+SELECT id FROM habits WHERE archived = 0;

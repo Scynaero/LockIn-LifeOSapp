@@ -1,0 +1,31 @@
+CREATE TABLE expenses (
+    id TEXT NOT NULL PRIMARY KEY,
+    amount REAL NOT NULL,
+    category TEXT NOT NULL,
+    date TEXT NOT NULL,
+    note TEXT,
+    is_recurring INTEGER NOT NULL DEFAULT 0
+);
+
+getAllExpenses:
+SELECT * FROM expenses ORDER BY date DESC;
+
+getExpensesByMonth:
+SELECT * FROM expenses WHERE date LIKE ? ORDER BY date DESC;
+
+getExpenseSummaryByMonth:
+SELECT category, SUM(amount) AS total
+FROM expenses
+WHERE date LIKE ?
+GROUP BY category
+ORDER BY total DESC;
+
+getTotalSpentByMonth:
+SELECT SUM(amount) AS total FROM expenses WHERE date LIKE ?;
+
+insertExpense:
+INSERT INTO expenses (id, amount, category, date, note, is_recurring)
+VALUES (?, ?, ?, ?, ?, ?);
+
+deleteExpense:
+DELETE FROM expenses WHERE id = ?;

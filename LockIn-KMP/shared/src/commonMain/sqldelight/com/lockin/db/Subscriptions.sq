@@ -1,0 +1,17 @@
+CREATE TABLE subscriptions (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    billing_cycle TEXT NOT NULL,
+    next_billing_date TEXT NOT NULL
+);
+
+getAllSubscriptions:
+SELECT * FROM subscriptions ORDER BY next_billing_date ASC;
+
+insertSubscription:
+INSERT INTO subscriptions (id, name, amount, billing_cycle, next_billing_date)
+VALUES (?, ?, ?, ?, ?);
+
+deleteSubscription:
+DELETE FROM subscriptions WHERE id = ?;

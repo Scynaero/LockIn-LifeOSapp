@@ -1,0 +1,78 @@
+CREATE TABLE workout_sets (
+    id TEXT NOT NULL PRIMARY KEY,
+    workout_id TEXT NOT NULL,
+    exercise_id TEXT NOT NULL,
+    weight REAL NOT NULL,
+    reps INTEGER NOT NULL,
+    rpe REAL,
+    is_completed INTEGER NOT NULL DEFAULT 0,
+    type TEXT NOT NULL DEFAULT 'normal',
+    FOREIGN KEY (workout_id) REFERENCES workouts (id) ON DELETE CASCADE,
+    FOREIGN KEY (exercise_id) REFERENCES exercises (id) ON DELETE CASCADE
+);
+
+getSetsForWorkout:
+SELECT ws.*, e.name AS exercise_name
+FROM workout_sets ws
+JOIN exercises e ON ws.exercise_id = e.id
+WHERE ws.workout_id = ?
+ORDER BY ws.ROWID ASC;
+
+getCompletedSetsForWorkout:
+SELECT ws.*, e.name AS exercise_name, e.target_muscle
+FROM workout_sets ws
+JOIN exercises e ON ws.exercise_id = e.id
+WHERE ws.workout_id = ? AND ws.is_completed = 1;
+
+getVolumeForRange:
+SELECT SUM(ws.weight * ws.reps) AS total_volume
+FROM workout_sets ws
+JOIN workouts w ON ws.workout_id = w.id
+WHERE w.date >= ? AND ws.is_completed = 1;
+
+getVolumeByDate:
+SELECT SUBSTR(w.date, 1, 10) AS day, SUM(ws.weight * ws.reps) AS volume
+FROM workout_sets ws
+JOIN workouts w ON ws.workout_id = w.id
+WHERE w.date >= ? AND ws.is_completed = 1
+GROUP BY day
+ORDER BY day ASC;
+
+getMusclesForRange:
+SELECT DISTINCT e.target_muscle
+FROM workout_sets ws
+JOIN workouts w ON ws.workout_id = w.id
+JOIN exercises e ON ws.exercise_id = e.id
+WHERE w.date >= ? AND ws.is_completed = 1;
+
+getMusclesForDate:
+SELECT DISTINCT e.target_muscle
+FROM workout_sets ws
+JOIN workouts w ON ws.workout_id = w.id
+JOIN exercises e ON ws.exercise_id = e.id
+WHERE w.date LIKE ? AND ws.is_completed = 1;
+
+getSecondaryMusclesForDate:
+SELECT e.secondary_muscles
+FROM workout_sets ws
+JOIN workouts w ON ws.workout_id = w.id
+JOIN exercises e ON ws.exercise_id = e.id
+WHERE w.date LIKE ? AND ws.is_completed = 1;
+
+getMuscleSplitForRange:
+SELECT e.target_muscle, COUNT(*) AS set_count
+FROM workout_sets ws
+JOIN workouts w ON ws.workout_id = w.id
+JOIN exercises e ON ws.exercise_id = e.id
+WHERE w.date >= ? AND ws.is_completed = 1
+GROUP BY e.target_muscle;
+
+insertSet:
+INSERT INTO workout_sets (id, workout_id, exercise_id, weight, reps, rpe, is_completed, type)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+updateSet:
+UPDATE workout_sets SET weight = ?, reps = ?, is_completed = ? WHERE id = ?;
+
+deleteSet:
+DELETE FROM workout_sets WHERE id = ?;

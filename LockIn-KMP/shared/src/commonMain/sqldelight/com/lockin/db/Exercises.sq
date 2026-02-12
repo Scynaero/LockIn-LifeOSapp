@@ -1,0 +1,27 @@
+CREATE TABLE exercises (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    target_muscle TEXT NOT NULL,
+    secondary_muscles TEXT,
+    equipment TEXT NOT NULL,
+    is_custom INTEGER NOT NULL DEFAULT 0
+);
+
+getAllExercises:
+SELECT * FROM exercises ORDER BY name ASC;
+
+getExerciseById:
+SELECT * FROM exercises WHERE id = ?;
+
+searchExercises:
+SELECT * FROM exercises WHERE name LIKE ? OR target_muscle LIKE ? ORDER BY name ASC;
+
+getExerciseCount:
+SELECT COUNT(*) FROM exercises;
+
+insertExercise:
+INSERT OR IGNORE INTO exercises (id, name, target_muscle, secondary_muscles, equipment, is_custom)
+VALUES (?, ?, ?, ?, ?, ?);
+
+updateSecondaryMuscles:
+UPDATE exercises SET secondary_muscles = ? WHERE id = ?;
