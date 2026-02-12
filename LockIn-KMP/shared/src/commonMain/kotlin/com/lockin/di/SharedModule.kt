@@ -36,6 +36,9 @@ val sharedModule = module {
     single { LogCompletionUseCase(get(), get(), get()) }
     single { GetHeatmapDataUseCase(get(), get()) }
     single { GetHabitStatsUseCase(get(), get(), get()) }
+
+    // ScreenModels
+    factory { BodyScreenModel(get()) }
 }
 
 fun initKoin(appModule: KoinApplication.() -> Unit = {}) {
