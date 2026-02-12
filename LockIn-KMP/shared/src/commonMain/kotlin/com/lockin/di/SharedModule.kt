@@ -13,6 +13,15 @@ import com.lockin.usecase.habit.GetHabitStatsUseCase
 import com.lockin.usecase.habit.GetHeatmapDataUseCase
 import com.lockin.usecase.habit.LogCompletionUseCase
 import com.lockin.usecase.habit.XpLevelingUseCase
+import com.lockin.usecase.body.WorkoutSessionUseCase
+import com.lockin.usecase.body.SetLoggingUseCase
+import com.lockin.usecase.body.SportsLoggingUseCase
+import com.lockin.usecase.body.MuscleSplitUseCase
+import com.lockin.usecase.finance.ExpenseUseCase
+import com.lockin.usecase.finance.DebtUseCase
+import com.lockin.usecase.finance.BudgetUseCase
+import com.lockin.usecase.notes.NoteCrudUseCase
+import com.lockin.usecase.notes.NoteArchiveUseCase
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -36,12 +45,31 @@ val sharedModule = module {
     single { LogCompletionUseCase(get(), get(), get()) }
     single { GetHeatmapDataUseCase(get(), get()) }
     single { GetHabitStatsUseCase(get(), get(), get()) }
+
+    // Body Use Cases
+    single { WorkoutSessionUseCase(get()) }
+    single { SetLoggingUseCase(get()) }
+    single { SportsLoggingUseCase(get()) }
+    single { MuscleSplitUseCase(get()) }
+
+    // Finance Use Cases
+    single { ExpenseUseCase(get()) }
+    single { DebtUseCase(get()) }
+    single { BudgetUseCase(get()) }
+
+    // Notes Use Cases
+    single { NoteCrudUseCase(get()) }
+    single { NoteArchiveUseCase(get()) }
 }
 
-fun initKoin(appModule: KoinApplication.() -> Unit = {}) {
+fun initKoin(
+    additionalModules: List<Module> = emptyList(),
+    appModule: KoinApplication.() -> Unit = {}
+) {
     startKoin {
         appModule()
         modules(sharedModule, platformModule())
+        modules(additionalModules)
     }
 }
 

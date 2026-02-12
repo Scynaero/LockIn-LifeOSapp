@@ -2,6 +2,9 @@ package com.lockin.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+// Background
+val Background = Color(0xFF000000)
+
 // Core surfaces
 val Surface = Color(0xFF0A0A0A)
 val SurfaceHighlight = Color(0xFF1A1A1A)
